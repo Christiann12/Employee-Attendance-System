@@ -1,0 +1,52 @@
+  #wrapper {
+    overflow-x: hidden;
+ }
+
+#sidebar-wrapper {
+  background-color: white;
+  box-shadow: 4px 4px 70px 5px rgba(0, 0, 0, 0.1);
+  min-height: 100vh;
+  position: fixed;
+}
+
+#sidebar-wrapper .sidebar-heading img{
+  height: 80px;
+  width: 80px;
+  margin: 30px 0px 0px 0px;
+}
+
+
+#sidebar-wrapper .list-group {
+  width: 8rem;
+}
+
+#sidebar-wrapper .list-group .active {
+  background-color: #1a1a1d;
+  box-shadow: 5px 4px 4px rgba(0, 0, 0, 0.25);
+  color: white !important;
+}
+
+#sidebar-wrapper .list-group .list-group-item{
+  font-family: 'Raleway';
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+  color: black;
+  width: 100%;
+  border: 0px solid #BEBEBE !important;
+  margin-top: 25px;
+  
+}
+
+
+#sidebar-wrapper .list-group .list-group-item:hover{
+    background-color: #1a1a1d;
+    color: white;
+}
+
+#page-content-wrapper {
+  width: 100%;
+  margin-left: 8rem;
+}
+
+

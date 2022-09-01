@@ -1,0 +1,111 @@
+/* .adminemployee{
+
+} */
+
+.adminemployee .banner{
+    /* background-color: red; */
+    margin: 80px 80px 0px 80px;
+}
+
+.adminemployee .banner .greeting{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 38px;
+    color: #000000;
+}
+
+.adminemployee .banner .clock{
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    color: #000000;
+}
+
+.adminemployee .section1 {
+    background-color: white;
+    margin: 80px 80px 0px 80px;
+    border-radius: 15px;
+}
+
+.adminemployee .section1 .header{
+    padding: 30px 30px 10px 30px;
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    color: #000000;
+    margin-bottom: 60px;
+    
+}
+
+.adminemployee .section1 .employeeform{
+    padding: 10px 30px 30px 30px;
+    
+}
+
+.adminemployee .section1 .employeeform .btn{
+    background-color: #1A1A1D;
+    border: 1px solid #1A1A1D !important;
+}
+
+.adminemployee .section2 {
+    background-color: white;
+    margin: 80px 80px 80px 80px;
+    border-radius: 15px;
+}
+
+.adminemployee .section2 .header{
+    padding: 30px 30px 10px 30px;
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    color: #000000;
+    margin-bottom: 60px;
+}
+
+.adminemployee .section2 .employeetable{
+    padding: 10px 30px 30px 30px;
+    /* background-color: red; */
+}
+.adminemployee .section2 .employeetable .headertable{
+    background-color: #bebebe !important;
+    color: black;
+}
+.adminemployee .section3 {
+    background-color: white;
+    margin: 80px 80px 80px 80px;
+    border-radius: 15px;
+}
+.adminemployee .section3 .header{
+    padding: 30px 30px 10px 30px;
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    color: #000000;
+    margin-bottom: 60px;
+}
+
+.adminemployee .section3 .importform{
+    padding: 10px 30px 10px 30px;
+    /* background-color: red; */
+}
+
+.adminemployee .section3 .buttons{
+    padding: 10px 30px 30px 30px;
+    /* background-color: red; */
+}
+
+.adminemployee .section3 .btn{
+    /* padding: 10px 100px;  */
+    background: #1A1A1D;
+    border: 1px solid #1A1A1D !important;
+}

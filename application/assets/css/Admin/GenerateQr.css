@@ -1,0 +1,82 @@
+.GenerateQr .banner{
+    /* background-color: red; */
+    margin: 80px 80px 0px 80px;
+}
+
+.GenerateQr .banner .greeting{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 38px;
+    color: #000000;
+}
+
+.GenerateQr .banner .clock{
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    color: #000000;
+}
+
+.GenerateQr .section1 {
+    background-color: white;
+    margin: 80px 80px 80px 80px;
+    border-radius: 15px;
+}
+
+.GenerateQr .section1 .header{
+    padding: 30px 30px 10px 30px;
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    color: #000000;
+    margin-bottom: 60px;
+}
+
+.GenerateQr .section1 .generateqrform{
+    padding: 0px 30px 30px 30px;
+}
+
+.GenerateQr .section1 .btn{
+    /* padding: 10px 100px;  */
+    background: #1A1A1D;
+    border: 1px solid #1A1A1D !important;
+}
+
+
+.GenerateQr .section2 {
+    background-color: white;
+    margin: 80px 80px 80px 80px;
+    border-radius: 15px;
+}
+
+.GenerateQr .section2 .header{
+    padding: 30px 30px 10px 30px;
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    color: #000000;
+    margin-bottom: 60px;
+}
+
+.GenerateQr .section2 .generateqrtable{
+    padding: 10px 30px 30px 30px;
+    /* background-color: red; */
+}
+
+.GenerateQr .section2 .generateqrtable{
+    padding: 10px 30px 30px 30px;
+    /* background-color: red; */
+}
+
+.GenerateQr .section2 .generateqrtable .headertable{
+    background-color: #bebebe !important;
+    color: black;
+}

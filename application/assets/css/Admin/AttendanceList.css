@@ -1,0 +1,48 @@
+.attendancelist .banner{
+    /* background-color: red; */
+    margin: 80px 80px 0px 80px;
+}
+
+.attendancelist .banner .greeting{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 38px;
+    color: #000000;
+}
+
+.attendancelist .banner .clock{
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    color: #000000;
+}
+
+.attendancelist .section1 {
+    background-color: white;
+    margin: 80px 80px 80px 80px;
+    border-radius: 15px;
+}
+
+.attendancelist .section1 .header{
+    padding: 30px 30px 10px 30px;
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    color: #000000;
+    margin-bottom: 60px;
+}
+
+.attendancelist .section1 .attendancetable{
+    padding: 10px 30px 30px 30px;
+    /* background-color: red; */
+}
+.attendancelist .section1 .attendancetable .headertable{
+    background-color: #bebebe !important;
+    color: black;
+}

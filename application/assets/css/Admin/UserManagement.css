@@ -1,0 +1,80 @@
+.usermanagement .banner{
+    /* background-color: red; */
+    margin: 80px 80px 0px 80px;
+}
+
+.usermanagement .banner .greeting{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 38px;
+    color: #000000;
+}
+
+.usermanagement .banner .clock{
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    color: #000000;
+}
+
+.usermanagement .section1 {
+    background-color: white;
+    margin: 80px 80px 0px 80px;
+    border-radius: 15px;
+}
+
+.usermanagement .section1 .header{
+    padding: 30px 30px 10px 30px;
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    color: #000000;
+    margin-bottom: 60px;
+}
+
+.usermanagement .section1 .userform{
+    padding: 10px 30px 30px 30px;
+}
+
+.usermanagement .section1 .userform .btn{
+    background-color: #1A1A1D;
+    border: 1px solid #1A1A1D !important;
+}
+
+.usermanagement .section2 {
+    background-color: white;
+    margin: 80px 80px 80px 80px;
+    border-radius: 15px;
+}
+
+.usermanagement .section2 .header{
+    padding: 30px 30px 10px 30px;
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    color: #000000;
+    margin-bottom: 60px;
+}
+
+.usermanagement .section2 .usertable{
+    padding: 10px 30px 30px 30px;
+    /* background-color: red; */
+}
+
+.usermanagement .section2 .usertable .headertable{
+    background-color: #bebebe !important;
+    color: black;
+}
+
+/* .usermanagement .section2 .usertable .data{
+
+} */
+
