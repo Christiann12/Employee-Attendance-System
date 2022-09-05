@@ -21,7 +21,7 @@ class AttendanceList extends CI_Controller {
 			$this->load->view('HeaderAndFooter/Footer.php');
 		}
 		else{
-			redirect('');
+			redirect('AdminLogin');
 		}
 	}
 	public function generateTable(){

@@ -26,7 +26,7 @@ class Employees extends CI_Controller {
 			$this->load->view('HeaderAndFooter/Footer.php');
 		}
 		else{
-			redirect('');
+			redirect('AdminLogin');
 		}
 	}
 	public function editEmployee($id = ''){
@@ -38,7 +38,7 @@ class Employees extends CI_Controller {
 			$this->load->view('HeaderAndFooter/Footer.php');
 		}
 		else{
-			redirect('');
+			redirect('AdminLogin');
 		}
 	}
 	public function deleteEmployee($id = ''){
@@ -52,16 +52,16 @@ class Employees extends CI_Controller {
 	}
 	//save employee
 	public function saveEdit(){
-		$this->form_validation->set_rules('employeeFirstName', 'First Name' ,'required');
-		$this->form_validation->set_rules('employeeLastName', 'Last Name' ,'required');
+		$this->form_validation->set_rules('employeeFirstName', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP');
+		$this->form_validation->set_rules('employeeLastName', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP');
 		
 		$postData = array(
             "empId" => $this->input->post("employeeId"),
-            "fname" => $this->input->post("employeeFirstName"),
-            "lname" => $this->input->post("employeeLastName"),
-			"timein" => $this->input->post("timein"),
-            "timeout" => $this->input->post("timeout"),
-			"dayoff" => $this->input->post("dayoff"),
+            "fname" => ucfirst(strtolower($this->input->post("employeeFirstName"))),
+            "lname" => ucfirst(strtolower($this->input->post("employeeLastName"))),
+			"timein" => (empty($this->input->post("timein")) ? 'timein' : $this->input->post("timein")),
+            "timeout" => (empty($this->input->post("timeout")) ? 'timeout' : $this->input->post("timeout")),
+			"dayoff" => (empty($this->input->post("dayoff")) ? 'dayoff' : $this->input->post("dayoff")),
         );
 
 		if($this->form_validation->run() === true){
@@ -80,14 +80,14 @@ class Employees extends CI_Controller {
 	}
 	//save employee
 	public function addEmployee(){
-		$this->form_validation->set_rules('employeeFirstName', 'First Name' ,'required');
-		$this->form_validation->set_rules('employeeLastName', 'Last Name' ,'required');
+		$this->form_validation->set_rules('employeeFirstName', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP');
+		$this->form_validation->set_rules('employeeLastName', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP');
 		
 		$postData = array(
             "empId" => "EMP-".$this->randStrGen(2,7),
 			"secretId" => "scrt".$this->randStrGen(1,12),
-            "fname" => $this->input->post("employeeFirstName"),
-            "lname" => $this->input->post("employeeLastName"),
+            "fname" => ucfirst(strtolower($this->input->post("employeeFirstName"))),
+            "lname" => ucfirst(strtolower($this->input->post("employeeLastName"))),
         );
 
 		if($this->form_validation->run() === true){
@@ -128,15 +128,60 @@ class Employees extends CI_Controller {
 	// import function 
 	public function import(){
 		$file_data = $this->csvimport->get_array($_FILES["csv_file"]["tmp_name"]);
-		foreach($file_data as $row){
-			$data = array (
-                "empId" => "EMP-".$this->randStrGen(2,7),
-				"secretId" => "scrt".$this->randStrGen(1,12),
-				"fname" => $row["firstname"],
-				"lname" => $row["lastname"],
-            );
-			$this->Employee_model->addEmployee($data);
+		$status = 'Still Good';
+		$data = array();
+
+		if(!array_key_exists('firstname',$file_data[0]) || !array_key_exists('lastname',$file_data[0])){
+			$status = "Required header is missing or wrong!";
+			
 		}
+		if(count($file_data) * 3 != count($file_data,1)){
+			$status = "Look for a wrong entry!";
+		}
+		
+		if($status === 'Still Good'){
+			foreach($file_data as $csvitem){
+				// check if blank
+				if($csvitem["firstname"] == '' || $csvitem["lastname"] == ''){
+					$status = "There's a blank record!";
+					break;
+				}
+				// check if has number
+				if( preg_match('~[0-9]+~', $csvitem["firstname"]) || preg_match('~[0-9]+~', $csvitem["lastname"])){
+					$status = "There's a numerical value in a record!";
+					break;
+				}
+				// check if has special character
+				if( preg_match('/[\'^£$%&*(!)}+{@#~?><>\[\],|=_¬-]/', $csvitem["firstname"]) || preg_match('/[\'^£$%&*(!)}+{@#~?><>\[\],|=_¬-]/', $csvitem["lastname"])){
+					$status = "There's a value with a special character";
+					break;
+				}
+
+				$row = array();
+				
+				$row["empId"] = "EMP-".$this->randStrGen(2,7);
+				$row["secretId"] = "scrt".$this->randStrGen(1,12);
+				$row["fname"] = ucfirst(strtolower($csvitem["firstname"]));
+				$row["lname"] = ucfirst(strtolower($csvitem["lastname"]));
+				$data[] = $row;
+			}
+			if($status === 'Still Good'){
+				$this->Employee_model->addEmployeeBatch($data);
+			}
+			else {
+				$test = array();
+				$this->output->set_status_header('400'); //Triggers the jQuery error callback
+				$test['message'] = $status;
+				echo json_encode($test);
+			}
+		}
+		else {
+			$test = array();
+			$this->output->set_status_header('400'); //Triggers the jQuery error callback
+			$test['message'] = $status;
+			echo json_encode($test);
+		}
+		
 	}
 	//functions
 	public function randStrGen($mode = null, $len = null){
@@ -158,4 +203,22 @@ class Employees extends CI_Controller {
         }
         return $result;
     }
+	public function checkFieldIfHasNum($text = ''){
+		if( preg_match('~[0-9]+~', $text)){
+			$this->form_validation->set_message('checkFieldIfHasNum', 'The {field} has numeric value!');
+            return false;
+		}
+		else{
+			return true;
+		}
+	}
+	public function checkFieldIfHasSP($text = ''){
+		if( preg_match('/[\'^£$%&*(!)}+{@#~?><>\[\],|=_¬-]/', $text)){
+			$this->form_validation->set_message('checkFieldIfHasSP', 'The {field} has special character!');
+            return false;
+		}
+		else{
+			return true;
+		}
+	}
 }

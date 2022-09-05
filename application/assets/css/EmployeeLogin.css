@@ -1,0 +1,124 @@
+.loginBody{
+    font-family: Raleway; background-color: #FEFFFF;
+    ;
+}
+.loginBody .primaryContainer{
+    height: 100vh; overflow:auto; 
+    padding: 10% 10% 10% 10%;
+    /* padding-top: 8%; padding-bottom: 8%; padding-left: 25%; padding-right: 25%; */
+}
+
+.loginBody .primaryContainer .loginpanel{
+    height: 100%;
+    /* border: 5px solid red; */
+}
+
+.loginBody .primaryContainer .title{
+    font-weight: 700;font-size: 24px;line-height: 42px;color: #000000;
+}
+
+.loginBody .primaryContainer .subtitle{
+    font-style: italic;font-weight: 400;font-size: 14px;line-height: 23px;color: #8A8A8A;
+}
+.loginBody .primaryContainer .btn{
+    padding: 10px 80px; background: #1A1A1D;
+    border: 1px solid #1A1A1D !important;
+}
+.loginBody .primaryContainer .spacing1{
+    padding-top: 30px;
+ }
+
+ .loginBody .primaryContainer .spacing2{
+    padding-bottom: 30px;
+ }
+
+/* css floating label  */
+.form-label-group {
+    position: relative;
+    margin-bottom: 1rem;
+}
+  
+  .form-label-group input,
+  .form-label-group label {
+    height: 3.125rem;
+    padding: .75rem;
+  }
+  
+  .form-label-group label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    margin-bottom: 0; /* Override default `<label>` margin */
+    line-height: 1.5;
+    color: #495057;
+    pointer-events: none;
+    cursor: text; /* Match the input under the label */
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    transition: all .1s ease-in-out;
+  }
+  
+  .form-label-group input::-webkit-input-placeholder {
+    color: transparent;
+  }
+  
+  .form-label-group input::-moz-placeholder {
+    color: transparent;
+  }
+  
+  .form-label-group input:-ms-input-placeholder {
+    color: transparent;
+  }
+  
+  .form-label-group input::-ms-input-placeholder {
+    color: transparent;
+  }
+  
+  .form-label-group input::placeholder {
+    color: transparent;
+  }
+  
+  .form-label-group input:not(:-moz-placeholder-shown) {
+    padding-top: 1.25rem;
+    padding-bottom: .25rem;
+  }
+  
+  .form-label-group input:not(:-ms-input-placeholder) {
+    padding-top: 1.25rem;
+    padding-bottom: .25rem;
+  }
+  
+  .form-label-group input:not(:placeholder-shown) {
+    padding-top: 1.25rem;
+    padding-bottom: .25rem;
+  }
+  
+  .form-label-group input:not(:-moz-placeholder-shown) ~ label {
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    font-size: 12px;
+    color: #777;
+  }
+  
+  .form-label-group input:not(:-ms-input-placeholder) ~ label {
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    font-size: 12px;
+    color: #777;
+  }
+  
+  .form-label-group input:not(:placeholder-shown) ~ label {
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    font-size: 12px;
+    color: #777;
+  }
+  
+  .form-label-group input:-webkit-autofill ~ label {
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    font-size: 12px;
+    color: #777;
+  }

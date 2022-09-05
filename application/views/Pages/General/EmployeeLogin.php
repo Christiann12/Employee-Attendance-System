@@ -12,23 +12,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
     <!-- developer css  -->
-    <link rel="stylesheet" href="<?php echo base_url(); ?>application/assets/css/Login.css"/>
+    <link rel="stylesheet" href="<?php echo base_url(); ?>application/assets/css/EmployeeLogin.css"/>
    
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
     </head>
     <body class="loginBody">
         
         <div class="primaryContainer">
-            <div class="loginPanel">
-               <div class="">
-               <center>
+            <div class="loginpanel">
+                <center>
                     <img class="spacing1" src="<?php echo base_url(); ?>application/assets/images/logo1.png" alt="Logo">
                     <p class="title spacing1">Welcome to Paxforce</p>
-                    <p class="subtitle spacing1">Administrator</p>
+                    <p class="subtitle spacing1">Employee</p>
                 </center>
-                <?php echo form_open_multipart('Admin/UserManagement/checkUser') ?>
+                    <?php echo form_open_multipart('EmployeeLogin/checkUser') ?>
 
-                    <div class="m-auto spacing1" style="width: 50%;">
+                        <div class="spacing1" style="">
                         <!-- RESULT NOTIFICATION  -->
                         <?php if($this->session->flashdata('successLogin')){ ?>
                             <div class="alert alert-success" > 
@@ -41,8 +40,8 @@
                             </div>
                         <?php } ?>
                         <div class="form-label-group">
-                            <input name="emailLogin" type="email" id="email" class="form-control" placeholder="Email/Username">
-                            <label for="emailLogin" class="">Email/Username</label>
+                            <input name="empId" type="text" id="empId" class="form-control" placeholder="Employee ID">
+                            <label for="empId" class="">Employee ID</label>
                         </div>
 
                         <div class="form-label-group">
@@ -66,8 +65,6 @@
                     </div>
 
                 <?php echo form_close() ?>
-               </div>
-                
             </div>
         </div>
 

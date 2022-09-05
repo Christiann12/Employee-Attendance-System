@@ -361,8 +361,17 @@
 							setInterval(function(){
 								window.location.href = "<?= base_url('AdminEmployees')?>";
 							}, 2000);
+						},
+						error: function( jqXhr ) {
+							
+							if( jqXhr.status == 400 ) { //Validation error or other reason for Bad Request 400
+								var json = JSON.parse( jqXhr.responseText );
+								alert(json.message);
+								$('#import_csv')[0].reset();
+								// $('#uploadButton').attr('disabled', false);
+								$('#uploadButton').html('Upload');
+							}
 						}
-						
 					})
 				});
 			});
@@ -391,8 +400,17 @@
 							setInterval(function(){
 								window.location.href = "<?= base_url('UploadSched')?>";
 							}, 2000);
+						},
+						error: function( jqXhr ) {
+							
+							if( jqXhr.status == 400 ) { //Validation error or other reason for Bad Request 400
+								var json = JSON.parse( jqXhr.responseText );
+								alert(json.message);
+								$('#import_csv_schedule')[0].reset();
+								// $('#uploadButton').attr('disabled', false);
+								$('#uploadButton_schedule').html('Upload');
+							}
 						}
-						
 					})
 				});
 			});

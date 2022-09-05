@@ -71,6 +71,7 @@ class User_model extends CI_Model {
 			->get()
 			->row();
     }
+    
     //get table data
     public function getTableData(){
          return $this->db->select("*")->from($this->table)->get()->result();

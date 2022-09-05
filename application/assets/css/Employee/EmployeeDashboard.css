@@ -1,0 +1,54 @@
+.employeedashboard .banner{
+    /* background-color: red; */
+    margin: 30px 30px 0px 30px;
+}
+
+.employeedashboard .banner .greeting{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 28px;
+    color: #000000;
+}
+
+.employeedashboard .banner .clock{
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 19px;
+    color: #000000;
+}
+.timesheet{
+    background-color: white;
+    margin: 80px 0px 0px 0px;
+}
+.timesheet .chart{
+    /* background-color: red; */
+    display: inline-block;
+    text-align: center;
+}
+.timesheet .containerPanel {
+    /* background-color: blue; */
+    padding: 30px 30px 30px 30px;
+}
+.timesheet .containerPanel .title{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    color: #000000;
+}
+.timesheet .containerPanel .hours{
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    color: #000000;
+}
+
+.timesheet .containerPanel .btn{
+     background: #1A1A1D;
+    border: 1px solid #1A1A1D !important;
+}

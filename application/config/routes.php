@@ -49,15 +49,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'Login';
+$route['default_controller'] = 'EmployeeLogin';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 
 // Login route 
 
-$route['Login'] = 'Login';
-$route['login'] = 'Login';
+$route['AdminLogin'] = 'Login';
+$route['adminlogin'] = 'Login';
 
 // Admin Routes
 $route['AdminDashboard'] = 'Admin/Dashboard';
@@ -87,3 +87,14 @@ $route['attendancelist'] = 'Admin/AttendanceList';
 
 $route['UploadSched'] = 'Admin/UploadSched';
 $route['uploadsched'] = 'Admin/UploadSched';
+
+//****************************************************************************************************************************//
+
+$route['Login'] = 'EmployeeLogin';
+$route['login'] = 'EmployeeLogin';
+
+$route['EmployeeDashboard'] = 'Employee/EmployeeDashboard';
+$route['employeedashboard'] = 'Employee/EmployeeDashboard';
+
+$route['EmployeeProfile'] = 'Employee/EmployeeProfile';
+$route['employeeprofile'] = 'Employee/EmployeeProfile';

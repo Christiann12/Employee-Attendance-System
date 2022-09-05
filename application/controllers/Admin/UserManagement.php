@@ -21,7 +21,7 @@ class UserManagement extends CI_Controller {
 			$this->load->view('HeaderAndFooter/Footer.php');
 		}
 		else{
-			redirect('');
+			redirect('AdminLogin');
 		}
 	}
 	public function editUser($id = '')
@@ -34,23 +34,23 @@ class UserManagement extends CI_Controller {
 			$this->load->view('HeaderAndFooter/Footer.php');
 		}
 		else{
-			redirect('');
+			redirect('AdminLogin');
 		}
 	}
 	//save user
 	public function saveUser(){
-		$this->form_validation->set_rules('userFirstname', 'First Name' ,'required');
-		$this->form_validation->set_rules('userLastname', 'Last Name' ,'required');
+		$this->form_validation->set_rules('userFirstname', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP');
+		$this->form_validation->set_rules('userLastname', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP');
 		$this->form_validation->set_rules('userEmail', 'Email' ,'required|callback_email_check');
 		$this->form_validation->set_rules('userPassword', 'Password' ,'required');
 		$this->form_validation->set_rules('userRePassword', 'Confirm Password' ,'required|matches[userPassword]');
 		
 		$postData = array(
             "userId" => "USR-".$this->randStrGen(2,7),
-            "fname" => $this->input->post("userFirstname"),
-            "lname" => $this->input->post("userLastname"),
+            "fname" => ucfirst(strtolower($this->input->post("userFirstname"))),
+            "lname" => ucfirst(strtolower($this->input->post("userLastname"))),
             "password" => md5($this->input->post("userPassword")),
-            "email" => $this->input->post("userEmail"),
+            "email" => strtolower($this->input->post("userEmail")),
             "userRole" => 'Admin',
         );
 
@@ -71,8 +71,8 @@ class UserManagement extends CI_Controller {
 	//update user
 	public function saveEdit(){
 		// echo 'test'; 
-		$this->form_validation->set_rules('userFirstname', 'First Name' ,'required');
-		$this->form_validation->set_rules('userLastname', 'Last Name' ,'required');
+		$this->form_validation->set_rules('userFirstname', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP');
+		$this->form_validation->set_rules('userLastname', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP');
 		$this->form_validation->set_rules('userEmail', 'Email' ,'required|callback_email_check_edit['.$this->input->post('userIdField').']');
 		
 		if($this->input->post("userPassword") != ''){
@@ -82,10 +82,10 @@ class UserManagement extends CI_Controller {
 		
 		$postData = array(
             "userId" => $this->input->post('userIdField'),
-            "fname" => $this->input->post("userFirstname"),
-            "lname" => $this->input->post("userLastname"),
+            "fname" => ucfirst(strtolower($this->input->post("userFirstname"))),
+            "lname" => ucfirst(strtolower($this->input->post("userLastname"))),
             // "password" => md5($this->input->post("userPassword")),
-            "email" => $this->input->post("userEmail"),
+            "email" => strtolower($this->input->post("userEmail")),
             "userRole" => 'Admin',
         );
 
@@ -157,12 +157,12 @@ class UserManagement extends CI_Controller {
 			}
 			else{
 				$this->session->set_flashdata('errorLogin','Incorrect Email or Password');
-				redirect('');
+				redirect('AdminLogin');
 			}
 		}
 		else{
 			$this->session->set_flashdata('errorLogin',validation_errors());
-			redirect('');
+			redirect('AdminLogin');
 		}
 	}
 	//get table data
@@ -176,7 +176,7 @@ class UserManagement extends CI_Controller {
 	public function signout(){
 		$array_items = array('isLogIn', 'userId', 'firstName', 'lastName', 'email','userRole');
 		$this->session->unset_userdata($array_items);
-		redirect('');
+		redirect('AdminLogin');
 	}
 	//functions
 	public function randStrGen($mode = null, $len = null){
@@ -217,5 +217,23 @@ class UserManagement extends CI_Controller {
         } else {
             return true;
         }
+	}
+	public function checkFieldIfHasNum($text = ''){
+		if( preg_match('~[0-9]+~', $text)){
+			$this->form_validation->set_message('checkFieldIfHasNum', 'The {field} has numeric value!');
+            return false;
+		}
+		else{
+			return true;
+		}
+	}
+	public function checkFieldIfHasSP($text = ''){
+		if( preg_match('/[\'^£$%&*(!)}+{@#~?><>\[\],|=_¬-]/', $text)){
+			$this->form_validation->set_message('checkFieldIfHasSP', 'The {field} has special character!');
+            return false;
+		}
+		else{
+			return true;
+		}
 	}
 }
