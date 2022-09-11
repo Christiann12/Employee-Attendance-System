@@ -20,27 +20,28 @@
     line-height: 19px;
     color: #000000;
 }
-.timesheet{
+.employeedashboard .timesheet{
+    box-shadow: 5px 5px 10px 1px rgba(138, 138, 138, 0.25);
     background-color: white;
     margin: 80px 0px 0px 0px;
 }
-.timesheet .chart{
+.employeedashboard .timesheet .chart{
     /* background-color: red; */
     display: inline-block;
     text-align: center;
 }
-.timesheet .containerPanel {
+.employeedashboard .timesheet .containerPanel {
     /* background-color: blue; */
     padding: 30px 30px 30px 30px;
 }
-.timesheet .containerPanel .title{
+.employeedashboard .timesheet .containerPanel .title{
     font-family: 'Raleway';
     font-style: normal;
     font-weight: 700;
     font-size: 20px;
     color: #000000;
 }
-.timesheet .containerPanel .hours{
+.employeedashboard .timesheet .containerPanel .hours{
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 700;
@@ -48,7 +49,30 @@
     color: #000000;
 }
 
-.timesheet .containerPanel .btn{
-     background: #1A1A1D;
+.employeedashboard .timesheet .containerPanel .btn{
+     background: #1A1A1D; color: white;
     border: 1px solid #1A1A1D !important;
+}
+
+.employeedashboard .attendancelist{
+    box-shadow: 5px 5px 10px 1px rgba(138, 138, 138, 0.25);
+    background-color: white;
+    margin: 80px 0px 80px 0px;
+    padding: 30px 15px 30px 15px;
+}
+
+.employeedashboard .attendancelist .title{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    color: #000000;
+}
+
+/* .employeedashboard .attendancelist .employeeTable{ */
+    /* margin: 250px 0px 250px 0px; */
+/* } */
+.employeedashboard .attendancelist .employeeTable .headertable{
+    background-color: #bebebe !important;
+    color: black;
 }

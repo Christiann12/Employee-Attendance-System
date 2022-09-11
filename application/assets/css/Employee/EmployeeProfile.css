@@ -1,42 +1,73 @@
-.loginBody{
-    font-family: Raleway; background: linear-gradient(116.82deg, rgba(255, 255, 255, 1) 0.49%, rgba(165, 0, 3, 0.76) 68.96%, rgba(26, 26, 29, 0.918) 91.98%);
+.employeeprofile .banner {
+    margin: 30px 30px 0px 30px;
+    /* background-color: red; */
+}
+.employeeprofile .banner .greeting{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    color: #000000;
 }
 
-.loginBody .primaryContainer{
-    height: 100vh; overflow:auto; 
-    padding-top: 8%; padding-bottom: 8%; padding-left: 25%; padding-right: 25%;
+.employeeprofile .profile {
+    box-shadow: 5px 5px 10px 1px rgba(138, 138, 138, 0.25);
+    background-color: white;
+    margin: 30px 0px 0px 0px;
+    padding: 30px;
 }
 
-.loginBody .primaryContainer .loginPanel{
-  background-color: white; box-shadow: 5px 5px 10px 1px rgba(0, 0, 0, 0.25); border-radius: 20px;
-    
+.employeeprofile .profile .name{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 23px;
+    color: #000000;
+}
+.employeeprofile .profile .empId{
+    margin: 0;
+}
+.employeeprofile .profile .schedule{
+    margin: 0;
+}
+.employeeprofile .profile .dayoff{
+    margin: 0;
 }
 
-.loginBody .primaryContainer .loginPanel .title{
-    font-weight: 700;font-size: 36px;line-height: 42px;color: #000000;
+.employeeprofile .banner2 {
+    margin: 60px 30px 0px 30px;
+    /* background-color: red; */
+}
+.employeeprofile .banner2 .greeting{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    color: #000000;
 }
 
-.loginBody .primaryContainer .loginPanel .subtitle{
-    font-style: italic;font-weight: 400;font-size: 20px;line-height: 23px;color: #8A8A8A;
+.employeeprofile .editprofile {
+    box-shadow: 5px 5px 10px 1px rgba(138, 138, 138, 0.25);
+    background-color: white;
+    margin: 30px 0px 0px 0px;
+    padding: 60px 30px 60px 30px;
 }
 
-.loginBody .primaryContainer .loginPanel .btn{
-    padding: 10px 100px; background: #1A1A1D; color: white;
+.employeeprofile .editprofile .btn{
+    padding: 10px 80px; background: #1A1A1D; color: white;
     border: 1px solid #1A1A1D !important;
 }
 
-
-.loginBody .primaryContainer .loginPanel .forgot-password{
-   font-weight: 400;font-size: 12px;color: #8A8A8A; font-family: 'Open Sans'; font-style: normal;
+.employeeprofile .dashboard {
+    box-shadow: 5px 5px 10px 1px rgba(138, 138, 138, 0.25);
+    background-color: white;
+    margin: 30px 0px 40px 0px;
+    padding: 250px 30px 250px 30px;
 }
 
-.loginBody .primaryContainer .loginPanel .spacing1{
-    padding-top: 30px;
- }
-
- .loginBody .primaryContainer .loginPanel .spacing2{
-    padding-bottom: 30px;
- }
 /* css floating label  */
 .form-label-group {
     position: relative;

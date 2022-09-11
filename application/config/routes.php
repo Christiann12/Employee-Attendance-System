@@ -98,3 +98,6 @@ $route['employeedashboard'] = 'Employee/EmployeeDashboard';
 
 $route['EmployeeProfile'] = 'Employee/EmployeeProfile';
 $route['employeeprofile'] = 'Employee/EmployeeProfile';
+
+$route['EmployeeScan/(:any)'] = 'Employee/EmployeeScan/index/$1';
+$route['employeescan/(:any)'] = 'Employee/EmployeeScan/index/$1';

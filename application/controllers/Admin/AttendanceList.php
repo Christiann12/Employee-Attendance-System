@@ -38,6 +38,7 @@ class AttendanceList extends CI_Controller {
 			$row['data4'] = $listItem->timein.' - '.$listItem->timeout;
 			$row['data5'] = $listItem->late;
 			$row['data6'] = $listItem->hours;
+			$row['data7'] = $listItem->date;
 			$data[] = $row;
 		}
 		$json_data['data'] = $data;

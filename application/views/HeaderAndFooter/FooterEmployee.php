@@ -19,6 +19,7 @@
 		<!-- developer js -->
 		<script src="<?php echo base_url('application/assets/js/clock.js') ?>"></script>
 		<script src="<?php echo base_url('application/assets/js/easypiechart.js') ?>"></script>
+		<!-- circular progress bar  -->
 		<script>
 			document.addEventListener('DOMContentLoaded', function() {
 				var chart = window.chart = new EasyPieChart(document.querySelector('span'), {
@@ -42,5 +43,60 @@
 
 			});
 		</script>
+		<!-- employee attendance table script  -->
+		<script>
+			$(document).ready( function () {
+				
+				$('#employeeTable').DataTable().destroy();
+				// var VtxtSearch=$("#txtSearchChild").val();
+				loademployeeTable();
+			});	
+			// $("#childSearch").submit(function(event){
+			// 	event.preventDefault();
+			// 	$('#employeeTable').DataTable().destroy();
+			// 	var VtxtSearch=$("#txtSearchChild").val();
+			// 	loademployeeTable(VtxtSearch);
+			// });
+			function loademployeeTable(txtSearch=''){
+				// alert('thiswork');
+				var dataTable = $('#employeeTable').DataTable({
+					
+					// "lengthMenu": [[10, 25, 100, 1000, 3000, -1], [10, 25, 100, 1000, 3000]],
+					"processing":true,
+					"language": {
+						processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '
+					},
+					"lengthChange": false,
+					"info": false,   
+					// "bLengthChange": true,
+					// "serverSide":true,
+					"responsive": true,
+					// "bPaginate": true,
+					// "sPaginationType": "full_numbers",
+					"ajax": {
+						"url": "<?php echo base_url('Employee/EmployeeDashboard/generateTable')?>",
+						"type": "POST",
+						// "data": {txtSearch:''}
+					},
+					columns: [
+						{
+							data: 'data1',
+							className: 'data'
+						},
+						{
+							data: 'data2',
+							className: 'data'
+						},
+						{
+							data: 'data3',
+							className: 'data'
+						},
+					],
+					// "order":[],
+					"searching": false,
+				});
+			}
+		</script>
     </body>
+	
 </html>

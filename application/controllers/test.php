@@ -11,7 +11,7 @@ class Test extends CI_Controller {
 		echo 'Check Time : '.date('H:i:s', $checkTime);
 		echo '<hr>';
 
-		$loginTime = strtotime('15:00');
+		$loginTime = strtotime('8:00');
 		$diff = ($checkTime - $loginTime);
 		echo 'Login Time : '.date('H:i:s', $loginTime).'<br>';
 		echo ($diff < 0)? 'Late!' : 'Right time!'; echo '<br>';

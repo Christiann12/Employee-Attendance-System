@@ -48,7 +48,7 @@
                     <input name="userRePassword" type="password" id="userRePassword" class="inputDesign form-control" placeholder="Confirm Password">
                 </div>
 
-                <button type="submit" class="btn btn-primary my-3" >Submit</button>
+                <button type="submit" class="btn my-3" >Submit</button>
             <?php echo form_close() ?>
         </div>
     </div>

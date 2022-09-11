@@ -18,6 +18,7 @@
     <!-- Developer Created Css -->
     <link rel="stylesheet" href="<?php echo base_url(); ?>application/assets/css/Employee/EmployeeWrapper.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>application/assets/css/Employee/EmployeeDashboard.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>application/assets/css/Employee/EmployeeProfile.css">
    
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
     </head>

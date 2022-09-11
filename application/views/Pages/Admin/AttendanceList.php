@@ -15,6 +15,7 @@
                         <th class="headertable">Time</th>
                         <th class="headertable">Late</th>
                         <th class="headertable">Hour Type</th>
+                        <th class="headertable">Date</th>
                     </tr>
                 </thead>
                 <tbody>

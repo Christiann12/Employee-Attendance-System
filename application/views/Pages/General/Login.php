@@ -61,7 +61,7 @@
                         </div>
 
                         <center class="spacing2">
-                            <button type="submi" class="btn btn-primary" >Login</button>
+                            <button type="submi" class="btn" >Login</button>
                         </center>
                     </div>
 

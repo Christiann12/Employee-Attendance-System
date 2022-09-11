@@ -30,26 +30,30 @@ class EmployeeLogin extends CI_Controller {
 		if($this->form_validation->run() === true){
 			$userData = $this->Employee_model->checkCredentialsEmployee($postData);
 			if(!empty($userData)){
-				$this->session->set_flashdata('successLogin','Login Successful');
+				$this->session->set_flashdata('successLoginEmployee','Login Successful');
 		
 				$this->session->set_userdata([
 					'isLogInEmployee'     => true,
 					'employeeId'     => $userData->empId,
+					'secretIdEmployee'     => $userData->secretId,
 					'firstNameEmployee'     => $userData->fname,
 					'lastNameEmployee'  => $userData->lname,
+					'employeeTimein'  => $userData->timein,
+					'employeeTimeout'  => $userData->timeout,
+					'employeeDayoff'  => $userData->dayoff,
 				]);
 				
 				redirect('EmployeeDashboard');
 			}
 			else{
-				$this->session->set_flashdata('errorLogin','Incorrect Email or Password');
+				$this->session->set_flashdata('errorLoginEmployee','Incorrect Email or Password');
 				redirect('');
 			}
-			$this->session->set_flashdata('successLogin','Login Successful');
+			$this->session->set_flashdata('successLoginEmployee','Login Successful');
 			redirect('');
 		}
 		else{
-			$this->session->set_flashdata('errorLogin',validation_errors());
+			$this->session->set_flashdata('errorLoginEmployee',validation_errors());
 			redirect('');
 		}
 	}

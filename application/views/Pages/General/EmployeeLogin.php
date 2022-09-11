@@ -29,14 +29,14 @@
 
                         <div class="spacing1" style="">
                         <!-- RESULT NOTIFICATION  -->
-                        <?php if($this->session->flashdata('successLogin')){ ?>
+                        <?php if($this->session->flashdata('successLoginEmployee')){ ?>
                             <div class="alert alert-success" > 
-                                <?php  echo $this->session->flashdata('successLogin'); $this->session->unset_userdata ( 'successLogin' );?>
+                                <?php  echo $this->session->flashdata('successLoginEmployee'); $this->session->unset_userdata ( 'successLoginEmployee' );?>
                             </div>
                         <?php } ?>  
-                        <?php if ($this->session->flashdata('errorLogin')){ ?>
+                        <?php if ($this->session->flashdata('errorLoginEmployee')){ ?>
                             <div class="alert alert-danger" > 
-                                <?php  echo $this->session->flashdata('errorLogin'); $this->session->unset_userdata ( 'errorLogin' );?>
+                                <?php  echo $this->session->flashdata('errorLoginEmployee'); $this->session->unset_userdata ( 'errorLoginEmployee' );?>
                             </div>
                         <?php } ?>
                         <div class="form-label-group">
@@ -60,7 +60,7 @@
                         </div>
 
                         <center class="spacing2">
-                            <button type="submi" class="btn btn-primary" >Login</button>
+                            <button type="submi" class="btn" >Login</button>
                         </center>
                     </div>
 

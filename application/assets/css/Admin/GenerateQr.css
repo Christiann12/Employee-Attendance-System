@@ -44,7 +44,7 @@
 
 .GenerateQr .section1 .btn{
     /* padding: 10px 100px;  */
-    background: #1A1A1D;
+    background: #1A1A1D; color: white;
     border: 1px solid #1A1A1D !important;
 }
 

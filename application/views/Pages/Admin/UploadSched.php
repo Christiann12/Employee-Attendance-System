@@ -11,8 +11,8 @@
                 <input type="file" name="csv_file" id="csv_file" required accept=".csv" />
             </div>
             <div class="buttons">
-                <button id="uploadButton_schedule" type="submit" class="btn btn-primary" >Upload</button>
-                <a download href="<?php echo base_url("application/assets/csv/csvformatschedule.csv"); ?>" class="btn btn-primary ml-5"> Sample CSV</a>
+                <button id="uploadButton_schedule" type="submit" class="btn" >Upload</button>
+                <a download href="<?php echo base_url("application/assets/csv/csvformatschedule.csv"); ?>" class="btn ml-5"> Sample CSV</a>
             </div>
         </form>
     </div> 

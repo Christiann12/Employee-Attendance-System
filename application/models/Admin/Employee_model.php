@@ -103,4 +103,7 @@ class Employee_model extends CI_Model {
 			->get()
 			->row();
     }
+    public function getEmpData($id=''){
+        return $this->db->select("*")->from($this->table)->where('secretid',$id)->get()->row();
+    }
 }
