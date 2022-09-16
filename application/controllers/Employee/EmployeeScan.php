@@ -15,40 +15,59 @@ class EmployeeScan extends CI_Controller {
 	public function index($id="")
 	{
         $data['empData'] = $this->Employee_model->getEmpData($id);
-        $attendanceDetail = $this->Attendance_model->getData($data['empData']->empId);
+        $attendanceDetail = $this->Attendance_model->getTimeIn($data['empData']->empId);
         
         if(empty($attendanceDetail)){
             $this->load->view('Pages/General/InputInformationTimein.php',$data);
         }
         else{
-            if($attendanceDetail->timeout != 'timeout'){
-                // echo '<script language="javascript">';
-                // echo 'alert("message successfully sent")';
-                // echo '</script>';
-                redirect('EmployeeDashboard');
+
+            $timein = date("H:i" , strtotime($data['empData']->timein));
+            $timeout = date("H:i" , strtotime($data['empData']->timeout));
+
+            $currentTime = date("H:i");
+            
+            $postData = array(
+                'empId' => $data['empData']->empId,
+                "datetimeout" => date('Y-m-d'),
+                'timeout' => $currentTime,
+            );
+
+            if(date('l',strtotime($attendanceDetail->datetimein)) == $data['empData']->dayoff){
+                $postData['hours'] = 'Overtime-DayOff';
+            }
+            else if ($this->isBetween($timein,$timeout,$currentTime)){
+                $postData['hours'] = 'Early Out';
             }
             else{
-                $timeout = date('H:i');
-                $checkTime = $data['empData']->timeout;
-                $diff = ($checkTime - $timeout);
-                
-                $postData = array(
-                    'empId' => $data['empData']->empId,
-                    'timeout' => $timeout,
-                );
-    
-                if(date('l') == $data['empData']->dayoff){
-                    $postData['hours'] = 'Overtime';
+                if($timeout == $currentTime){
+                    $postData['hours'] = 'On Time';
                 }
-                else{
-                    $postData['hours'] = ($diff === 0) ? 'On Time' : (($diff < 0) ? 'Overtime': 'Halfday');
+                else if($timeout < $currentTime){
+                    $temp = (strtotime($currentTime) - strtotime($timeout)) / 60;
+                    if(floor($temp/15) == 0){
+                        $postData['hours'] ='On Time';
+                    }
+                    else{
+                        $postData['hours'] = floor($temp/15).' Overtime';
+                    }
                 }
-    
-                if($this->Attendance_model->updateRecord($postData)){
-                    redirect('EmployeeDashboard');
+                else if($timeout > $currentTime){
+                    $temp = (strtotime('today '.$currentTime) - strtotime('yesterday '.$timeout)) / 60;
+                    if(floor($temp/15) == 0){
+                        $postData['hours'] ='On Time';
+                    }
+                    else{
+                        $postData['hours'] = floor($temp/15).' Overtime';
+                    }
                 }
             }
-            
+
+            if($this->Attendance_model->updateRecord($postData)){
+                redirect('EmployeeDashboard');
+            }
+        
+        
         }
 	}
     public function saveTimein(){
@@ -76,14 +95,27 @@ class EmployeeScan extends CI_Controller {
         //check if late or not 
         $loginTime = date('H:i');
         $checkTime = $empData->timein;
-        $diff = ($checkTime - $loginTime);
+        $diff = ($checkTime - $loginTime); 
 
+        $timein = date("H:i" , strtotime($empData->timein));
+		$timeout = date("H:i" , strtotime($empData->timeout));
+
+		$currentTime = date("H:i");
+            
+		if ($this->isBetween($timein,$timeout,$currentTime)) 
+		{
+			$status_in = 'Late';
+		} else {
+			$status_in = 'On time';
+		}
 
         $postData = array(
             "empId" => $empData->empId,
             "timein" => $loginTime,
-            "date" => date('Y-m-d'),
-            "late" => ($diff < 0)? 'Late' : 'On Time',
+            "timeinsched" => $empData->timein,
+            "timeoutsched" => $empData->timeout,
+            "datetimein" => date('Y-m-d'),
+            "late" => $status_in,
         );
 
         if($this->form_validation->run() === true){
@@ -109,4 +141,11 @@ class EmployeeScan extends CI_Controller {
             redirect('EmployeeScan/'.$this->input->post("EmpId"));
         }
     }
+    function isBetween($from, $till, $input) {
+		$f = DateTime::createFromFormat('!H:i', $from);
+		$t = DateTime::createFromFormat('!H:i', $till);
+		$i = DateTime::createFromFormat('!H:i', $input);
+		if ($f > $t) $t->modify('+1 day');
+		return ($f < $i && $i < $t) || ($f < $i->modify('+1 day') && $i < $t);
+	}
 }

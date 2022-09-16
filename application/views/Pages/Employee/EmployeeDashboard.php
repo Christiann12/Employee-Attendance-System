@@ -7,36 +7,13 @@
         <div class="containerPanel">
             <p class="title">Time Sheet</p>
             <center>
-                <?php 
-                    if($attendanceDetail->timeout != 'timeout'){
-                        $timein = strtotime($attendanceDetail->timein);
-                        $timeout = strtotime($attendanceDetail->timeout);
-                        $diff  = ($timeout - $timein);
-
-                        
-                        if(strtotime($attendanceDetail->timein) > strtotime(date('H:i'))){
-                            $time1 = strtotime($attendanceDetail->timein);
-                            $time2 = strtotime($attendanceDetail->timeout);
-                            $diff2 = ($time2 - $time1);
-                        }
-                        else{
-                            $time1 = strtotime(date('H:i'));
-                            $time2 = strtotime($attendanceDetail->timeout);
-                            $diff2 = ($time2 - $time1);
-                        }
-                        $temp1 = ($diff/60)/60;
-                        $temp2 = ($diff2/60)/60;
-                        $newhour = $temp1 - $temp2;
-                        $percent = round(($newhour / $temp1)*100,2);
-                    }
-                ?>
+               
                 <?php if($attendanceDetail->timeout != 'timeout'){ ?>
-                    <p class="hours"><?php echo (round($temp2,2) < 0 ) ? 0 : round($temp2,2);?> hour left</p>
-
+                    <p class="hours"><?php  echo $circularData['message'] ?></p>
                 <?php } else{ ?>
                     <p class="hours">No Current Schedule</p>
                 <?php } ?>
-                <span class="chart" data-percent="<?php echo ($attendanceDetail->timeout != 'timeout') ? $percent : 0;?>"></span>
+                <span class="chart" data-percent="<?php echo ($attendanceDetail->timeout != 'timeout') ? $circularData['percent'] : 0;?>"></span>
                 
             </center>
             <center>

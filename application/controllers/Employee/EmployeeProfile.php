@@ -44,13 +44,18 @@ class EmployeeProfile extends CI_Controller {
 
 		if($this->form_validation->run() === true){
 			if ($this->Employee_model->saveEdit($postData)){
+				$userData = $this->Employee_model->getEmp($this->session->userdata('employeeId'));
 				$this->session->set_flashdata('successEditEmployee','Edit Success');
 				// if($this->session->userdata('userId') == $this->input->post('userIdField')){
 				$this->session->set_userdata([
 					'isLogInEmployee'     => true,
-					'employeeId'     => $postData['userId'],
+					'employeeId'     => $postData['empId'],
 					'firstNameEmployee'     => $postData['fname'],
 					'lastNameEmployee'  => $postData['lname'],
+					'employeeTimein'  => $userData->timein,
+					'employeeTimeout'  => $userData->timeout,
+					'employeeDayoff'  => $userData->dayoff,
+					'secretIdEmployee'     => $userData->secretId,
 				]);
 				// }
 			}

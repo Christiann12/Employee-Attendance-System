@@ -283,13 +283,14 @@
 				// var VtxtSearch=$("#txtSearchChild").val();
 				loadattendancetable();
 			});	
-			// $("#childSearch").submit(function(event){
-			// 	event.preventDefault();
-			// 	$('#attendancetable').DataTable().destroy();
-			// 	var VtxtSearch=$("#txtSearchChild").val();
-			// 	loadattendancetable(VtxtSearch);
-			// });
-			function loadattendancetable(txtSearch=''){
+			$("#attendanceFilter").submit(function(event){
+				event.preventDefault();
+				var empId=$("#empIdFilter").val();
+				var date=$("#dateFilter").val();
+				$('#attendancetable').DataTable().destroy();
+				loadattendancetable(empId,date);
+			});
+			function loadattendancetable(empId='',date=''){
 				// alert('thiswork');
 				var dataTable = $('#attendancetable').DataTable({
 					
@@ -305,7 +306,7 @@
 					"ajax": {
 						"url": "<?php echo base_url('Admin/AttendanceList/generateTable')?>",
 						"type": "POST",
-						// "data": {txtSearch:''}
+						"data": {empId:empId,date:date}
 					},
 					columns: [
 						{

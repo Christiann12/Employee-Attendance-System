@@ -8,10 +8,20 @@ class Dashboard extends CI_Controller {
 		date_default_timezone_set('Asia/Singapore');
 		$this->load->helper('url');
 		$this->load->library('session');
+		$this->load->model('Admin/Employee_model');
+		$this->load->model('Admin/Attendance_model');
 	}
 
 	public function index()
 	{
+		
+		// dashboard data 
+
+		$data['activeEmp'] = $this->Employee_model->getNoActiveEmployee();
+		$data['noPresent'] = $this->Attendance_model->getNoPresent();
+		$data['totalNumEmp'] = $this->Employee_model->getTotalNoEmp();
+		$data['noLate'] = $this->Attendance_model->getLate();
+		
         if($this->session->userdata('isLogIn') === true){
 			$data['page'] = "AdminDashboard";
 			$this->load->view('HeaderAndFooter/Header.php');

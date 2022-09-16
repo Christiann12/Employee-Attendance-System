@@ -25,7 +25,7 @@ class AttendanceList extends CI_Controller {
 		}
 	}
 	public function generateTable(){
-		$data1 = $this->Attendance_model->getTableData();
+		$data1 = $this->Attendance_model->getTableData($this->input->post('empId'),$this->input->post('date'));
 		
 		// $productss = $this->inventory_model->productList();
 		$data = array();
@@ -38,7 +38,7 @@ class AttendanceList extends CI_Controller {
 			$row['data4'] = $listItem->timein.' - '.$listItem->timeout;
 			$row['data5'] = $listItem->late;
 			$row['data6'] = $listItem->hours;
-			$row['data7'] = $listItem->date;
+			$row['data7'] = $listItem->datetimein;
 			$data[] = $row;
 		}
 		$json_data['data'] = $data;

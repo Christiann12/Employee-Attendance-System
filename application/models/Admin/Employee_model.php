@@ -30,7 +30,7 @@ class Employee_model extends CI_Model {
                 'password' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 100,
-                'default' => md5('PaxForcePassword1234')
+                'default' => md5('1234')
                 ),
                 'dayoff' => array(
                 'type' => 'VARCHAR',
@@ -105,5 +105,11 @@ class Employee_model extends CI_Model {
     }
     public function getEmpData($id=''){
         return $this->db->select("*")->from($this->table)->where('secretid',$id)->get()->row();
+    }
+    public function getNoActiveEmployee(){
+        return $this->db->select("*")->from($this->table)->where('timein !=','timein')->get()->num_rows();
+    }
+    public function getTotalNoEmp(){
+        return $this->db->select("*")->from($this->table)->get()->num_rows();
     }
 }
