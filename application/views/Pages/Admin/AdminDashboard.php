@@ -20,7 +20,7 @@
                     <center>
                         <i class="fa fa-users icon" aria-hidden="true"></i>
                         <p class="cardheader"><?php echo $activeEmp; ?></p>
-                        <p class="carddesc">No. of Employees Active</p>
+                        <p class="carddesc">No. of employees with schedule</p>
                     </center>
                 </div>
             </div>
@@ -47,8 +47,21 @@
     <div class="section2">
         <p class="header">Dashboard</p>
         <div class="graphcontainer">
-            
-                <p>Graphs Goes Here!</p>
+            <!-- <p>Graphs Goes Here!</p> -->
+            <div class="row">
+                <div class="col-6">
+                
+                    <div class="graph1" id="MonthlyLate">
+                        <!-- <p>Graphs Goes Here!</p> -->
+                    </div>
+                </div>
+                <div class="col-6">
+                
+                    <div class="graph1" id="MonthlyOnTime">
+                        <!-- <p>Graphs Goes Here!</p> -->
+                    </div>
+                </div>
+            </div>
             
         </div>
     </div>

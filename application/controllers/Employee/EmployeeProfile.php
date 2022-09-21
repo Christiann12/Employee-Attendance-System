@@ -9,15 +9,18 @@ class EmployeeProfile extends CI_Controller {
 		$this->load->helper('url');
 		$this->load->library('session');
 		$this->load->model('Admin/Employee_model');
+		$this->load->model('Admin/Attendance_model');
 	}
 
 	public function index()
 	{
+		$data['lateCount'] = $this->Attendance_model->getTardinessMeasure('Late');
+		$data['OnTimeCount'] = $this->Attendance_model->getTardinessMeasure('On Time');
         if($this->session->userdata('isLogInEmployee') === true){
 			$data['page'] = "EmployeeProfile";
 			$this->load->view('HeaderAndFooter/HeaderEmployee.php');
 			$this->load->view('Pages/Employee/WrapperEmployee.php',$data);
-			$this->load->view('HeaderAndFooter/FooterEmployee.php');
+			$this->load->view('HeaderAndFooter/FooterEmployee.php',$data);
 		}
 		else{
 			redirect('');

@@ -79,8 +79,6 @@
     </div>
 
     <div class="dashboard">
-        <center>
-            <p>Graph Goes Here!</p>
-        </center>
+        <div id="profileDashboard"></div>
     </div>
 </div>

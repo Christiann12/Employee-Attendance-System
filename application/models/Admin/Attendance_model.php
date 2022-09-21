@@ -105,4 +105,13 @@ class Attendance_model extends CI_Model {
     public function getLate(){
         return $this->db->select('COUNT("empId")')->from($this->table)->where('datetimein',date('Y-m-d'))->where('late','Late')->group_by('empId')->get()->num_rows();
     }
+    public function getMonthCountLate($data = ''){
+        return $this->db->select('*')->from($this->table)->where('MONTH(datetimein)',$data)->where('YEAR(datetimein)',date('Y'))->where('late','Late')->get()->num_rows();
+    }
+    public function getMonthCountOntime($data = ''){
+        return $this->db->select('*')->from($this->table)->where('MONTH(datetimein)',$data)->where('YEAR(datetimein)',date('Y'))->where('late','On time')->get()->num_rows();
+    }
+    public function getTardinessMeasure($mode =''){
+        return $this->db->select('*')->from($this->table)->where('empId',$this->session->userdata('employeeId'))->where('MONTH(datetimein)',date('m'))->where('YEAR(datetimein)',date('Y'))->where('late',$mode)->get()->num_rows();
+    }
 }

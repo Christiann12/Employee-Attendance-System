@@ -97,6 +97,45 @@
 				});
 			}
 		</script>
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				const chart1 = Highcharts.chart('profileDashboard', {
+					chart: {
+						type: 'column',
+						scrollablePlotArea: {
+							minWidth: 400,
+							scrollPositionX: 1
+						}
+					},
+
+					title: {
+						text: 'Monthly Tardiness Measure'
+					},
+
+					xAxis: {
+						categories: ['Late', 'On Time'],
+						labels: {
+							overflow: 'justify'
+						}
+					},
+					yAxis: {
+						type: 'logarithmic',
+
+						title: {
+							text: 'Count'
+						}
+					},
+
+					series: [{
+						name: 'Tardiness Measure',
+						// data: [1,1]
+						data: [<?php echo (isset($lateCount) ? $lateCount : 0)?>, 
+						<?php echo (isset($OnTimeCount) ? $OnTimeCount : 0)?>]
+					}]
+
+				});
+			});
+		</script>
     </body>
 	
 </html>

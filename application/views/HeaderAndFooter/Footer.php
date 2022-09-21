@@ -421,5 +421,103 @@
 				});
 			});
 		</script>
+
+		<script>
+			
+			document.addEventListener('DOMContentLoaded', function () {
+				const chart1 = Highcharts.chart('MonthlyLate', {
+					chart: {
+						type: 'column',
+						scrollablePlotArea: {
+							minWidth: 400,
+							scrollPositionX: 1
+						}
+					},
+
+					title: {
+						text: 'Monthly Late Count'
+					},
+
+					xAxis: {
+						categories: ['January', 'February','March','April','May','June','July','August','September','October','November','December'],
+						labels: {
+							overflow: 'justify'
+						}
+					},
+					yAxis: {
+						type: 'logarithmic',
+
+						title: {
+							text: 'Late Count'
+						}
+					},
+
+					series: [{
+						name: 'Number of Late employees monthly',
+						// data: [1,1,1,1,1,1,1,1,1,1,1,1]
+						data: [<?php echo (isset($LateCountJanuary) ? $LateCountJanuary : 0)?>, 
+						<?php echo (isset($LateCountFebruary) ? $LateCountFebruary : 0)?>, 
+						<?php echo (isset($LateCountMarch) ? $LateCountMarch : 0)?>, 
+						<?php echo (isset($LateCountApril) ? $LateCountApril : 0)?>, 
+						<?php echo (isset($LateCountMay) ? $LateCountMay : 0)?>, 
+						<?php echo (isset($LateCountJune) ? $LateCountJune : 0)?>, 
+						<?php echo (isset($LateCountJuly) ? $LateCountJuly : 0)?>,
+						<?php echo (isset($LateCountAugust) ? $LateCountAugust : 0)?>,
+						<?php echo (isset($LateCountSeptember) ? $LateCountSeptember : 0)?>,
+						<?php echo (isset($LateCountOctober) ? $LateCountOctober : 0)?>,
+						<?php echo (isset($LateCountNovember) ? $LateCountNovember : 0)?>,
+						<?php echo (isset($LateCountDecember) ? $LateCountDecember : 0)?>]
+					}]
+
+				});
+			});
+			document.addEventListener('DOMContentLoaded', function () {
+				const chart1 = Highcharts.chart('MonthlyOnTime', {
+					chart: {
+						type: 'column',
+						scrollablePlotArea: {
+							minWidth: 400,
+							scrollPositionX: 1
+						}
+					},
+
+					title: {
+						text: 'Monthly On Time Count'
+					},
+
+					xAxis: {
+						categories: ['January', 'February','March','April','May','June','July','August','September','October','November','December'],
+						labels: {
+							overflow: 'justify'
+						}
+					},
+					yAxis: {
+						type: 'logarithmic',
+
+						title: {
+							text: 'Count'
+						}
+					},
+
+					series: [{
+						name: 'Number of On Time employees monthly',
+						// data: [1,1,1,1,1,1,1,1,1,1,1,1]
+						data: [<?php echo (isset($OnTimeCountJanuary) ? $OnTimeCountJanuary : 0)?>, 
+						<?php echo (isset($OnTimeCountFebruary) ? $OnTimeCountFebruary : 0)?>, 
+						<?php echo (isset($OnTimeCountMarch) ? $OnTimeCountMarch : 0)?>, 
+						<?php echo (isset($OnTimeCountApril) ? $OnTimeCountApril : 0)?>, 
+						<?php echo (isset($OnTimeCountMay) ? $OnTimeCountMay : 0)?>, 
+						<?php echo (isset($OnTimeCountJune) ? $OnTimeCountJune : 0)?>, 
+						<?php echo (isset($OnTimeCountJuly) ? $OnTimeCountJuly : 0)?>,
+						<?php echo (isset($OnTimeCountAugust) ? $OnTimeCountAugust : 0)?>,
+						<?php echo (isset($OnTimeCountSeptember) ? $OnTimeCountSeptember : 0)?>,
+						<?php echo (isset($OnTimeCountOctober) ? $OnTimeCountOctober : 0)?>,
+						<?php echo (isset($OnTimeCountNovember) ? $OnTimeCountNovember : 0)?>,
+						<?php echo (isset($OnTimeCountDecember) ? $OnTimeCountDecember : 0)?>]
+					}]
+
+				});
+			});
+		</script>
     </body>
 </html>

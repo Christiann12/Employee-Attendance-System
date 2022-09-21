@@ -30,7 +30,7 @@ class UploadSched extends CI_Controller {
 		$file_data = $this->csvimport->get_array($_FILES["csv_file"]["tmp_name"]);
 		$data = array();
 		$status = 'Still Good';
-
+		$count = 0;
 		if(!array_key_exists('empId',$file_data[0]) || !array_key_exists('timein',$file_data[0]) || !array_key_exists('timeout',$file_data[0]) || !array_key_exists('dayoff',$file_data[0])){
 			$status = "Required header  is missing or wrong!";
 			
@@ -40,7 +40,7 @@ class UploadSched extends CI_Controller {
 			
 		}
 		if($status === 'Still Good'){
-			
+			$count++;
 			foreach($file_data as $csvitem){
 				// check if blank
 				if($csvitem["empId"] == '' || $csvitem["timein"] == '' || $csvitem["timeout"] == '' || $csvitem["dayoff"] == ''){
