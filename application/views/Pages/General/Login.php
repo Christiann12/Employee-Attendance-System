@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="<?php echo base_url(); ?>application/assets/css/Login.css"/>
    
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+    <title>EAS System</title>
     </head>
     <body class="loginBody">
         
@@ -61,7 +62,7 @@
                         </div>
 
                         <center class="spacing2">
-                            <button type="submi" class="btn" >Login</button>
+                            <button type="submit" class="btn" >Login</button>
                         </center>
                     </div>
 

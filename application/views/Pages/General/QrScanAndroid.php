@@ -10,6 +10,7 @@
 
         <!-- developer css  -->
         <link rel="stylesheet" href="<?php echo base_url(); ?>application/assets/css/Employee/EmployeeAndroidScanQr.css">
+        <title>EAS System</title>
     </head>
     <body style=" font-family: Raleway; background-color: #edf5e1;">
         <div class="main-panel" >

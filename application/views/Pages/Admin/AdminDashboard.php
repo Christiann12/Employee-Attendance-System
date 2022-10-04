@@ -1,6 +1,6 @@
 <div class="admindashboard">
     <div class="banner">
-        <p class="greeting">Good day, <strong><?php echo $this->session->userdata('firstName').' '.$this->session->userdata('lastName'); ?></strong></p>
+        <p class="greeting">Good day, <strong><?php echo $this->session->userdata('firstName').' '.$this->session->userdata('lastName').' - '.$this->session->userdata('userRole'); ?></strong></p>
         <p class="clock"id="ct7"><?php echo date('m/d/Y - g:i:s A') ?></p>
     </div>
     <div class="section1">

@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="<?php echo base_url(); ?>application/assets/css/Employee/EmployeeProfile.css">
    
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+    <title>EAS System</title>
     </head>
     <body style=" font-family: Raleway; background-color: #edf5e1;">
         

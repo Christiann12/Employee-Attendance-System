@@ -88,7 +88,7 @@ class EmployeeDashboard extends CI_Controller {
 				$newhour = $temp1 - $temp2;
 				$percent = round(($newhour / $temp1)*100,2);
 			}
-			$data['message'] = $temp2 > 1? floor($temp2).' hours left' : floor($temp2).' hour left';
+			$data['message'] = ceil($temp2) >= 1? ceil($temp2).' hours left' : ceil($temp2).' hour left';
 			$data['percent'] = $percent;
 		}
 		else{

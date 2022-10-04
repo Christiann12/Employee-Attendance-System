@@ -43,6 +43,20 @@
                 </div>
 
                 <div class="form-label-group mt-3">
+                    <label for="userRole">User Role</label>
+                    <?php
+                        $userRoles = array(
+                            '' => 'User Role',
+                            "Admin" => "Admin", //all
+                            "Operations" => "Operations", //support, ping
+                            "Finance" => "Finance", //inventory product, iventory services
+                            "HumanResource" => "HumanResource", //transactions
+                        ); 
+                        echo form_dropdown('userRole', $userRoles,   $userData->userRole , 'class="form-control" id="userRole"');
+                    ?>
+                </div>  
+
+                <div class="form-label-group mt-3">
                     <label for="userPassword" class="labelDesign">Password</label>
                     <input name="userPassword" type="password" id="userPassword" class="inputDesign form-control" placeholder="Password" >
                 </div>

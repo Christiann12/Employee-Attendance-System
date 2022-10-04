@@ -27,8 +27,10 @@ class EmployeeProfile extends CI_Controller {
 		}
 	}
 	public function saveEdit(){
-		$this->form_validation->set_rules('fnameEdit', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|callback_checkIfNameIsChanged['.$this->input->post('passwordEdit').']');
-		$this->form_validation->set_rules('lnameEdit', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|callback_checkIfNameIsChanged['.$this->input->post('passwordEdit').']');
+		// $this->form_validation->set_rules('fnameEdit', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|callback_checkIfNameIsChanged['.$this->input->post('passwordEdit').']');
+		// $this->form_validation->set_rules('lnameEdit', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|callback_checkIfNameIsChanged['.$this->input->post('passwordEdit').']');
+		$this->form_validation->set_rules('fnameEdit', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP');
+		$this->form_validation->set_rules('lnameEdit', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP');
 
 		if($this->input->post("passwordEdit") != ''){
 			$this->form_validation->set_rules('passwordEdit', 'Password' ,'required');

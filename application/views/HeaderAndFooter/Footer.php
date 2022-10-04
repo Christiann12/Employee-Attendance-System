@@ -68,6 +68,10 @@
 							className: 'data'
 						},
 						{
+							data: 'userRole',
+							className: 'data'
+						},
+						{
 							data: null,
 							orderable: false,
 							className: 'data',
@@ -421,7 +425,6 @@
 				});
 			});
 		</script>
-
 		<script>
 			
 			document.addEventListener('DOMContentLoaded', function () {

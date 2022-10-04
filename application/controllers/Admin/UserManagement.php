@@ -44,6 +44,7 @@ class UserManagement extends CI_Controller {
 		$this->form_validation->set_rules('userEmail', 'Email' ,'required|callback_email_check');
 		$this->form_validation->set_rules('userPassword', 'Password' ,'required');
 		$this->form_validation->set_rules('userRePassword', 'Confirm Password' ,'required|matches[userPassword]');
+		$this->form_validation->set_rules('userRole', 'User Role' ,'required');
 		
 		$postData = array(
             "userId" => "USR-".$this->randStrGen(2,7),
@@ -51,7 +52,7 @@ class UserManagement extends CI_Controller {
             "lname" => ucfirst(strtolower($this->input->post("userLastname"))),
             "password" => md5($this->input->post("userPassword")),
             "email" => strtolower($this->input->post("userEmail")),
-            "userRole" => 'Admin',
+            "userRole" => $this->input->post("userRole"),
         );
 
 		if($this->form_validation->run() === true){
@@ -74,7 +75,7 @@ class UserManagement extends CI_Controller {
 		$this->form_validation->set_rules('userFirstname', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP');
 		$this->form_validation->set_rules('userLastname', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP');
 		$this->form_validation->set_rules('userEmail', 'Email' ,'required|callback_email_check_edit['.$this->input->post('userIdField').']');
-		
+		$this->form_validation->set_rules('userRole', 'User Role' ,'required');
 		if($this->input->post("userPassword") != ''){
 			$this->form_validation->set_rules('userPassword', 'Password' ,'required');
 			$this->form_validation->set_rules('userRePassword', 'Confirm Password' ,'required|matches[userPassword]');
@@ -86,7 +87,7 @@ class UserManagement extends CI_Controller {
             "lname" => ucfirst(strtolower($this->input->post("userLastname"))),
             // "password" => md5($this->input->post("userPassword")),
             "email" => strtolower($this->input->post("userEmail")),
-            "userRole" => 'Admin',
+            "userRole" => $this->input->post("userRole"),
         );
 
 		if($this->input->post("userPassword") != ''){
