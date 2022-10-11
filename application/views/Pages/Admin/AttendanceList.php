@@ -1,16 +1,16 @@
 <div class="attendancelist">
     <div class="banner">
-        <p class="greeting">Attendance List</p>
+        <p class="greeting">Time Sheet</p>
         <p class="clock"id="ct7"><?php echo date('m/d/Y - g:i:s A') ?></p>
     </div>
     <div class="section1">
-        <p class="header m-0">Attendance List</p>
-        <div class="filterform">
+        <!-- <p class="header m-0">Attendance List</p> -->
+        <div class="filterform ">
             <form id="attendanceFilter">
 
-                <div class="form-label-group">
+                <div class="form-label-group mt-5">
                     <label for="empIdFilter" class="labelDesign spacing">Employee ID</label>
-                    <input name="empIdFilter" type="text" id="empIdFilter" class="inputDesign form-control" placeholder="Employee ID" value="">
+                    <input name="empIdFilter" type="text" id="empIdFilter" class="inputDesign form-control" placeholder="E.g EMP-xxxxxxxx" value="">
                 </div>
 
                 <div class="form-label-group mt-3">
@@ -47,13 +47,13 @@
             <table id="attendancetable" class="responsive display nowrap cell-border hover" width="100%">
                 <thead>
                     <tr>
-                        <th class="headertable">ID</th>
-                        <th class="headertable">Employee ID</th>
-                        <th class="headertable">Name</th>
+                        <th class="headertable">Attendance ID</th>
+                        <th class="headertable">First Name</th>
+                        <th class="headertable">Last Name</th>
                         <th class="headertable">Time</th>
-                        <th class="headertable">Late</th>
-                        <th class="headertable">Hour Type</th>
-                        <th class="headertable">Date</th>
+                        <th class="headertable">Late/EarlyIn</th>
+                        <th class="headertable">UT/OT</th>
+                        <th class="headertable">Date Timein</th>
                     </tr>
                 </thead>
                 <tbody>

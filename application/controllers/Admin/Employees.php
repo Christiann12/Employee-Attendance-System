@@ -8,12 +8,14 @@ class Employees extends CI_Controller {
 		date_default_timezone_set('Asia/Singapore');
 		//helpers
 		$this->load->helper('url');
+		$this->load->helper('cookie');
 		//libraries
 		$this->load->library('session');
 		$this->load->library('encryption');
 		$this->load->library('csvimport');
 		//model
 		$this->load->model('Admin/Employee_model');
+		$this->load->model('Admin/User_model');
 	}
 
 	public function index()
@@ -26,23 +28,60 @@ class Employees extends CI_Controller {
 			$this->load->view('HeaderAndFooter/Footer.php');
 		}
 		else{
-			redirect('AdminLogin');
+			if(!empty(get_cookie('remember_me_token'))){
+				$userData = $this->User_model->getCurrentUserCookie(get_cookie('remember_me_token'));
+				$this->session->set_userdata([
+					'isLogIn'     => true,
+					'userRole'     => $userData->userRole,
+					'userId'     => $userData->userId,
+					'firstName'     => $userData->fname,
+					'lastName'  => $userData->lname,
+					'email'       => $userData->email,
+				]);
+				redirect('AdminEmployees');
+			}
+			else{
+				redirect('AdminLogin');
+			}
 		}
 	}
 	public function editEmployee($id = ''){
-		$data['employeeData'] = $this->Employee_model->getEmp($id);
-		if($this->session->userdata('isLogIn') === true){
-			$data['page'] = "EmployeeEditPage";
-			$this->load->view('HeaderAndFooter/Header.php');
-			$this->load->view('Pages/Admin/Wrapper.php',$data);
-			$this->load->view('HeaderAndFooter/Footer.php');
+		$urlData = urldecode($this->safe_decode($id));
+		$data['employeeData'] = $this->Employee_model->getEmp($this->encryption->decrypt($urlData) == '' ? null : $this->encryption->decrypt($urlData));
+		// print_r($data['employeeData']);
+		// echo $this->encryption->decrypt('123') == '' ? 'asd' : 'no';
+		if(!empty($data['employeeData'])){
+			if($this->session->userdata('isLogIn') === true){
+				$data['page'] = "EmployeeEditPage";
+				$this->load->view('HeaderAndFooter/Header.php');
+				$this->load->view('Pages/Admin/Wrapper.php',$data);
+				$this->load->view('HeaderAndFooter/Footer.php');
+			}
+			else{
+				if(!empty(get_cookie('remember_me_token'))){
+					$userData = $this->User_model->getCurrentUserCookie(get_cookie('remember_me_token'));
+					$this->session->set_userdata([
+						'isLogIn'     => true,
+						'userRole'     => $userData->userRole,
+						'userId'     => $userData->userId,
+						'firstName'     => $userData->fname,
+						'lastName'  => $userData->lname,
+						'email'       => $userData->email,
+					]);
+					redirect('EditEmployee/'.$this->safe_encode(urlencode($this->encryption->encrypt($data['employeeData']->empId))));
+				}
+				else{
+					redirect('AdminLogin');
+				}
+			}
 		}
 		else{
-			redirect('AdminLogin');
+			redirect('AdminEmployees');
 		}
 	}
 	public function deleteEmployee($id = ''){
-		if ($this->Employee_model->deleteEmployee($id)){
+		$urlData = urldecode($this->safe_decode($id));
+		if ($this->Employee_model->deleteEmployee($this->encryption->decrypt($urlData) == '' ? null : $this->encryption->decrypt($urlData))){
 			$this->session->set_flashdata('successAddEmployee','Delete Success');
 		}
 		else{
@@ -71,11 +110,11 @@ class Employees extends CI_Controller {
 			else{
 				$this->session->set_flashdata('failEditEmployee','Edit Failed');
 			}
-            redirect('EditEmployee/'.$this->input->post("employeeId"));
+            redirect('EditEmployee/'.$this->safe_encode(urlencode($this->encryption->encrypt($this->input->post("employeeId")))));
         }
         else{
 			$this->session->set_flashdata('failEditEmployee',validation_errors());
-            redirect('EditEmployee/'.$this->input->post("employeeId"));
+            redirect('EditEmployee/'.$this->safe_encode(urlencode($this->encryption->encrypt($this->input->post("employeeId")))));
         }
 	}
 	//save employee
@@ -108,7 +147,7 @@ class Employees extends CI_Controller {
 	//get table data
 	public function EmployeeTableAjax(){
 		$data1 = $this->Employee_model->getTableData();
-		
+	
 		// $productss = $this->inventory_model->productList();
 		$data = array();
 
@@ -120,6 +159,7 @@ class Employees extends CI_Controller {
 			$row['data4'] = $listItem->timein.' - '.$listItem->timeout;
 			$row['data5'] = $listItem->dayoff;
 			$row['data6'] = $listItem->secretId;
+			$row['data7'] = $this->safe_encode(urlencode($this->encryption->encrypt($listItem->empId)));
 			$data[] = $row;
 		}
 		$json_data['data'] = $data;
@@ -184,6 +224,13 @@ class Employees extends CI_Controller {
 		
 	}
 	//functions
+	function safe_encode($string){
+	return str_replace("%", ":", $string);
+	}
+	
+	function safe_decode($string){
+	return str_replace(":", "%", $string);
+	}
 	public function randStrGen($mode = null, $len = null){
         $result = "";
         if($mode == 1):

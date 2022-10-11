@@ -82,8 +82,8 @@ $route['EditUser/(:any)'] = 'Admin/UserManagement/editUser/$1';
 $route['deleteuser/(:any)'] = 'Admin/UserManagement/deleteUser/$1';
 $route['DeleteUser/(:any)'] = 'Admin/UserManagement/deleteUser/$1';
 
-$route['AttendanceList'] = 'Admin/AttendanceList';
-$route['attendancelist'] = 'Admin/AttendanceList';
+$route['TimeSheet'] = 'Admin/AttendanceList';
+$route['timesheet'] = 'Admin/AttendanceList';
 
 $route['UploadSched'] = 'Admin/UploadSched';
 $route['uploadsched'] = 'Admin/UploadSched';

@@ -148,8 +148,8 @@
 							className: 'data',
 							render: function(data) {
 								// console.log()
-								var editLink = '<?php  echo base_url('EditEmployee/') ?>' + data.data1;
-								var deleteLink = '<?php  echo base_url('DeleteEmployee/') ?>' + data.data1;
+								var editLink = '<?php  echo base_url('EditEmployee/') ?>' + data.data7;
+								var deleteLink = '<?php  echo base_url('DeleteEmployee/') ?>' + data.data7;
 								return '<a class="btn btn-success rounded-1 " href="'+editLink+'">Edit</a><a class="btn btn-danger rounded-1 ml-1" href="'+deleteLink+'">Delete</a>';
 							}
 						}
@@ -318,11 +318,11 @@
 							className: 'data'
 						},
 						{
-							data: 'data2',
+							data: 'data3',
 							className: 'data'
 						},
 						{
-							data: 'data3',
+							data: 'data8',
 							className: 'data'
 						},
 						{

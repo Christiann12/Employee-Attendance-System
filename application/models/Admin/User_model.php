@@ -35,6 +35,11 @@ class User_model extends CI_Model {
                 'userRole' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 50
+                ),
+                'remember_me_token' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 100,
+                'null' => true,
                 )
             ); 
             $this->dbforge->add_field($fields);
@@ -68,6 +73,13 @@ class User_model extends CI_Model {
 			->from($this->table)
 			->where('email',$data['email'])
 			->where('password',$data['password'])
+			->get()
+			->row();
+    }
+    public function getCurrentUserCookie($token = ''){
+        return $this->db->select("*")
+			->from($this->table)
+			->where('remember_me_token',$token)
 			->get()
 			->row();
     }

@@ -21,9 +21,9 @@
                 class=" <?php echo ((strtolower($this->uri->segment(1)) == 'adminemployees' || strtolower($this->uri->segment(1)) == 'editemployee' ) ? "active" : null) ?> list-group-item list-group-item-action"
                 data-toggle="tooltip" data-placement="right" title="Add Child">Employees</a>
             <?php } if (strtolower($this->session->userdata('userRole')) == "admin" || strtolower($this->session->userdata('userRole')) == "finance") {?>
-            <a href="<?php echo base_url('AttendanceList')?>"
-                class=" <?php echo ((strtolower($this->uri->segment(1)) == 'attendancelist') ? "active" : null) ?> list-group-item list-group-item-action"
-                data-toggle="tooltip" data-placement="right" title="Attendance List">Attendance List</a>
+            <a href="<?php echo base_url('TimeSheet')?>"
+                class=" <?php echo ((strtolower($this->uri->segment(1)) == 'timesheet') ? "active" : null) ?> list-group-item list-group-item-action"
+                data-toggle="tooltip" data-placement="right" title="Attendance List">Time Sheet</a>
             <?php } if (strtolower($this->session->userdata('userRole')) == "admin" || strtolower($this->session->userdata('userRole')) == "operations" ) {?>
             <a href="<?php echo base_url('UploadSched')?>"
                 class=" <?php echo ((strtolower($this->uri->segment(1)) == 'uploadsched') ? "active" : null) ?> list-group-item list-group-item-action"

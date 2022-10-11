@@ -39,13 +39,13 @@
                 
                 <div class="form-label-group">
                     <label for="employeeFirstName" class="labelDesign spacing">First Name</label>
-                    <input name="employeeFirstName" type="text" id="employeeFirstName" class="inputDesign form-control" placeholder="First Name" value="">
+                    <input name="employeeFirstName" type="text" id="employeeFirstName" class="inputDesign form-control" placeholder="E.g Juan" value="">
                 </div>
             
             
                 <div class="form-label-group mt-3">
                     <label for="employeeLastName" class="labelDesign spacing">Last Name</label>
-                    <input name="employeeLastName" type="text" id="employeeLastName" class="inputDesign form-control" placeholder="Last Name" value="">
+                    <input name="employeeLastName" type="text" id="employeeLastName" class="inputDesign form-control" placeholder="E.g Dela Cruz" value="">
                 </div>
 
                 <button type="submit" class="btn my-3" >Submit</button>

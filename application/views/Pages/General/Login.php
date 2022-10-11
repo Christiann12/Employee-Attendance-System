@@ -25,7 +25,7 @@
                <center>
                     <img class="spacing1" src="<?php echo base_url(); ?>application/assets/images/logo1.png" alt="Logo">
                     <p class="title spacing1">Welcome to Paxforce</p>
-                    <p class="subtitle spacing1">Administrator</p>
+                    <p class="subtitle spacing1">Login</p>
                 </center>
                 <?php echo form_open_multipart('Admin/UserManagement/checkUser') ?>
 
@@ -50,6 +50,13 @@
                             <input name="passwordLogin" type="password" id="passwordLogin" class="form-control" placeholder="Password">
                             <label for="passwordLogin" class="">Password</label>
                         </div>
+
+                        <label for="rememberme" class="mr-3">Stay Signed In?</label>
+                        <input name="rememberme" type="checkbox" id="rememberme" class="mt-2">
+                            
+                            
+                            
+                   
 
                         <div class="row">
                             <div class="col-6 d-flex align-items-start">

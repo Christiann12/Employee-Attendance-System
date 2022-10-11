@@ -8,14 +8,17 @@ class Dashboard extends CI_Controller {
 		date_default_timezone_set('Asia/Singapore');
 		$this->load->helper('url');
 		$this->load->library('session');
+		$this->load->helper('cookie');
 		$this->load->model('Admin/Employee_model');
 		$this->load->model('Admin/Attendance_model');
+		$this->load->model('Admin/User_model');
 	}
 
 	public function index()
 	{
 		
 		// dashboard data 
+		// $data['test'] = get_cookie('remember_me_token');
 
 		$data['activeEmp'] = $this->Employee_model->getNoActiveEmployee();
 		$data['noPresent'] = $this->Attendance_model->getNoPresent();
@@ -55,7 +58,21 @@ class Dashboard extends CI_Controller {
 			$this->load->view('HeaderAndFooter/Footer.php',$data);
 		}
 		else{
-			redirect('AdminLogin');
+			if(!empty(get_cookie('remember_me_token'))){
+				$userData = $this->User_model->getCurrentUserCookie(get_cookie('remember_me_token'));
+				$this->session->set_userdata([
+					'isLogIn'     => true,
+					'userRole'     => $userData->userRole,
+					'userId'     => $userData->userId,
+					'firstName'     => $userData->fname,
+					'lastName'  => $userData->lname,
+					'email'       => $userData->email,
+				]);
+				redirect('AdminDashboard');
+			}
+			else{
+				redirect('AdminLogin');
+			}
 		}
 	}
 

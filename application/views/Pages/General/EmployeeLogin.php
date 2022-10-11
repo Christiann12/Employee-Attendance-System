@@ -49,9 +49,11 @@
                             <input name="passwordLogin" type="password" id="passwordLogin" class="form-control" placeholder="Password">
                             <label for="passwordLogin" class="">Password</label>
                         </div>
-
+                        
                         <div class="row">
                             <div class="col-6 d-flex align-items-start">
+                                <label for="rememberme" class="mr-3">Stay Signed In?</label>
+                                <input name="rememberme" type="checkbox" id="rememberme" class="mt-1">
                             </div>
                             <div class="col-6">
                                 <center>

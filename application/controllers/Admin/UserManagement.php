@@ -7,6 +7,7 @@ class UserManagement extends CI_Controller {
 		parent::__construct();
 		date_default_timezone_set('Asia/Singapore');
 		$this->load->helper('url');
+		$this->load->helper('cookie');
 		$this->load->library('session');
 		$this->load->model('Admin/User_model');
 	}
@@ -21,7 +22,21 @@ class UserManagement extends CI_Controller {
 			$this->load->view('HeaderAndFooter/Footer.php');
 		}
 		else{
-			redirect('AdminLogin');
+			if(!empty(get_cookie('remember_me_token'))){
+				$userData = $this->User_model->getCurrentUserCookie(get_cookie('remember_me_token'));
+				$this->session->set_userdata([
+					'isLogIn'     => true,
+					'userRole'     => $userData->userRole,
+					'userId'     => $userData->userId,
+					'firstName'     => $userData->fname,
+					'lastName'  => $userData->lname,
+					'email'       => $userData->email,
+				]);
+				redirect('UserManagement');
+			}
+			else{
+				redirect('AdminLogin');
+			}
 		}
 	}
 	public function editUser($id = '')
@@ -143,18 +158,49 @@ class UserManagement extends CI_Controller {
 		if($this->form_validation->run() === true){
 			$userData = $this->User_model->checkCredentials($postData);
 			if(!empty($userData)){
-				$this->session->set_flashdata('successLogin','Login Successful');
+				if($this->input->post('rememberme')){
+
+					$token = $this->randStrGen(1,15);
+
+					$cookie = array(
+						'name'   => 'remember_me_token',
+						'value'  => $token,
+						'expire' => '1209600',  // Two weeks
+					);
+
+					set_cookie($cookie);
+					$data = array(
+						'remember_me_token' => $token
+					);
+					$this->db->where('userId',$userData->userId)->update('users',$data); 
+
+					$this->session->set_flashdata('successLogin','Login Successful');
 		
-				$this->session->set_userdata([
-					'isLogIn'     => true,
-					'userRole'     => $userData->userRole,
-					'userId'     => $userData->userId,
-					'firstName'     => $userData->fname,
-					'lastName'  => $userData->lname,
-					'email'       => $userData->email,
-				]);
-				
-				redirect('AdminDashboard');
+					$this->session->set_userdata([
+						'isLogIn'     => true,
+						'userRole'     => $userData->userRole,
+						'userId'     => $userData->userId,
+						'firstName'     => $userData->fname,
+						'lastName'  => $userData->lname,
+						'email'       => $userData->email,
+					]);
+					
+					redirect('AdminDashboard');
+				}
+				else{
+					$this->session->set_flashdata('successLogin','Login Successful');
+		
+					$this->session->set_userdata([
+						'isLogIn'     => true,
+						'userRole'     => $userData->userRole,
+						'userId'     => $userData->userId,
+						'firstName'     => $userData->fname,
+						'lastName'  => $userData->lname,
+						'email'       => $userData->email,
+					]);
+					
+					redirect('AdminDashboard');
+				}
 			}
 			else{
 				$this->session->set_flashdata('errorLogin','Incorrect Email or Password');
@@ -175,8 +221,16 @@ class UserManagement extends CI_Controller {
 		echo json_encode($json_data);
 	}
 	public function signout(){
+		if(!empty(get_cookie('remember_me_token'))){
+			delete_cookie('remember_me_token');
+			$data = array(
+				'remember_me_token' => NULL
+			);
+			$this->db->where('userId',$this->session->userdata('userId'))->update('users',$data); 
+		}
 		$array_items = array('isLogIn', 'userId', 'firstName', 'lastName', 'email','userRole');
 		$this->session->unset_userdata($array_items);
+		
 		redirect('AdminLogin');
 	}
 	//functions

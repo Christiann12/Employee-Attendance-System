@@ -13,7 +13,6 @@ class GenerateQr extends CI_Controller {
 
 	public function index()
 	{
-        
 		if($this->session->userdata('isLogIn') === true){
 			$data['page'] = "GenerateQr";
 			$this->load->view('HeaderAndFooter/Header.php');
@@ -21,13 +20,46 @@ class GenerateQr extends CI_Controller {
 			$this->load->view('HeaderAndFooter/Footer.php');
 		}
 		else{
-			redirect('AdminLogin');
+			if(!empty(get_cookie('remember_me_token'))){
+				$userData = $this->User_model->getCurrentUserCookie(get_cookie('remember_me_token'));
+				$this->session->set_userdata([
+					'isLogIn'     => true,
+					'userRole'     => $userData->userRole,
+					'userId'     => $userData->userId,
+					'firstName'     => $userData->fname,
+					'lastName'  => $userData->lname,
+					'email'       => $userData->email,
+				]);
+				redirect('GenerateQr');
+			}
+			else{
+				redirect('AdminLogin');
+			}
 		}
 	}
 
 	public function generateQr(){
 		$data['data'] = $this->Employee_model->getData();
-		// print_r($data['data']);
-		$this->load->view('Pages/General/QrPage.php',$data);
+
+		if($this->session->userdata('isLogIn') === true){
+			$this->load->view('Pages/General/QrPage.php',$data);
+		}
+		else{
+			if(!empty(get_cookie('remember_me_token'))){
+				$userData = $this->User_model->getCurrentUserCookie(get_cookie('remember_me_token'));
+				$this->session->set_userdata([
+					'isLogIn'     => true,
+					'userRole'     => $userData->userRole,
+					'userId'     => $userData->userId,
+					'firstName'     => $userData->fname,
+					'lastName'  => $userData->lname,
+					'email'       => $userData->email,
+				]);
+				$this->load->view('Pages/General/QrPage.php',$data);
+			}
+			else{
+				redirect('AdminLogin');
+			}
+		}
 	}
 }

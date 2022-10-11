@@ -22,7 +22,21 @@ class UploadSched extends CI_Controller {
 			$this->load->view('HeaderAndFooter/Footer.php');
 		}
 		else{
-			redirect('AdminLogin');
+			if(!empty(get_cookie('remember_me_token'))){
+				$userData = $this->User_model->getCurrentUserCookie(get_cookie('remember_me_token'));
+				$this->session->set_userdata([
+					'isLogIn'     => true,
+					'userRole'     => $userData->userRole,
+					'userId'     => $userData->userId,
+					'firstName'     => $userData->fname,
+					'lastName'  => $userData->lname,
+					'email'       => $userData->email,
+				]);
+				redirect('UploadSched');
+			}
+			else{
+				redirect('AdminLogin');
+			}
 		}
 	}
 
