@@ -3,7 +3,7 @@ DirectoryIndex index.php
 <IfModule mod_rewrite.c>
 
   RewriteEngine on
-  RewriteBase /employee-attendance-system/
+  RewriteBase /
   RewriteCond $1 !^(index.php|user_guide|robots.txt|assets|images|js|css|libs|uploads|icons|favicon.png|fonts)
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d 
