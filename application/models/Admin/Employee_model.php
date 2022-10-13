@@ -46,6 +46,16 @@ class Employee_model extends CI_Model {
                 'type' => 'VARCHAR',
                 'constraint' => 50,
                 'default' => 'timeout'
+                ),
+                'location' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 100,
+                'null' => true,
+                ),
+                'remember_me_token_employee' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 100,
+                'null' => true,
                 )
             ); 
             $this->dbforge->add_field($fields);
@@ -102,6 +112,13 @@ class Employee_model extends CI_Model {
 			->where('password',$data['password'])
 			->get()
 			->row();
+    }
+    public function getCurrentUserCookie($token = ''){
+        return $this->db->select("*")
+        ->from($this->table)
+        ->where('remember_me_token_employee',$token)
+        ->get()
+        ->row();
     }
     public function getEmpData($id=''){
         return $this->db->select("*")->from($this->table)->where('secretid',$id)->get()->row();

@@ -68,6 +68,8 @@ $route['adminemployees'] = 'Admin/Employees';
 
 $route['editemployee/(:any)'] = 'Admin/Employees/editEmployee/$1';
 $route['EditEmployee/(:any)'] = 'Admin/Employees/editEmployee/$1';
+$route['editemployee'] = 'Admin/Employees';
+$route['EditEmployee'] = 'Admin/Employees';
 $route['deleteemployee/(:any)'] = 'Admin/Employees/deleteEmployee/$1';
 $route['DeleteEmployee/(:any)'] = 'Admin/Employees/deleteEmployee/$1';
 
@@ -79,6 +81,8 @@ $route['usermanagement'] = 'Admin/UserManagement';
 
 $route['edituser/(:any)'] = 'Admin/UserManagement/editUser/$1';
 $route['EditUser/(:any)'] = 'Admin/UserManagement/editUser/$1';
+$route['edituser'] = 'Admin/UserManagement';
+$route['EditUser'] = 'Admin/UserManagement';
 $route['deleteuser/(:any)'] = 'Admin/UserManagement/deleteUser/$1';
 $route['DeleteUser/(:any)'] = 'Admin/UserManagement/deleteUser/$1';
 

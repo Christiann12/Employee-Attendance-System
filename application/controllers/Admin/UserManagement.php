@@ -8,6 +8,7 @@ class UserManagement extends CI_Controller {
 		date_default_timezone_set('Asia/Singapore');
 		$this->load->helper('url');
 		$this->load->helper('cookie');
+		$this->load->library('encryption');
 		$this->load->library('session');
 		$this->load->model('Admin/User_model');
 	}
@@ -16,23 +17,33 @@ class UserManagement extends CI_Controller {
 	{
         
 		if($this->session->userdata('isLogIn') === true){
-			$data['page'] = "UserManagement";
-			$this->load->view('HeaderAndFooter/Header.php');
-			$this->load->view('Pages/Admin/Wrapper.php',$data);
-			$this->load->view('HeaderAndFooter/Footer.php');
+			$userData = $query = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
+			if (!empty($userData)) {
+				$data['page'] = "UserManagement";
+				$this->load->view('HeaderAndFooter/Header.php');
+				$this->load->view('Pages/Admin/Wrapper.php',$data);
+				$this->load->view('HeaderAndFooter/Footer.php');
+			} else {
+				redirect('AdminLogin');
+			}
+			
 		}
 		else{
 			if(!empty(get_cookie('remember_me_token'))){
 				$userData = $this->User_model->getCurrentUserCookie(get_cookie('remember_me_token'));
-				$this->session->set_userdata([
-					'isLogIn'     => true,
-					'userRole'     => $userData->userRole,
-					'userId'     => $userData->userId,
-					'firstName'     => $userData->fname,
-					'lastName'  => $userData->lname,
-					'email'       => $userData->email,
-				]);
-				redirect('UserManagement');
+				if (!empty($userData)) {
+					$this->session->set_userdata([
+						'isLogIn'     => true,
+						'userRole'     => $userData->userRole,
+						'userId'     => $userData->userId,
+						'firstName'     => $userData->fname,
+						'lastName'  => $userData->lname,
+						'email'       => $userData->email,
+					]);
+					redirect('UserManagement');
+				} else {
+					redirect('AdminLogin');
+				}
 			}
 			else{
 				redirect('AdminLogin');
@@ -41,23 +52,53 @@ class UserManagement extends CI_Controller {
 	}
 	public function editUser($id = '')
 	{
-        $data['userData'] = $this->User_model->getUser($id);
-		if($this->session->userdata('isLogIn') === true){
-			$data['page'] = "UserEditPage";
-			$this->load->view('HeaderAndFooter/Header.php');
-			$this->load->view('Pages/Admin/Wrapper.php',$data);
-			$this->load->view('HeaderAndFooter/Footer.php');
+		$urlData = urldecode($this->safe_decode($id));
+        $data['userData'] = $this->User_model->getUser($this->encryption->decrypt($urlData) == '' ? null : $this->encryption->decrypt($urlData));
+		if(!empty($data['userData'])){
+			if($this->session->userdata('isLogIn') === true){
+				$userData = $query = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
+				if (!empty($userData)) {
+					$data['page'] = "UserEditPage";
+					$this->load->view('HeaderAndFooter/Header.php');
+					$this->load->view('Pages/Admin/Wrapper.php',$data);
+					$this->load->view('HeaderAndFooter/Footer.php');
+				} else {
+					redirect('AdminLogin');
+				}
+				
+			}
+			else{
+				if(!empty(get_cookie('remember_me_token'))){
+					$userData = $this->User_model->getCurrentUserCookie(get_cookie('remember_me_token'));
+					if (!empty($userData)) {
+						$this->session->set_userdata([
+							'isLogIn'     => true,
+							'userRole'     => $userData->userRole,
+							'userId'     => $userData->userId,
+							'firstName'     => $userData->fname,
+							'lastName'  => $userData->lname,
+							'email'       => $userData->email,
+						]);
+						redirect('EditUser/'.$this->safe_encode(urlencode($this->encryption->encrypt($data['userData']->userId))));
+					} else {
+						redirect('AdminLogin');
+					}
+				}
+				else{
+					redirect('AdminLogin');
+				}
+			}
 		}
 		else{
-			redirect('AdminLogin');
+			redirect('UserManagement');
 		}
 	}
 	//save user
 	public function saveUser(){
-		$this->form_validation->set_rules('userFirstname', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP');
-		$this->form_validation->set_rules('userLastname', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP');
-		$this->form_validation->set_rules('userEmail', 'Email' ,'required|callback_email_check');
-		$this->form_validation->set_rules('userPassword', 'Password' ,'required');
+		$this->form_validation->set_rules('userFirstname', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
+		$this->form_validation->set_rules('userLastname', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
+		$this->form_validation->set_rules('userEmail', 'Email' ,'required|callback_email_check|max_length[100]');
+		$this->form_validation->set_rules('userPassword', 'Password' ,'required|callback_checkPasswordStrength|max_length[50]');
 		$this->form_validation->set_rules('userRePassword', 'Confirm Password' ,'required|matches[userPassword]');
 		$this->form_validation->set_rules('userRole', 'User Role' ,'required');
 		
@@ -86,13 +127,12 @@ class UserManagement extends CI_Controller {
 	}
 	//update user
 	public function saveEdit(){
-		// echo 'test'; 
-		$this->form_validation->set_rules('userFirstname', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP');
-		$this->form_validation->set_rules('userLastname', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP');
-		$this->form_validation->set_rules('userEmail', 'Email' ,'required|callback_email_check_edit['.$this->input->post('userIdField').']');
+		$this->form_validation->set_rules('userFirstname', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
+		$this->form_validation->set_rules('userLastname', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
+		$this->form_validation->set_rules('userEmail', 'Email' ,'required|callback_email_check_edit['.$this->input->post('userIdField').']|max_length[100]');
 		$this->form_validation->set_rules('userRole', 'User Role' ,'required');
 		if($this->input->post("userPassword") != ''){
-			$this->form_validation->set_rules('userPassword', 'Password' ,'required');
+			$this->form_validation->set_rules('userPassword', 'Password' ,'required|callback_checkPasswordStrength|max_length[50]');
 			$this->form_validation->set_rules('userRePassword', 'Confirm Password' ,'required|matches[userPassword]');
 		}
 		
@@ -126,21 +166,27 @@ class UserManagement extends CI_Controller {
 			else{
 				$this->session->set_flashdata('failEditUser','Edit Failed');
 			}
-            redirect('EditUser/'.$this->input->post("userIdField"));
+            redirect('EditUser/'.$this->safe_encode(urlencode($this->encryption->encrypt($this->input->post("userIdField")))));
         }
         else{
 			$this->session->set_flashdata('failEditUser',validation_errors());
-            redirect('EditUser/'.$this->input->post("userIdField"));
+            redirect('EditUser/'.$this->safe_encode(urlencode($this->encryption->encrypt($this->input->post("userIdField")))));
         }
 	}
 	//delete user
 	public function deleteUser($id = ''){
-	
-		if($this->User_model->deleteUser($id)){
-			$this->session->set_flashdata('successAddUser','Delete Success');
+		$urlData = urldecode($this->safe_decode($id));
+		$newId = $this->encryption->decrypt($urlData) == '' ? null : $this->encryption->decrypt($urlData);
+		if($newId != $this->session->userdata('userId')){
+			if($this->User_model->deleteUser($newId)){
+				$this->session->set_flashdata('successAddUser','Delete Success');
+			}
+			else{
+				$this->session->set_flashdata('failAddUser','Delete Failed');
+			}
 		}
 		else{
-			$this->session->set_flashdata('failAddUser','Delete Failed');
+			$this->session->set_flashdata('failAddUser','You can\'t delete your account!');
 		}
 		
 		redirect('UserManagement');
@@ -159,6 +205,8 @@ class UserManagement extends CI_Controller {
 			$userData = $this->User_model->checkCredentials($postData);
 			if(!empty($userData)){
 				if($this->input->post('rememberme')){
+
+					!empty(get_cookie('count')) ? delete_cookie('count'):null;
 
 					$token = $this->randStrGen(1,15);
 
@@ -188,6 +236,8 @@ class UserManagement extends CI_Controller {
 					redirect('AdminDashboard');
 				}
 				else{
+					!empty(get_cookie('count')) ? delete_cookie('count'):null;
+
 					$this->session->set_flashdata('successLogin','Login Successful');
 		
 					$this->session->set_userdata([
@@ -203,6 +253,35 @@ class UserManagement extends CI_Controller {
 				}
 			}
 			else{
+
+				$temp = array();
+
+				if(!empty(get_cookie('count'))){
+					$temp = explode("-",get_cookie('count'));
+				}
+
+				$countVal = !empty(get_cookie('count')) ? $temp[0] + 1 : 1;
+
+				if($countVal == 5):
+					$time = strtotime("+5 min");
+				elseif($countVal == 10):
+					$time = strtotime("+30 min");
+				elseif($countVal == 15):
+					$time = strtotime("+1 hour");
+				elseif($countVal >= 20):
+					$time = strtotime("+1 day");
+				endif;
+				
+				$arr = array($countVal,$time);
+
+				$countCookie = array(
+					'name'   => 'count',
+					'value'  => implode("-",$arr),
+					'expire' => '86400',  // 1day
+				);
+
+				set_cookie($countCookie);
+
 				$this->session->set_flashdata('errorLogin','Incorrect Email or Password');
 				redirect('AdminLogin');
 			}
@@ -215,9 +294,20 @@ class UserManagement extends CI_Controller {
 	//get table data
 	public function UserTableAjax(){
 		$data1 = $this->User_model->getTableData();
-		
-		// $productss = $this->inventory_model->productList();
-		$json_data['data'] = $data1;
+
+		$data = array();
+
+		foreach($data1 as $listItem){
+			$row = array();
+			$row['id'] = $listItem->userId;
+			$row['fname'] = $listItem->fname;
+			$row['lname'] = $listItem->lname;
+			$row['email'] = $listItem->email;
+			$row['userRole'] = $listItem->userRole;
+			$row['encId'] = $this->safe_encode(urlencode($this->encryption->encrypt($listItem->userId)));
+			$data[] = $row;
+		}
+		$json_data['data'] = $data;
 		echo json_encode($json_data);
 	}
 	public function signout(){
@@ -234,6 +324,12 @@ class UserManagement extends CI_Controller {
 		redirect('AdminLogin');
 	}
 	//functions
+	function safe_encode($string){
+		return str_replace("%", ":", $string);
+	}
+	function safe_decode($string){
+		return str_replace(":", "%", $string);
+	}
 	public function randStrGen($mode = null, $len = null){
         $result = "";
         if($mode == 1):
@@ -253,7 +349,6 @@ class UserManagement extends CI_Controller {
         }
         return $result;
     }
-
 	public function email_check($email){
 		$emailCount = $this->db->select('email')->where('email',$email)->get('users')->num_rows();
 		if ($emailCount > 0) {
@@ -285,6 +380,27 @@ class UserManagement extends CI_Controller {
 	public function checkFieldIfHasSP($text = ''){
 		if( preg_match('/[\'^£$%&*(!)}+{@#~?><>\[\],|=_¬-]/', $text)){
 			$this->form_validation->set_message('checkFieldIfHasSP', 'The {field} has special character!');
+            return false;
+		}
+		else{
+			return true;
+		}
+	}
+	public function checkPasswordStrength($password = ''){
+		if( strlen($password) < 8 ){
+			$this->form_validation->set_message('checkPasswordStrength', 'The {field} must be 8 characters long');
+            return false;
+		}
+		if( !preg_match('/[\'^£$%&*(!)}+{@#~?><>\[\],|=_¬-]/', $password)){
+			$this->form_validation->set_message('checkPasswordStrength', 'The {field} must contain atleast 1 special character');
+            return false;
+		}
+		if( !preg_match('/[A-Z]/', $password)){
+			$this->form_validation->set_message('checkPasswordStrength', 'The {field} must contain atleast 1 upper character');
+            return false;
+		}
+		if( !preg_match('/[a-z]/', $password)){
+			$this->form_validation->set_message('checkPasswordStrength', 'The {field} must contain atleast 1 lower character');
             return false;
 		}
 		else{

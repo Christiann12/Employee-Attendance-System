@@ -8,6 +8,7 @@ class EmployeeProfile extends CI_Controller {
 		date_default_timezone_set('Asia/Singapore');
 		$this->load->helper('url');
 		$this->load->library('session');
+		$this->load->helper('cookie');
 		$this->load->model('Admin/Employee_model');
 		$this->load->model('Admin/Attendance_model');
 	}
@@ -17,23 +18,50 @@ class EmployeeProfile extends CI_Controller {
 		$data['lateCount'] = $this->Attendance_model->getTardinessMeasure('Late');
 		$data['OnTimeCount'] = $this->Attendance_model->getTardinessMeasure('On Time');
         if($this->session->userdata('isLogInEmployee') === true){
-			$data['page'] = "EmployeeProfile";
-			$this->load->view('HeaderAndFooter/HeaderEmployee.php');
-			$this->load->view('Pages/Employee/WrapperEmployee.php',$data);
-			$this->load->view('HeaderAndFooter/FooterEmployee.php',$data);
+			$userData = $query = $this->db->get_where('employee', array('empId' => $this->session->userdata('employeeId')))->row();
+			if (!empty($userData)) {
+				$data['page'] = "EmployeeProfile";
+				$this->load->view('HeaderAndFooter/HeaderEmployee.php');
+				$this->load->view('Pages/Employee/WrapperEmployee.php',$data);
+				$this->load->view('HeaderAndFooter/FooterEmployee.php',$data);
+			} else {
+				redirect('');
+			}
 		}
 		else{
-			redirect('');
+			if(!empty(get_cookie('remember_me_token_employee'))){
+				$userData = $this->Employee_model->getCurrentUserCookie(get_cookie('remember_me_token_employee'));
+				
+				if (!empty($userData)) {
+					$this->session->set_userdata([
+						'isLogInEmployee'     => true,
+						'employeeId'     => $userData->empId,
+						'secretIdEmployee'     => $userData->secretId,
+						'firstNameEmployee'     => $userData->fname,
+						'lastNameEmployee'  => $userData->lname,
+						'employeeTimein'  => $userData->timein,
+						'employeeTimeout'  => $userData->timeout,
+						'employeeDayoff'  => $userData->dayoff,
+					]);
+					redirect('EmployeeProfile');
+				} else {
+					redirect('');
+				}
+				
+			}
+			else{
+				redirect('');
+			}
 		}
 	}
 	public function saveEdit(){
 		// $this->form_validation->set_rules('fnameEdit', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|callback_checkIfNameIsChanged['.$this->input->post('passwordEdit').']');
 		// $this->form_validation->set_rules('lnameEdit', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|callback_checkIfNameIsChanged['.$this->input->post('passwordEdit').']');
-		$this->form_validation->set_rules('fnameEdit', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP');
-		$this->form_validation->set_rules('lnameEdit', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP');
+		$this->form_validation->set_rules('fnameEdit', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
+		$this->form_validation->set_rules('lnameEdit', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
 
 		if($this->input->post("passwordEdit") != ''){
-			$this->form_validation->set_rules('passwordEdit', 'Password' ,'required');
+			$this->form_validation->set_rules('passwordEdit', 'Password' ,'required|callback_checkPasswordStrength|max_length[100]');
 			$this->form_validation->set_rules('confPasswordEdit', 'Confirm Password' ,'required|matches[passwordEdit]');
 		}
 		
@@ -95,6 +123,27 @@ class EmployeeProfile extends CI_Controller {
 	public function checkIfNameIsChanged($text = '',$password = ''){
 		if( ($text == $this->session->userdata('lastNameEmployee') || $text == $this->session->userdata('firstNameEmployee') ) && $password == ''){
 			$this->form_validation->set_message('checkIfNameIsChanged', 'No new update in {field}!');
+            return false;
+		}
+		else{
+			return true;
+		}
+	}
+	public function checkPasswordStrength($password = ''){
+		if( strlen($password) < 8 ){
+			$this->form_validation->set_message('checkPasswordStrength', 'The {field} must be 8 characters long');
+            return false;
+		}
+		if( !preg_match('/[\'^£$%&*(!)}+{@#~?><>\[\],|=_¬-]/', $password)){
+			$this->form_validation->set_message('checkPasswordStrength', 'The {field} must contain atleast 1 special character');
+            return false;
+		}
+		if( !preg_match('/[A-Z]/', $password)){
+			$this->form_validation->set_message('checkPasswordStrength', 'The {field} must contain atleast 1 upper character');
+            return false;
+		}
+		if( !preg_match('/[a-z]/', $password)){
+			$this->form_validation->set_message('checkPasswordStrength', 'The {field} must contain atleast 1 lower character');
             return false;
 		}
 		else{

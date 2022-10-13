@@ -8,16 +8,16 @@
             <p class="title">Time Sheet</p>
             <center>
                
-                <?php if($attendanceDetail->timeout != 'timeout'){ ?>
+                <?php if($empData->timeout != 'timeout' || $empData->timein != 'timein' || $empData->dayoff != 'dayoff'  ){ ?>
                     <p class="hours"><?php  echo $circularData['message'] ?></p>
                 <?php } else{ ?>
                     <p class="hours">No Current Schedule</p>
                 <?php } ?>
-                <span class="chart" data-percent="<?php echo ($attendanceDetail->timeout != 'timeout') ? $circularData['percent'] : 0;?>"></span>
+                <span class="chart" data-percent="<?php echo ($empData->timeout != 'timeout' || $empData->timein != 'timein' || $empData->dayoff != 'dayoff'  ) ? $circularData['percent'] : 0;?>"></span>
                 
             </center>
             <center>
-                <a href="<?php echo base_url('General/ScanQrAndroid')?>" class="btn mt-3 <?php echo ($this->session->userdata('employeeTimein') == 'timein') ? "disabled"  : null ?>" >Scan QR code to time-in</a>
+                <a href="<?php echo base_url('General/ScanQrAndroid')?>" class="btn mt-3 <?= ($buttonStatus) ?  null : "disabled" ?>" >Scan QR code to time-in</a>
             </center>
         </div>
     </div>
@@ -38,5 +38,8 @@
                 </tbody>
             </table>
         </div>
+    </div>
+    <div class="dashboard mb-5">
+        <div id="profileDashboard"></div>
     </div>
 </div>

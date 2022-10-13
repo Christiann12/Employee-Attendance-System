@@ -8,25 +8,30 @@ class Test extends CI_Controller {
 		date_default_timezone_set('Asia/Singapore');
         $this->load->library('user_agent');
 
-		$currenttime = strtotime('2022-9-16 23:59');
-		$schedTimeout = strtotime('2022-9-16 17:30');
+		$timein = date("H:i" , strtotime("7:00"));
+		$timeout = date("H:i" , strtotime("15:00"));
 
-		// $timein = date("H:i" , strtotime('22:00'));
-		// $timeout = date("H:i" , strtotime('5:00'));
+		$timeinniemp = date("H:i" , strtotime("6:50"));
 
-		// $currentTime = date("H:i" , strtotime('23:30'));
-            
+		$currentTime = date("00:00");
 
-		// if ($this->isBetween($timein,$timeout,$currentTime)) 
-		// {
-		// 	$status_in = 'Late';
-		// } else {
-		// 	$status_in = 'On time';
-		// }
+		$test = "empty";
 
-		// echo $status_in;
+		if ($this->isBetween($timein,$timeout,$currentTime)){
+			$test= 'Under Time: ' . gmdate("H:i:s", ( strtotime($currentTime) - strtotime($timeinniemp) ));
+		}
+		else{
+			if($timeout == $currentTime || $this->isBetween($timeout,date("H:i" , strtotime($timeout."+15min")),$currentTime)){
+				// $test= 'On Time';
+				$test= "On Time: " . gmdate("H:i:s", ( strtotime($currentTime) - strtotime($timeinniemp) ));
+			}
+			else{
+			
+				$test= "Over Time: " . gmdate("H:i:s", ( strtotime($currentTime) - strtotime($timeinniemp) ));
+			}
+		}
 
-		echo (( $currenttime - $schedTimeout ) / 60)/15;
+		echo $test;
 	}
 	function isBetween($from, $till, $input) {
 		$f = DateTime::createFromFormat('!H:i', $from);

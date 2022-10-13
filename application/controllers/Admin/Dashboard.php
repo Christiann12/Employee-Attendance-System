@@ -52,23 +52,34 @@ class Dashboard extends CI_Controller {
 		$data['OnTimeCountDecember'] = $this->Attendance_model->getMonthCountOntime(date("m", strtotime("December")));
 		
         if($this->session->userdata('isLogIn') === true){
-			$data['page'] = "AdminDashboard";
-			$this->load->view('HeaderAndFooter/Header.php');
-			$this->load->view('Pages/Admin/Wrapper.php',$data);
-			$this->load->view('HeaderAndFooter/Footer.php',$data);
+			$userData = $query = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
+			if (!empty($userData)) {
+				$data['page'] = "AdminDashboard";
+				$this->load->view('HeaderAndFooter/Header.php');
+				$this->load->view('Pages/Admin/Wrapper.php',$data);
+				$this->load->view('HeaderAndFooter/Footer.php',$data);
+			} else {
+				redirect('AdminLogin');
+			}
+			
 		}
 		else{
 			if(!empty(get_cookie('remember_me_token'))){
 				$userData = $this->User_model->getCurrentUserCookie(get_cookie('remember_me_token'));
-				$this->session->set_userdata([
-					'isLogIn'     => true,
-					'userRole'     => $userData->userRole,
-					'userId'     => $userData->userId,
-					'firstName'     => $userData->fname,
-					'lastName'  => $userData->lname,
-					'email'       => $userData->email,
-				]);
-				redirect('AdminDashboard');
+				if (!empty($userData)) {
+					$this->session->set_userdata([
+						'isLogIn'     => true,
+						'userRole'     => $userData->userRole,
+						'userId'     => $userData->userId,
+						'firstName'     => $userData->fname,
+						'lastName'  => $userData->lname,
+						'email'       => $userData->email,
+					]);
+					redirect('AdminDashboard');
+				} else {
+					redirect('AdminLogin');
+				}
+				
 			}
 			else{
 				redirect('AdminLogin');

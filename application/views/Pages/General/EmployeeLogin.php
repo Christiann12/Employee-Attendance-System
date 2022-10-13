@@ -24,7 +24,7 @@
                 <center>
                     <img class="spacing1" src="<?php echo base_url(); ?>application/assets/images/logo1.png" alt="Logo">
                     <p class="title spacing1">Welcome to Paxforce</p>
-                    <p class="subtitle spacing1">Employee</p>
+                    <p class="subtitle spacing1">Login</p>
                 </center>
                     <?php echo form_open_multipart('EmployeeLogin/checkUser') ?>
 
@@ -57,13 +57,14 @@
                             </div>
                             <div class="col-6">
                                 <center>
-                                    <p style="text-align: right;" class="forgot-password">Forgot Password?</p>
+                                    <p style="text-align: right;" class="forgot-password d-none">Forgot Password?</p>
                                 </center>
                             </div>
                         </div>
 
                         <center class="spacing2">
-                            <button type="submi" class="btn" >Login</button>
+                            <!-- <button type="submi" class="btn" >Login</button> -->
+                            <button type="submit" id="ct7"class="btn" <?= !empty($status) ? 'disabled' : null ?> ><?= !empty($timeremaining) ? '' : 'Login' ?></button>
                         </center>
                     </div>
 
@@ -77,5 +78,42 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>		
 		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+        <script>
+            
+            // Set the date we're counting down to
+              var countDownDate = new Date("<?=date("F j, Y H:i:s",strtotime($timeremaining."+1 sec"))?>").getTime();
+              countDownDate.toLocaleString('en-SG', {
+                    timeZone: 'Asia/Singapore',
+                    // hour12: false
+                })
+              // Update the count down every 1 second
+              var x = setInterval(function() {
+                
+                // Get today's date and time
+                var now = new Date().getTime();
+                now.toLocaleString('en-SG', {
+                    timeZone: 'Asia/Singapore',
+                    // hour12: false
+                })
+                // Find the distance between now and the count down date
+                var distance = countDownDate - now;
+    
+                // Time calculations for days, hours, minutes and seconds
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+                // Display the result in the element with id="demo"
+                document.getElementById("ct7").innerHTML = hours + "h "
+                + minutes + "m " + seconds + "s ";
+    
+                // If the count down is finished, write some text
+                if (distance < 0) {
+                    clearInterval(x);
+                    location.reload();
+                }
+
+              }, 1000);
+        </script>
     </body>
 </html>

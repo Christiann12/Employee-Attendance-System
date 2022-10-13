@@ -18,27 +18,36 @@ class Employees extends CI_Controller {
 		$this->load->model('Admin/User_model');
 	}
 
-	public function index()
-	{
-        // $data['test'] = $this->encryption->encrypt('My secret message');
+	public function index(){
+		
 		if($this->session->userdata('isLogIn') === true){
-			$data['page'] = "AdminEmployee";
-			$this->load->view('HeaderAndFooter/Header.php');
-			$this->load->view('Pages/Admin/Wrapper.php',$data);
-			$this->load->view('HeaderAndFooter/Footer.php');
+			$userData = $query = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
+			if (!empty($userData)) {
+				$data['page'] = "AdminEmployee";
+				$this->load->view('HeaderAndFooter/Header.php');
+				$this->load->view('Pages/Admin/Wrapper.php',$data);
+				$this->load->view('HeaderAndFooter/Footer.php');
+			} else {
+				redirect('AdminLogin');
+			}
+			
 		}
 		else{
 			if(!empty(get_cookie('remember_me_token'))){
 				$userData = $this->User_model->getCurrentUserCookie(get_cookie('remember_me_token'));
-				$this->session->set_userdata([
-					'isLogIn'     => true,
-					'userRole'     => $userData->userRole,
-					'userId'     => $userData->userId,
-					'firstName'     => $userData->fname,
-					'lastName'  => $userData->lname,
-					'email'       => $userData->email,
-				]);
-				redirect('AdminEmployees');
+				if (!empty($userData)) {
+					$this->session->set_userdata([
+						'isLogIn'     => true,
+						'userRole'     => $userData->userRole,
+						'userId'     => $userData->userId,
+						'firstName'     => $userData->fname,
+						'lastName'  => $userData->lname,
+						'email'       => $userData->email,
+					]);
+					redirect('AdminEmployees');
+				} else {
+					redirect('AdminLogin');
+				}
 			}
 			else{
 				redirect('AdminLogin');
@@ -48,27 +57,37 @@ class Employees extends CI_Controller {
 	public function editEmployee($id = ''){
 		$urlData = urldecode($this->safe_decode($id));
 		$data['employeeData'] = $this->Employee_model->getEmp($this->encryption->decrypt($urlData) == '' ? null : $this->encryption->decrypt($urlData));
-		// print_r($data['employeeData']);
-		// echo $this->encryption->decrypt('123') == '' ? 'asd' : 'no';
+
 		if(!empty($data['employeeData'])){
 			if($this->session->userdata('isLogIn') === true){
-				$data['page'] = "EmployeeEditPage";
-				$this->load->view('HeaderAndFooter/Header.php');
-				$this->load->view('Pages/Admin/Wrapper.php',$data);
-				$this->load->view('HeaderAndFooter/Footer.php');
+				$userData = $query = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
+				if (!empty($userData)) {
+					$data['page'] = "EmployeeEditPage";
+					$this->load->view('HeaderAndFooter/Header.php');
+					$this->load->view('Pages/Admin/Wrapper.php',$data);
+					$this->load->view('HeaderAndFooter/Footer.php');
+				} else {
+					redirect('AdminLogin');
+				}
+				
 			}
 			else{
 				if(!empty(get_cookie('remember_me_token'))){
 					$userData = $this->User_model->getCurrentUserCookie(get_cookie('remember_me_token'));
-					$this->session->set_userdata([
-						'isLogIn'     => true,
-						'userRole'     => $userData->userRole,
-						'userId'     => $userData->userId,
-						'firstName'     => $userData->fname,
-						'lastName'  => $userData->lname,
-						'email'       => $userData->email,
-					]);
-					redirect('EditEmployee/'.$this->safe_encode(urlencode($this->encryption->encrypt($data['employeeData']->empId))));
+					if (!empty($userData)) {
+						$this->session->set_userdata([
+							'isLogIn'     => true,
+							'userRole'     => $userData->userRole,
+							'userId'     => $userData->userId,
+							'firstName'     => $userData->fname,
+							'lastName'  => $userData->lname,
+							'email'       => $userData->email,
+						]);
+						redirect('EditEmployee/'.$this->safe_encode(urlencode($this->encryption->encrypt($data['employeeData']->empId))));
+					} else {
+						redirect('AdminLogin');
+					}
+					
 				}
 				else{
 					redirect('AdminLogin');
@@ -91,8 +110,8 @@ class Employees extends CI_Controller {
 	}
 	//save employee
 	public function saveEdit(){
-		$this->form_validation->set_rules('employeeFirstName', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP');
-		$this->form_validation->set_rules('employeeLastName', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP');
+		$this->form_validation->set_rules('employeeFirstName', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
+		$this->form_validation->set_rules('employeeLastName', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
 		
 		$postData = array(
             "empId" => $this->input->post("employeeId"),
@@ -119,11 +138,12 @@ class Employees extends CI_Controller {
 	}
 	//save employee
 	public function addEmployee(){
-		$this->form_validation->set_rules('employeeFirstName', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP');
-		$this->form_validation->set_rules('employeeLastName', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP');
+		$this->form_validation->set_rules('employeeFirstName', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
+		$this->form_validation->set_rules('employeeLastName', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
 		
+		$rowCount = $this->db->get('employee')->num_rows()+1;
 		$postData = array(
-            "empId" => "EMP-".$this->randStrGen(2,7),
+            "empId" => "EMP-".date('Y').'-0'.$rowCount++,
 			"secretId" => "scrt".$this->randStrGen(1,12),
             "fname" => ucfirst(strtolower($this->input->post("employeeFirstName"))),
             "lname" => ucfirst(strtolower($this->input->post("employeeLastName"))),
@@ -169,6 +189,7 @@ class Employees extends CI_Controller {
 	public function import(){
 		$file_data = $this->csvimport->get_array($_FILES["csv_file"]["tmp_name"]);
 		$status = 'Still Good';
+		$rowCount = $this->db->get('employee')->num_rows()+1;
 		$data = array();
 
 		if(!array_key_exists('firstname',$file_data[0]) || !array_key_exists('lastname',$file_data[0])){
@@ -176,7 +197,7 @@ class Employees extends CI_Controller {
 			
 		}
 		if(count($file_data) * 3 != count($file_data,1)){
-			$status = "Look for a wrong entry!";
+			$status = "Invalid format of data, please double check the file for inconsistencies then try again.";
 		}
 		
 		if($status === 'Still Good'){
@@ -199,7 +220,7 @@ class Employees extends CI_Controller {
 
 				$row = array();
 				
-				$row["empId"] = "EMP-".$this->randStrGen(2,7);
+				$row["empId"] =  "EMP-".date('Y').'-0'.$rowCount++;
 				$row["secretId"] = "scrt".$this->randStrGen(1,12);
 				$row["fname"] = ucfirst(strtolower($csvitem["firstname"]));
 				$row["lname"] = ucfirst(strtolower($csvitem["lastname"]));
@@ -225,11 +246,11 @@ class Employees extends CI_Controller {
 	}
 	//functions
 	function safe_encode($string){
-	return str_replace("%", ":", $string);
+		return str_replace("%", ":", $string);
 	}
 	
 	function safe_decode($string){
-	return str_replace(":", "%", $string);
+		return str_replace(":", "%", $string);
 	}
 	public function randStrGen($mode = null, $len = null){
         $result = "";

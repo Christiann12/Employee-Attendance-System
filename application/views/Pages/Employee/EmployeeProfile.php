@@ -9,9 +9,9 @@
         <center>
             <div><img src="<?php echo base_url(); ?>application/assets/images/logo1.png" alt=""></div>
             <p class="name py-4"><?php echo $this->session->userdata('firstNameEmployee').' '.$this->session->userdata('lastNameEmployee'); ?></p>
-            <p class="empId"><?php echo $this->session->userdata('employeeId')?></p>
-            <p class="schedule"><?php echo $this->session->userdata('employeeTimein').'-'.$this->session->userdata('employeeTimeout'); ?></p>
-            <p class="dayoff"><?php echo $this->session->userdata('employeeDayoff');?></p>
+            <p class="empId">ID: <?php echo $this->session->userdata('employeeId')?></p>
+            <p class="schedule">Schedule: <?php echo $this->session->userdata('employeeTimein').'-'.$this->session->userdata('employeeTimeout'); ?></p>
+            <p class="dayoff">Dayoff: <?php echo $this->session->userdata('employeeDayoff');?></p>
         </center>
     </div>
 
@@ -21,7 +21,7 @@
         </center>
     </div>
 
-    <div class="editprofile">
+    <div class="editprofile mb-5">
         
             <?php echo form_open_multipart('Employee/EmployeeProfile/saveEdit') ?>
 
@@ -56,6 +56,7 @@
                 <div class="form-label-group">
                     <input name="passwordEdit" type="password" id="passwordEdit" class="form-control" placeholder="Password">
                     <label for="passwordEdit" class="">Password</label>
+                    <small id="passwordHelp" class="form-text text-muted">Password must contain at least 1 special character, uppercase letter, lowercase letter, and must be at least 8 characters long.</small>
                 </div>
 
                 <div class="form-label-group">
@@ -72,13 +73,4 @@
         
     </div>
 
-    <div class="banner2">
-        <center>
-            <p class="greeting">Dashboard</p>
-        </center>
-    </div>
-
-    <div class="dashboard">
-        <div id="profileDashboard"></div>
-    </div>
 </div>

@@ -15,23 +15,34 @@ class AttendanceList extends CI_Controller {
 	{
         
 		if($this->session->userdata('isLogIn') === true){
-			$data['page'] = "AttendanceList";
-			$this->load->view('HeaderAndFooter/Header.php');
-			$this->load->view('Pages/Admin/Wrapper.php',$data);
-			$this->load->view('HeaderAndFooter/Footer.php');
+			$userData = $query = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
+			if (!empty($userData)) {
+				$data['page'] = "AttendanceList";
+				$this->load->view('HeaderAndFooter/Header.php');
+				$this->load->view('Pages/Admin/Wrapper.php',$data);
+				$this->load->view('HeaderAndFooter/Footer.php');
+			} else {
+				redirect('AdminLogin');
+			}
+			
 		}
 		else{
 			if(!empty(get_cookie('remember_me_token'))){
 				$userData = $this->User_model->getCurrentUserCookie(get_cookie('remember_me_token'));
-				$this->session->set_userdata([
-					'isLogIn'     => true,
-					'userRole'     => $userData->userRole,
-					'userId'     => $userData->userId,
-					'firstName'     => $userData->fname,
-					'lastName'  => $userData->lname,
-					'email'       => $userData->email,
-				]);
-				redirect('TimeSheet');
+				if (!empty($userData)) {
+					$this->session->set_userdata([
+						'isLogIn'     => true,
+						'userRole'     => $userData->userRole,
+						'userId'     => $userData->userId,
+						'firstName'     => $userData->fname,
+						'lastName'  => $userData->lname,
+						'email'       => $userData->email,
+					]);
+					redirect('TimeSheet');
+				} else {
+					redirect('AdminLogin');
+				}
+				
 			}
 			else{
 				redirect('AdminLogin');

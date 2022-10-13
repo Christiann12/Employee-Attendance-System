@@ -8,6 +8,7 @@ class EmployeeScan extends CI_Controller {
 		date_default_timezone_set('Asia/Singapore');
 		$this->load->helper('url');
 		$this->load->library('session');
+        $this->load->helper('cookie');
         $this->load->model('Admin/Attendance_model');
         $this->load->model('Admin/Employee_model');
 	}
@@ -37,7 +38,7 @@ class EmployeeScan extends CI_Controller {
                 $postData['hours'] = 'Overtime-DayOff';
             }
             else if ($this->isBetween($timein,$timeout,$currentTime)){
-                $postData['hours'] = 'Early Out';
+                $postData['hours'] = 'Under Time';
             }
             else{
                 if($timeout == $currentTime){
@@ -92,11 +93,6 @@ class EmployeeScan extends CI_Controller {
 		
 		$name = 'attachment';
 
-        //check if late or not 
-        $loginTime = date('H:i');
-        $checkTime = $empData->timein;
-        $diff = ($checkTime - $loginTime); 
-
         $timein = date("H:i" , strtotime($empData->timein));
 		$timeout = date("H:i" , strtotime($empData->timeout));
 
@@ -111,7 +107,7 @@ class EmployeeScan extends CI_Controller {
 
         $postData = array(
             "empId" => $empData->empId,
-            "timein" => $loginTime,
+            "timein" => $currentTime,
             "timeinsched" => $empData->timein,
             "timeoutsched" => $empData->timeout,
             "datetimein" => date('Y-m-d'),

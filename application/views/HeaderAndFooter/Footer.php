@@ -18,6 +18,17 @@
 
 		<!-- developer js -->
 		<script src="<?php echo base_url('application/assets/js/clock.js') ?>"></script>
+		<!-- confirm delete -->
+		<script>
+			function ConfirmDelete(){
+				if (confirm("Are you sure you want to delete?")){
+					return true;
+				}
+				else {
+					return false;
+				}
+			}  
+		</script>
 		<!-- usertable script  -->
 		<script>
 			$(document).ready( function () {
@@ -52,7 +63,7 @@
 					},
 					columns: [
 						{
-							data: 'userId',
+							data: 'id',
 							className: 'data'
 						},
 						{
@@ -77,9 +88,9 @@
 							className: 'data',
 							render: function(data) {
 								// console.log()
-								var editLink = '<?php  echo base_url('EditUser/') ?>' + data.userId;
-								var deleteLink = '<?php  echo base_url('DeleteUser/') ?>' + data.userId;
-								return '<a class="btn btn-success rounded-1 " href="'+editLink+'">Edit</a><a class="btn btn-danger rounded-1 ml-1" href="'+deleteLink+'">Delete</a>';
+								var editLink = '<?php  echo base_url('EditUser/') ?>' + data.encId;
+								var deleteLink = '<?php  echo base_url('DeleteUser/') ?>' + data.encId;
+								return '<a class="btn btn-success rounded-1 " href="'+editLink+'">Edit</a><a class="btn btn-danger rounded-1 ml-1" onclick="return ConfirmDelete()" href="'+deleteLink+'">Delete</a>';
 							}
 						}
 					],
@@ -150,12 +161,73 @@
 								// console.log()
 								var editLink = '<?php  echo base_url('EditEmployee/') ?>' + data.data7;
 								var deleteLink = '<?php  echo base_url('DeleteEmployee/') ?>' + data.data7;
-								return '<a class="btn btn-success rounded-1 " href="'+editLink+'">Edit</a><a class="btn btn-danger rounded-1 ml-1" href="'+deleteLink+'">Delete</a>';
+								return '<a class="btn btn-success rounded-1 " href="'+editLink+'">Edit</a><a class="btn btn-danger rounded-1 ml-1" onclick="return ConfirmDelete()" href="'+deleteLink+'">Delete</a>';
 							}
 						}
 					],
 					// "order":[],
 					"searching": true,
+					"dom": "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>><'row'<'col-sm-12't>><'row'<'col-sm-6'i><'col-sm-6'p>>",
+					
+					
+					buttons: [
+						// 'copyHtml5',
+						{
+							extend: 'copyHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'Copy',
+							className: 'btn-sm',
+							exportOptions: {
+								columns: [ 0, 1, 2, 3, 4]
+							}
+						},
+						// 'excelHtml5',
+						{
+							extend: 'excelHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'Excel',
+							className: 'btn-sm',
+							exportOptions: {
+								columns: [ 0, 1, 2, 3, 4]
+							}
+						},
+						// 'csvHtml5',
+						{
+							extend: 'csvHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'CSV',
+							className: 'btn-sm',
+							exportOptions: {
+								columns: [ 0, 1, 2, 3, 4]
+							}
+						},
+						// 'pdfHtml5',
+						{
+							extend: 'pdfHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'PDF',
+							className: 'btn-sm',
+							exportOptions: {
+								columns: [ 0, 1, 2, 3, 4]
+							}
+						},
+						// 'print',
+						{
+							extend: 'print',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'Print',
+							className: 'btn-sm',
+							exportOptions: {
+								columns: [ 0, 1, 2, 3, 4]
+							}
+						},
+					]
+					
 				});
 			}
 		</script>
@@ -344,6 +416,64 @@
 					],
 					// "order":[],
 					"searching": true,
+					"dom": "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>><'row'<'col-sm-12't>><'row'<'col-sm-6'i><'col-sm-6'p>>",
+					buttons: [
+						// 'copyHtml5',
+						{
+							extend: 'copyHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'Copy',
+							className: 'btn-sm',
+							exportOptions: {
+								columns: [ 0, 1, 2, 3, 4, 5, 6]
+							}
+						},
+						// 'excelHtml5',
+						{
+							extend: 'excelHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'Excel',
+							className: 'btn-sm',
+							exportOptions: {
+								columns: [ 0, 1, 2, 3, 4, 5, 6]
+							}
+						},
+						// 'csvHtml5',
+						{
+							extend: 'csvHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'CSV',
+							className: 'btn-sm',
+							exportOptions: {
+								columns: [ 0, 1, 2, 3, 4, 5, 6]
+							}
+						},
+						// 'pdfHtml5',
+						{
+							extend: 'pdfHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'PDF',
+							className: 'btn-sm',
+							exportOptions: {
+								columns: [ 0, 1, 2, 3, 4, 5, 6]
+							}
+						},
+						// 'print',
+						{
+							extend: 'print',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'Print',
+							className: 'btn-sm',
+							exportOptions: {
+								columns: [ 0, 1, 2, 3, 4, 5, 6]
+							}
+						},
+					]
 				});
 			}
 		</script>
