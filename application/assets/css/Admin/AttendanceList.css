@@ -42,6 +42,14 @@
     padding: 10px 30px 30px 30px;
     /* background-color: red; */
 }
+.attendancelist .section1 .filterform{
+    padding: 10px 30px 30px 30px;
+    /* background-color: red; */
+}
+.attendancelist .section1 .filterform .btn{
+    background-color: #1A1A1D; color: white;
+    border: 1px solid #1A1A1D !important;
+}
 .attendancelist .section1 .attendancetable .headertable{
     background-color: #bebebe !important;
     color: black;

@@ -1,0 +1,86 @@
+.employeedashboard .banner{
+    /* background-color: red; */
+    margin: 30px 30px 0px 30px;
+}
+
+.employeedashboard .banner .greeting{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 28px;
+    color: #000000;
+}
+
+.employeedashboard .banner .clock{
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 19px;
+    color: #000000;
+}
+.employeedashboard .timesheet{
+    box-shadow: 5px 5px 10px 1px rgba(138, 138, 138, 0.25);
+    background-color: white;
+    margin: 80px 0px 0px 0px;
+}
+.employeedashboard .timesheet .chart{
+    /* background-color: red; */
+    display: inline-block;
+    text-align: center;
+}
+.employeedashboard .timesheet .containerPanel {
+    /* background-color: blue; */
+    padding: 30px 30px 30px 30px;
+}
+.employeedashboard .timesheet .containerPanel .title{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    color: #000000;
+}
+.employeedashboard .timesheet .containerPanel .hours{
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    color: #000000;
+}
+
+.employeedashboard .timesheet .containerPanel .btn{
+     background: #1A1A1D; color: white;
+    border: 1px solid #1A1A1D !important;
+}
+
+.employeedashboard .attendancelist{
+    box-shadow: 5px 5px 10px 1px rgba(138, 138, 138, 0.25);
+    background-color: white;
+    margin: 80px 0px 80px 0px;
+    padding: 30px 15px 30px 15px;
+}
+
+.employeedashboard .attendancelist .title{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    color: #000000;
+}
+
+/* .employeedashboard .attendancelist .employeeTable{ */
+    /* margin: 250px 0px 250px 0px; */
+/* } */
+.employeedashboard .attendancelist .employeeTable .headertable{
+    background-color: #bebebe !important;
+    color: black;
+}
+
+.employeedashboard .dashboard {
+    box-shadow: 5px 5px 10px 1px rgba(138, 138, 138, 0.25);
+    background-color: white;
+    margin: 30px 0px 40px 0px;
+    /* padding: 250px 30px 250px 30px; */
+    padding: 10px;
+}

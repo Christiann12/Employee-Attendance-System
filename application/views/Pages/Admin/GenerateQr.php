@@ -19,7 +19,7 @@
                     <input name="userLastname" type="text" id="userLastname" class="inputDesign form-control" placeholder="Last Name" value="">
                 </div> -->
 
-                <button type="submit" class="btn btn-primary my-3" >Generate QR</button>
+                <button type="submit" class="btn my-3" >Generate QR</button>
             <?php echo form_close() ?>
         </div>
     </div>

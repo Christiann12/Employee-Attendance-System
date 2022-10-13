@@ -1,0 +1,161 @@
+.employeeprofile .banner {
+    margin: 30px 30px 0px 30px;
+    /* background-color: red; */
+}
+.employeeprofile .banner .greeting{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    color: #000000;
+}
+
+.employeeprofile .profile {
+    box-shadow: 5px 5px 10px 1px rgba(138, 138, 138, 0.25);
+    background-color: white;
+    margin: 30px 0px 0px 0px;
+    padding: 30px;
+}
+
+.employeeprofile .profile .name{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 23px;
+    color: #000000;
+}
+.employeeprofile .profile .empId{
+    margin: 0;
+}
+.employeeprofile .profile .schedule{
+    margin: 0;
+}
+.employeeprofile .profile .dayoff{
+    margin: 0;
+}
+
+.employeeprofile .banner2 {
+    margin: 60px 30px 0px 30px;
+    /* background-color: red; */
+}
+.employeeprofile .banner2 .greeting{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    color: #000000;
+}
+
+.employeeprofile .editprofile {
+    box-shadow: 5px 5px 10px 1px rgba(138, 138, 138, 0.25);
+    background-color: white;
+    margin: 30px 0px 0px 0px;
+    padding: 60px 30px 60px 30px;
+}
+
+.employeeprofile .editprofile .btn{
+    padding: 10px 80px; background: #1A1A1D; color: white;
+    border: 1px solid #1A1A1D !important;
+}
+
+.employeeprofile .dashboard {
+    box-shadow: 5px 5px 10px 1px rgba(138, 138, 138, 0.25);
+    background-color: white;
+    margin: 30px 0px 40px 0px;
+    /* padding: 250px 30px 250px 30px; */
+    padding: 10px;
+}
+
+/* css floating label  */
+.form-label-group {
+    position: relative;
+    margin-bottom: 1rem;
+}
+  
+  .form-label-group input,
+  .form-label-group label {
+    height: 3.125rem;
+    padding: .75rem;
+  }
+  
+  .form-label-group label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    margin-bottom: 0; /* Override default `<label>` margin */
+    line-height: 1.5;
+    color: #495057;
+    pointer-events: none;
+    cursor: text; /* Match the input under the label */
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    transition: all .1s ease-in-out;
+  }
+  
+  .form-label-group input::-webkit-input-placeholder {
+    color: transparent;
+  }
+  
+  .form-label-group input::-moz-placeholder {
+    color: transparent;
+  }
+  
+  .form-label-group input:-ms-input-placeholder {
+    color: transparent;
+  }
+  
+  .form-label-group input::-ms-input-placeholder {
+    color: transparent;
+  }
+  
+  .form-label-group input::placeholder {
+    color: transparent;
+  }
+  
+  .form-label-group input:not(:-moz-placeholder-shown) {
+    padding-top: 1.25rem;
+    padding-bottom: .25rem;
+  }
+  
+  .form-label-group input:not(:-ms-input-placeholder) {
+    padding-top: 1.25rem;
+    padding-bottom: .25rem;
+  }
+  
+  .form-label-group input:not(:placeholder-shown) {
+    padding-top: 1.25rem;
+    padding-bottom: .25rem;
+  }
+  
+  .form-label-group input:not(:-moz-placeholder-shown) ~ label {
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    font-size: 12px;
+    color: #777;
+  }
+  
+  .form-label-group input:not(:-ms-input-placeholder) ~ label {
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    font-size: 12px;
+    color: #777;
+  }
+  
+  .form-label-group input:not(:placeholder-shown) ~ label {
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    font-size: 12px;
+    color: #777;
+  }
+  
+  .form-label-group input:-webkit-autofill ~ label {
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    font-size: 12px;
+    color: #777;
+  }

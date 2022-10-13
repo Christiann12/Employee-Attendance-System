@@ -1,0 +1,28 @@
+.main-panel{
+    /* background-color: blue; */
+    /* height: 100vh; */
+}
+.holder{
+    margin: 50px 30px 50px 30px;
+    display: grid;
+    grid-template: 1fr / 1fr;
+    place-items: center;
+}
+.holder > *{
+    grid-column: 1 / 1;
+    grid-row: 1 / 1;
+}
+.cameraContainer{
+    z-index: 1;
+}
+.innerbox{
+    width: 60%;
+    height: 200px;
+    z-index: 2;
+    border-radius: 20px;
+    border: 2px solid #FFFFFF;
+}
+.camera{
+    border-radius: 20px;
+    /* margin: 20px; */
+}

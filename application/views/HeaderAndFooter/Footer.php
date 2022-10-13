@@ -18,6 +18,17 @@
 
 		<!-- developer js -->
 		<script src="<?php echo base_url('application/assets/js/clock.js') ?>"></script>
+		<!-- confirm delete -->
+		<script>
+			function ConfirmDelete(){
+				if (confirm("Are you sure you want to delete?")){
+					return true;
+				}
+				else {
+					return false;
+				}
+			}  
+		</script>
 		<!-- usertable script  -->
 		<script>
 			$(document).ready( function () {
@@ -52,7 +63,7 @@
 					},
 					columns: [
 						{
-							data: 'userId',
+							data: 'id',
 							className: 'data'
 						},
 						{
@@ -68,14 +79,18 @@
 							className: 'data'
 						},
 						{
+							data: 'userRole',
+							className: 'data'
+						},
+						{
 							data: null,
 							orderable: false,
 							className: 'data',
 							render: function(data) {
 								// console.log()
-								var editLink = '<?php  echo base_url('EditUser/') ?>' + data.userId;
-								var deleteLink = '<?php  echo base_url('DeleteUser/') ?>' + data.userId;
-								return '<a class="btn btn-success rounded-1 " href="'+editLink+'">Edit</a><a class="btn btn-danger rounded-1 ml-1" href="'+deleteLink+'">Delete</a>';
+								var editLink = '<?php  echo base_url('EditUser/') ?>' + data.encId;
+								var deleteLink = '<?php  echo base_url('DeleteUser/') ?>' + data.encId;
+								return '<a class="btn btn-success rounded-1 " href="'+editLink+'">Edit</a><a class="btn btn-danger rounded-1 ml-1" onclick="return ConfirmDelete()" href="'+deleteLink+'">Delete</a>';
 							}
 						}
 					],
@@ -107,6 +122,7 @@
 					"language": {
 						processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '
 					},
+					
 					// "serverSide":true,
 					"responsive": true,
 					// "bPaginate": true,
@@ -143,14 +159,75 @@
 							className: 'data',
 							render: function(data) {
 								// console.log()
-								var editLink = '<?php  echo base_url('EditEmployee/') ?>' + data.data1;
-								var deleteLink = '<?php  echo base_url('DeleteEmployee/') ?>' + data.data1;
-								return '<a class="btn btn-success rounded-1 " href="'+editLink+'">Edit</a><a class="btn btn-danger rounded-1 ml-1" href="'+deleteLink+'">Delete</a>';
+								var editLink = '<?php  echo base_url('EditEmployee/') ?>' + data.data7;
+								var deleteLink = '<?php  echo base_url('DeleteEmployee/') ?>' + data.data7;
+								return '<a class="btn btn-success rounded-1 " href="'+editLink+'">Edit</a><a class="btn btn-danger rounded-1 ml-1" onclick="return ConfirmDelete()" href="'+deleteLink+'">Delete</a>';
 							}
 						}
 					],
 					// "order":[],
 					"searching": true,
+					"dom": "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>><'row'<'col-sm-12't>><'row'<'col-sm-6'i><'col-sm-6'p>>",
+					
+					
+					buttons: [
+						// 'copyHtml5',
+						{
+							extend: 'copyHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'Copy',
+							className: 'btn-sm',
+							exportOptions: {
+								columns: [ 0, 1, 2, 3, 4]
+							}
+						},
+						// 'excelHtml5',
+						{
+							extend: 'excelHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'Excel',
+							className: 'btn-sm',
+							exportOptions: {
+								columns: [ 0, 1, 2, 3, 4]
+							}
+						},
+						// 'csvHtml5',
+						{
+							extend: 'csvHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'CSV',
+							className: 'btn-sm',
+							exportOptions: {
+								columns: [ 0, 1, 2, 3, 4]
+							}
+						},
+						// 'pdfHtml5',
+						{
+							extend: 'pdfHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'PDF',
+							className: 'btn-sm',
+							exportOptions: {
+								columns: [ 0, 1, 2, 3, 4]
+							}
+						},
+						// 'print',
+						{
+							extend: 'print',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'Print',
+							className: 'btn-sm',
+							exportOptions: {
+								columns: [ 0, 1, 2, 3, 4]
+							}
+						},
+					]
+					
 				});
 			}
 		</script>
@@ -282,13 +359,14 @@
 				// var VtxtSearch=$("#txtSearchChild").val();
 				loadattendancetable();
 			});	
-			// $("#childSearch").submit(function(event){
-			// 	event.preventDefault();
-			// 	$('#attendancetable').DataTable().destroy();
-			// 	var VtxtSearch=$("#txtSearchChild").val();
-			// 	loadattendancetable(VtxtSearch);
-			// });
-			function loadattendancetable(txtSearch=''){
+			$("#attendanceFilter").submit(function(event){
+				event.preventDefault();
+				var empId=$("#empIdFilter").val();
+				var date=$("#dateFilter").val();
+				$('#attendancetable').DataTable().destroy();
+				loadattendancetable(empId,date);
+			});
+			function loadattendancetable(empId='',date=''){
 				// alert('thiswork');
 				var dataTable = $('#attendancetable').DataTable({
 					
@@ -304,7 +382,7 @@
 					"ajax": {
 						"url": "<?php echo base_url('Admin/AttendanceList/generateTable')?>",
 						"type": "POST",
-						// "data": {txtSearch:''}
+						"data": {empId:empId,date:date}
 					},
 					columns: [
 						{
@@ -312,11 +390,11 @@
 							className: 'data'
 						},
 						{
-							data: 'data2',
+							data: 'data3',
 							className: 'data'
 						},
 						{
-							data: 'data3',
+							data: 'data8',
 							className: 'data'
 						},
 						{
@@ -331,9 +409,75 @@
 							data: 'data6',
 							className: 'data'
 						},
+						{
+							data: 'data8',
+							className: 'data'
+						},
+						{
+							data: 'data7',
+							className: 'data'
+						},
 					],
 					// "order":[],
 					"searching": true,
+					"dom": "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>><'row'<'col-sm-12't>><'row'<'col-sm-6'i><'col-sm-6'p>>",
+					buttons: [
+						// 'copyHtml5',
+						{
+							extend: 'copyHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'Copy',
+							className: 'btn-sm',
+							exportOptions: {
+								columns: [ 0, 1, 2, 3, 4, 5, 6]
+							}
+						},
+						// 'excelHtml5',
+						{
+							extend: 'excelHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'Excel',
+							className: 'btn-sm',
+							exportOptions: {
+								columns: [ 0, 1, 2, 3, 4, 5, 6]
+							}
+						},
+						// 'csvHtml5',
+						{
+							extend: 'csvHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'CSV',
+							className: 'btn-sm',
+							exportOptions: {
+								columns: [ 0, 1, 2, 3, 4, 5, 6]
+							}
+						},
+						// 'pdfHtml5',
+						{
+							extend: 'pdfHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'PDF',
+							className: 'btn-sm',
+							exportOptions: {
+								columns: [ 0, 1, 2, 3, 4, 5, 6]
+							}
+						},
+						// 'print',
+						{
+							extend: 'print',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'Print',
+							className: 'btn-sm',
+							exportOptions: {
+								columns: [ 0, 1, 2, 3, 4, 5, 6]
+							}
+						},
+					]
 				});
 			}
 		</script>
@@ -361,8 +505,17 @@
 							setInterval(function(){
 								window.location.href = "<?= base_url('AdminEmployees')?>";
 							}, 2000);
+						},
+						error: function( jqXhr ) {
+							
+							if( jqXhr.status == 400 ) { //Validation error or other reason for Bad Request 400
+								var json = JSON.parse( jqXhr.responseText );
+								alert(json.message);
+								$('#import_csv')[0].reset();
+								// $('#uploadButton').attr('disabled', false);
+								$('#uploadButton').html('Upload');
+							}
 						}
-						
 					})
 				});
 			});
@@ -391,9 +544,115 @@
 							setInterval(function(){
 								window.location.href = "<?= base_url('UploadSched')?>";
 							}, 2000);
+						},
+						error: function( jqXhr ) {
+							
+							if( jqXhr.status == 400 ) { //Validation error or other reason for Bad Request 400
+								var json = JSON.parse( jqXhr.responseText );
+								alert(json.message);
+								$('#import_csv_schedule')[0].reset();
+								// $('#uploadButton').attr('disabled', false);
+								$('#uploadButton_schedule').html('Upload');
+							}
 						}
-						
 					})
+				});
+			});
+		</script>
+		<script>
+			
+			document.addEventListener('DOMContentLoaded', function () {
+				const chart1 = Highcharts.chart('MonthlyLate', {
+					chart: {
+						type: 'column',
+						scrollablePlotArea: {
+							minWidth: 400,
+							scrollPositionX: 1
+						}
+					},
+
+					title: {
+						text: 'Monthly Late Count'
+					},
+
+					xAxis: {
+						categories: ['January', 'February','March','April','May','June','July','August','September','October','November','December'],
+						labels: {
+							overflow: 'justify'
+						}
+					},
+					yAxis: {
+						type: 'logarithmic',
+
+						title: {
+							text: 'Late Count'
+						}
+					},
+
+					series: [{
+						name: 'Number of Late employees monthly',
+						// data: [1,1,1,1,1,1,1,1,1,1,1,1]
+						data: [<?php echo (isset($LateCountJanuary) ? $LateCountJanuary : 0)?>, 
+						<?php echo (isset($LateCountFebruary) ? $LateCountFebruary : 0)?>, 
+						<?php echo (isset($LateCountMarch) ? $LateCountMarch : 0)?>, 
+						<?php echo (isset($LateCountApril) ? $LateCountApril : 0)?>, 
+						<?php echo (isset($LateCountMay) ? $LateCountMay : 0)?>, 
+						<?php echo (isset($LateCountJune) ? $LateCountJune : 0)?>, 
+						<?php echo (isset($LateCountJuly) ? $LateCountJuly : 0)?>,
+						<?php echo (isset($LateCountAugust) ? $LateCountAugust : 0)?>,
+						<?php echo (isset($LateCountSeptember) ? $LateCountSeptember : 0)?>,
+						<?php echo (isset($LateCountOctober) ? $LateCountOctober : 0)?>,
+						<?php echo (isset($LateCountNovember) ? $LateCountNovember : 0)?>,
+						<?php echo (isset($LateCountDecember) ? $LateCountDecember : 0)?>]
+					}]
+
+				});
+			});
+			document.addEventListener('DOMContentLoaded', function () {
+				const chart1 = Highcharts.chart('MonthlyOnTime', {
+					chart: {
+						type: 'column',
+						scrollablePlotArea: {
+							minWidth: 400,
+							scrollPositionX: 1
+						}
+					},
+
+					title: {
+						text: 'Monthly On Time Count'
+					},
+
+					xAxis: {
+						categories: ['January', 'February','March','April','May','June','July','August','September','October','November','December'],
+						labels: {
+							overflow: 'justify'
+						}
+					},
+					yAxis: {
+						type: 'logarithmic',
+
+						title: {
+							text: 'Count'
+						}
+					},
+
+					series: [{
+						name: 'Number of On Time employees monthly',
+						// data: [1,1,1,1,1,1,1,1,1,1,1,1]
+						data: [<?php echo (isset($OnTimeCountJanuary) ? $OnTimeCountJanuary : 0)?>, 
+						<?php echo (isset($OnTimeCountFebruary) ? $OnTimeCountFebruary : 0)?>, 
+						<?php echo (isset($OnTimeCountMarch) ? $OnTimeCountMarch : 0)?>, 
+						<?php echo (isset($OnTimeCountApril) ? $OnTimeCountApril : 0)?>, 
+						<?php echo (isset($OnTimeCountMay) ? $OnTimeCountMay : 0)?>, 
+						<?php echo (isset($OnTimeCountJune) ? $OnTimeCountJune : 0)?>, 
+						<?php echo (isset($OnTimeCountJuly) ? $OnTimeCountJuly : 0)?>,
+						<?php echo (isset($OnTimeCountAugust) ? $OnTimeCountAugust : 0)?>,
+						<?php echo (isset($OnTimeCountSeptember) ? $OnTimeCountSeptember : 0)?>,
+						<?php echo (isset($OnTimeCountOctober) ? $OnTimeCountOctober : 0)?>,
+						<?php echo (isset($OnTimeCountNovember) ? $OnTimeCountNovember : 0)?>,
+						<?php echo (isset($OnTimeCountDecember) ? $OnTimeCountDecember : 0)?>]
+					}]
+
 				});
 			});
 		</script>

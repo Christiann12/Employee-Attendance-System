@@ -8,41 +8,99 @@ class Employees extends CI_Controller {
 		date_default_timezone_set('Asia/Singapore');
 		//helpers
 		$this->load->helper('url');
+		$this->load->helper('cookie');
 		//libraries
 		$this->load->library('session');
 		$this->load->library('encryption');
 		$this->load->library('csvimport');
 		//model
 		$this->load->model('Admin/Employee_model');
+		$this->load->model('Admin/User_model');
 	}
 
-	public function index()
-	{
-        // $data['test'] = $this->encryption->encrypt('My secret message');
+	public function index(){
+		
 		if($this->session->userdata('isLogIn') === true){
-			$data['page'] = "AdminEmployee";
-			$this->load->view('HeaderAndFooter/Header.php');
-			$this->load->view('Pages/Admin/Wrapper.php',$data);
-			$this->load->view('HeaderAndFooter/Footer.php');
+			$userData = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
+			if (!empty($userData)) {
+				$data['page'] = "AdminEmployee";
+				$this->load->view('HeaderAndFooter/Header.php');
+				$this->load->view('Pages/Admin/Wrapper.php',$data);
+				$this->load->view('HeaderAndFooter/Footer.php');
+			} else {
+				redirect('AdminLogin');
+			}
+			
 		}
 		else{
-			redirect('');
+			if(!empty(get_cookie('remember_me_token'))){
+				$userData = $this->User_model->getCurrentUserCookie(get_cookie('remember_me_token'));
+				if (!empty($userData)) {
+					$this->session->set_userdata([
+						'isLogIn'     => true,
+						'userRole'     => $userData->userRole,
+						'userId'     => $userData->userId,
+						'firstName'     => $userData->fname,
+						'lastName'  => $userData->lname,
+						'email'       => $userData->email,
+					]);
+					redirect('AdminEmployees');
+				} else {
+					redirect('AdminLogin');
+				}
+			}
+			else{
+				redirect('AdminLogin');
+			}
 		}
 	}
 	public function editEmployee($id = ''){
-		$data['employeeData'] = $this->Employee_model->getEmp($id);
-		if($this->session->userdata('isLogIn') === true){
-			$data['page'] = "EmployeeEditPage";
-			$this->load->view('HeaderAndFooter/Header.php');
-			$this->load->view('Pages/Admin/Wrapper.php',$data);
-			$this->load->view('HeaderAndFooter/Footer.php');
+		$urlData = urldecode($this->safe_decode($id));
+		$data['employeeData'] = $this->Employee_model->getEmp($this->encryption->decrypt($urlData) == '' ? null : $this->encryption->decrypt($urlData));
+
+		if(!empty($data['employeeData'])){
+			if($this->session->userdata('isLogIn') === true){
+				$userData = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
+				if (!empty($userData)) {
+					$data['page'] = "EmployeeEditPage";
+					$this->load->view('HeaderAndFooter/Header.php');
+					$this->load->view('Pages/Admin/Wrapper.php',$data);
+					$this->load->view('HeaderAndFooter/Footer.php');
+				} else {
+					redirect('AdminLogin');
+				}
+				
+			}
+			else{
+				if(!empty(get_cookie('remember_me_token'))){
+					$userData = $this->User_model->getCurrentUserCookie(get_cookie('remember_me_token'));
+					if (!empty($userData)) {
+						$this->session->set_userdata([
+							'isLogIn'     => true,
+							'userRole'     => $userData->userRole,
+							'userId'     => $userData->userId,
+							'firstName'     => $userData->fname,
+							'lastName'  => $userData->lname,
+							'email'       => $userData->email,
+						]);
+						redirect('EditEmployee/'.$this->safe_encode(urlencode($this->encryption->encrypt($data['employeeData']->empId))));
+					} else {
+						redirect('AdminLogin');
+					}
+					
+				}
+				else{
+					redirect('AdminLogin');
+				}
+			}
 		}
 		else{
-			redirect('');
+			redirect('AdminEmployees');
 		}
 	}
 	public function deleteEmployee($id = ''){
-		if ($this->Employee_model->deleteEmployee($id)){
+		$urlData = urldecode($this->safe_decode($id));
+		if ($this->Employee_model->deleteEmployee($this->encryption->decrypt($urlData) == '' ? null : $this->encryption->decrypt($urlData))){
 			$this->session->set_flashdata('successAddEmployee','Delete Success');
 		}
 		else{
@@ -52,16 +110,16 @@ class Employees extends CI_Controller {
 	}
 	//save employee
 	public function saveEdit(){
-		$this->form_validation->set_rules('employeeFirstName', 'First Name' ,'required');
-		$this->form_validation->set_rules('employeeLastName', 'Last Name' ,'required');
+		$this->form_validation->set_rules('employeeFirstName', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
+		$this->form_validation->set_rules('employeeLastName', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
 		
 		$postData = array(
             "empId" => $this->input->post("employeeId"),
-            "fname" => $this->input->post("employeeFirstName"),
-            "lname" => $this->input->post("employeeLastName"),
-			"timein" => $this->input->post("timein"),
-            "timeout" => $this->input->post("timeout"),
-			"dayoff" => $this->input->post("dayoff"),
+            "fname" => ucfirst(strtolower($this->input->post("employeeFirstName"))),
+            "lname" => ucfirst(strtolower($this->input->post("employeeLastName"))),
+			"timein" => (empty($this->input->post("timein")) ? 'timein' : $this->input->post("timein")),
+            "timeout" => (empty($this->input->post("timeout")) ? 'timeout' : $this->input->post("timeout")),
+			"dayoff" => (empty($this->input->post("dayoff")) ? 'dayoff' : $this->input->post("dayoff")),
         );
 
 		if($this->form_validation->run() === true){
@@ -71,23 +129,24 @@ class Employees extends CI_Controller {
 			else{
 				$this->session->set_flashdata('failEditEmployee','Edit Failed');
 			}
-            redirect('EditEmployee/'.$this->input->post("employeeId"));
+            redirect('EditEmployee/'.$this->safe_encode(urlencode($this->encryption->encrypt($this->input->post("employeeId")))));
         }
         else{
 			$this->session->set_flashdata('failEditEmployee',validation_errors());
-            redirect('EditEmployee/'.$this->input->post("employeeId"));
+            redirect('EditEmployee/'.$this->safe_encode(urlencode($this->encryption->encrypt($this->input->post("employeeId")))));
         }
 	}
 	//save employee
 	public function addEmployee(){
-		$this->form_validation->set_rules('employeeFirstName', 'First Name' ,'required');
-		$this->form_validation->set_rules('employeeLastName', 'Last Name' ,'required');
+		$this->form_validation->set_rules('employeeFirstName', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
+		$this->form_validation->set_rules('employeeLastName', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
 		
+		$rowCount = $this->db->get('employee')->num_rows()+1;
 		$postData = array(
-            "empId" => "EMP-".$this->randStrGen(2,7),
+            "empId" => "EMP-".date('Y').'-0'.$rowCount++,
 			"secretId" => "scrt".$this->randStrGen(1,12),
-            "fname" => $this->input->post("employeeFirstName"),
-            "lname" => $this->input->post("employeeLastName"),
+            "fname" => ucfirst(strtolower($this->input->post("employeeFirstName"))),
+            "lname" => ucfirst(strtolower($this->input->post("employeeLastName"))),
         );
 
 		if($this->form_validation->run() === true){
@@ -108,7 +167,7 @@ class Employees extends CI_Controller {
 	//get table data
 	public function EmployeeTableAjax(){
 		$data1 = $this->Employee_model->getTableData();
-		
+	
 		// $productss = $this->inventory_model->productList();
 		$data = array();
 
@@ -120,6 +179,7 @@ class Employees extends CI_Controller {
 			$row['data4'] = $listItem->timein.' - '.$listItem->timeout;
 			$row['data5'] = $listItem->dayoff;
 			$row['data6'] = $listItem->secretId;
+			$row['data7'] = $this->safe_encode(urlencode($this->encryption->encrypt($listItem->empId)));
 			$data[] = $row;
 		}
 		$json_data['data'] = $data;
@@ -128,17 +188,70 @@ class Employees extends CI_Controller {
 	// import function 
 	public function import(){
 		$file_data = $this->csvimport->get_array($_FILES["csv_file"]["tmp_name"]);
-		foreach($file_data as $row){
-			$data = array (
-                "empId" => "EMP-".$this->randStrGen(2,7),
-				"secretId" => "scrt".$this->randStrGen(1,12),
-				"fname" => $row["firstname"],
-				"lname" => $row["lastname"],
-            );
-			$this->Employee_model->addEmployee($data);
+		$status = 'Still Good';
+		$rowCount = $this->db->get('employee')->num_rows()+1;
+		$data = array();
+
+		if(!array_key_exists('firstname',$file_data[0]) || !array_key_exists('lastname',$file_data[0])){
+			$status = "Required header is missing or wrong!";
+			
 		}
+		if(count($file_data) * 3 != count($file_data,1)){
+			$status = "Invalid format of data, please double check the file for inconsistencies then try again.";
+		}
+		
+		if($status === 'Still Good'){
+			foreach($file_data as $csvitem){
+				// check if blank
+				if($csvitem["firstname"] == '' || $csvitem["lastname"] == ''){
+					$status = "There's a blank record!";
+					break;
+				}
+				// check if has number
+				if( preg_match('~[0-9]+~', $csvitem["firstname"]) || preg_match('~[0-9]+~', $csvitem["lastname"])){
+					$status = "There's a numerical value in a record!";
+					break;
+				}
+				// check if has special character
+				if( preg_match('/[\'^£$%&*(!)}+{@#~?><>\[\],|=_¬-]/', $csvitem["firstname"]) || preg_match('/[\'^£$%&*(!)}+{@#~?><>\[\],|=_¬-]/', $csvitem["lastname"])){
+					$status = "There's a value with a special character";
+					break;
+				}
+
+				$row = array();
+				
+				$row["empId"] =  "EMP-".date('Y').'-0'.$rowCount++;
+				$row["secretId"] = "scrt".$this->randStrGen(1,12);
+				$row["fname"] = ucfirst(strtolower($csvitem["firstname"]));
+				$row["lname"] = ucfirst(strtolower($csvitem["lastname"]));
+				$data[] = $row;
+			}
+			if($status === 'Still Good'){
+				$this->Employee_model->addEmployeeBatch($data);
+			}
+			else {
+				$test = array();
+				$this->output->set_status_header('400'); //Triggers the jQuery error callback
+				$test['message'] = $status;
+				echo json_encode($test);
+			}
+		}
+		else {
+			$test = array();
+			$this->output->set_status_header('400'); //Triggers the jQuery error callback
+			$test['message'] = $status;
+			echo json_encode($test);
+		}
+		
 	}
 	//functions
+	function safe_encode($string){
+		return str_replace("%", ":", $string);
+	}
+	
+	function safe_decode($string){
+		return str_replace(":", "%", $string);
+	}
 	public function randStrGen($mode = null, $len = null){
         $result = "";
         if($mode == 1):
@@ -158,4 +271,22 @@ class Employees extends CI_Controller {
         }
         return $result;
     }
+	public function checkFieldIfHasNum($text = ''){
+		if( preg_match('~[0-9]+~', $text)){
+			$this->form_validation->set_message('checkFieldIfHasNum', 'The {field} has numeric value!');
+            return false;
+		}
+		else{
+			return true;
+		}
+	}
+	public function checkFieldIfHasSP($text = ''){
+		if( preg_match('/[\'^£$%&*(!)}+{@#~?><>\[\],|=_¬-]/', $text)){
+			$this->form_validation->set_message('checkFieldIfHasSP', 'The {field} has special character!');
+            return false;
+		}
+		else{
+			return true;
+		}
+	}
 }

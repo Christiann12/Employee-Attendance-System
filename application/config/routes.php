@@ -49,15 +49,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'Login';
+$route['default_controller'] = 'EmployeeLogin';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 
 // Login route 
 
-$route['Login'] = 'Login';
-$route['login'] = 'Login';
+$route['AdminLogin'] = 'Login';
+$route['adminlogin'] = 'Login';
 
 // Admin Routes
 $route['AdminDashboard'] = 'Admin/Dashboard';
@@ -68,6 +68,8 @@ $route['adminemployees'] = 'Admin/Employees';
 
 $route['editemployee/(:any)'] = 'Admin/Employees/editEmployee/$1';
 $route['EditEmployee/(:any)'] = 'Admin/Employees/editEmployee/$1';
+$route['editemployee'] = 'Admin/Employees';
+$route['EditEmployee'] = 'Admin/Employees';
 $route['deleteemployee/(:any)'] = 'Admin/Employees/deleteEmployee/$1';
 $route['DeleteEmployee/(:any)'] = 'Admin/Employees/deleteEmployee/$1';
 
@@ -79,11 +81,27 @@ $route['usermanagement'] = 'Admin/UserManagement';
 
 $route['edituser/(:any)'] = 'Admin/UserManagement/editUser/$1';
 $route['EditUser/(:any)'] = 'Admin/UserManagement/editUser/$1';
+$route['edituser'] = 'Admin/UserManagement';
+$route['EditUser'] = 'Admin/UserManagement';
 $route['deleteuser/(:any)'] = 'Admin/UserManagement/deleteUser/$1';
 $route['DeleteUser/(:any)'] = 'Admin/UserManagement/deleteUser/$1';
 
-$route['AttendanceList'] = 'Admin/AttendanceList';
-$route['attendancelist'] = 'Admin/AttendanceList';
+$route['TimeSheet'] = 'Admin/AttendanceList';
+$route['timesheet'] = 'Admin/AttendanceList';
 
 $route['UploadSched'] = 'Admin/UploadSched';
 $route['uploadsched'] = 'Admin/UploadSched';
+
+//****************************************************************************************************************************//
+
+$route['Login'] = 'EmployeeLogin';
+$route['login'] = 'EmployeeLogin';
+
+$route['EmployeeDashboard'] = 'Employee/EmployeeDashboard';
+$route['employeedashboard'] = 'Employee/EmployeeDashboard';
+
+$route['EmployeeProfile'] = 'Employee/EmployeeProfile';
+$route['employeeprofile'] = 'Employee/EmployeeProfile';
+
+$route['EmployeeScan/(:any)'] = 'Employee/EmployeeScan/index/$1';
+$route['employeescan/(:any)'] = 'Employee/EmployeeScan/index/$1';

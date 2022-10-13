@@ -30,7 +30,7 @@ class Employee_model extends CI_Model {
                 'password' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 100,
-                'default' => md5('PaxForcePassword1234')
+                'default' => md5('1234')
                 ),
                 'dayoff' => array(
                 'type' => 'VARCHAR',
@@ -46,6 +46,16 @@ class Employee_model extends CI_Model {
                 'type' => 'VARCHAR',
                 'constraint' => 50,
                 'default' => 'timeout'
+                ),
+                'location' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 100,
+                'null' => true,
+                ),
+                'remember_me_token_employee' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 100,
+                'null' => true,
                 )
             ); 
             $this->dbforge->add_field($fields);
@@ -58,6 +68,10 @@ class Employee_model extends CI_Model {
     // save user to database
     public function addEmployee($data = []){
         return $this->db->insert($this->table,$data);
+    }
+     // upload batch
+     public function addEmployeeBatch($data = []){
+        return $this->db->insert_batch($this->table, $data);
     }
     public function saveEdit($data = []){
         return $this->db->where('empId',$data['empId'])->update($this->table,$data); 
@@ -85,10 +99,34 @@ class Employee_model extends CI_Model {
     }
     // import schedule
     public function editSchedule($data = []){
-        return $this->db->where('empId',$data['empId'])->update($this->table,$data); 
+        return $this->db->update_batch($this->table, $data, 'empId'); 
     }
     // schudule table
     public function getTableFiltered(){
         return $this->db->select("*")->from($this->table)->where('timein !=','timein')->where('timeout !=','timeout')->where('dayoff !=','dayoff')->get()->result();
+    }
+    public function checkCredentialsEmployee($data = []){
+        return $this->db->select("*")
+			->from($this->table)
+			->where('empId',$data['empId'])
+			->where('password',$data['password'])
+			->get()
+			->row();
+    }
+    public function getCurrentUserCookie($token = ''){
+        return $this->db->select("*")
+        ->from($this->table)
+        ->where('remember_me_token_employee',$token)
+        ->get()
+        ->row();
+    }
+    public function getEmpData($id=''){
+        return $this->db->select("*")->from($this->table)->where('secretid',$id)->get()->row();
+    }
+    public function getNoActiveEmployee(){
+        return $this->db->select("*")->from($this->table)->where('timein !=','timein')->get()->num_rows();
+    }
+    public function getTotalNoEmp(){
+        return $this->db->select("*")->from($this->table)->get()->num_rows();
     }
 }

@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="<?php echo base_url(); ?>application/assets/css/QrPage.css"/>
     
         <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
-        
+        <title>EAS System</title>
     </head>
     <body class="loginBody" >
     

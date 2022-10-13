@@ -24,18 +24,18 @@
                 
                 <div class="form-label-group d-none">
                     <label for="employeeId" class="labelDesign spacing">Employee Id</label>
-                    <input name="employeeId" type="hidden" id="employeeId" class="inputDesign form-control" placeholder="Employee Id" value="<?php echo $employeeData->empId?>">
+                    <input name="employeeId" type="hidden" id="employeeId" class="inputDesign form-control" placeholder="E.g Juan" value="<?php echo $employeeData->empId?>">
                 </div>
 
                 <div class="form-label-group">
                     <label for="employeeFirstName" class="labelDesign spacing">First Name</label>
-                    <input name="employeeFirstName" type="text" id="employeeFirstName" class="inputDesign form-control" placeholder="First Name" value="<?php echo $employeeData->fname?>">
+                    <input name="employeeFirstName" type="text" id="employeeFirstName" class="inputDesign form-control" placeholder="E.g Juan" value="<?php echo $employeeData->fname?>">
                 </div>
             
             
                 <div class="form-label-group mt-3">
                     <label for="employeeLastName" class="labelDesign spacing">Last Name</label>
-                    <input name="employeeLastName" type="text" id="employeeLastName" class="inputDesign form-control" placeholder="Last Name" value="<?php echo $employeeData->lname?>">
+                    <input name="employeeLastName" type="text" id="employeeLastName" class="inputDesign form-control" placeholder="E.g Dela Cruz" value="<?php echo $employeeData->lname?>">
                 </div>
 
                 <div class="form-label-group mt-3">
@@ -67,7 +67,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary my-3" >Submit</button>
+                <button type="submit" class="btn my-3" >Submit</button>
             <?php echo form_close() ?>
         </div>
     </div>

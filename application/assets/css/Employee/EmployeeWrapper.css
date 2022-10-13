@@ -1,0 +1,28 @@
+.navbar{
+    background-color: white;
+    padding:0;
+}
+
+.navbar .navbar-nav .nav-item{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width:33.9%;
+}
+
+.navbar .navbar-nav .active{
+    background-color: #1a1a1d;
+}
+.navbar .navbar-nav .active i{
+    color: white !important;
+}
+.navbar .navbar-nav .nav-item i{
+    font-size: 25px;
+}
+
+#page-content-wrapper {
+  width: 100%;
+  /* background-color: red; */
+  /* margin-left: 8rem; */
+}
+
+

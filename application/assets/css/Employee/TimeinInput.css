@@ -1,0 +1,28 @@
+.loginBody{
+    font-family: Raleway; background-color: #edf5e1;
+}
+.banner{
+    /* background-color: red; */
+    margin: 30px 30px 0px 30px;
+}
+.banner .greeting{
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 28px;
+    color: #000000;
+}
+
+.banner .inputForm{
+  padding: 30px;
+}
+
+.banner .inputForm .btn{
+    margin-top: 30px;
+    /* padding: 10px 80px;  */
+    background: #1A1A1D;
+    border: 1px solid #1A1A1D !important;
+    color: white;
+    width: 100%;
+}
