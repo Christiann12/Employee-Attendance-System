@@ -102,7 +102,7 @@ class EmployeeLogin extends CI_Controller {
 			else{
 
 				$temp = array();
-
+				$time = '';
 				if(!empty(get_cookie('count_employee'))){
 					$temp = explode("-",get_cookie('count_employee'));
 				}

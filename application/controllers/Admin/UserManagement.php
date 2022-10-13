@@ -255,7 +255,7 @@ class UserManagement extends CI_Controller {
 			else{
 
 				$temp = array();
-
+				$time='';
 				if(!empty(get_cookie('count'))){
 					$temp = explode("-",get_cookie('count'));
 				}
