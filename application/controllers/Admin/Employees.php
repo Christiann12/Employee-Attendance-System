@@ -21,7 +21,7 @@ class Employees extends CI_Controller {
 	public function index(){
 		
 		if($this->session->userdata('isLogIn') === true){
-			$userData = $query = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
+			$userData = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
 			if (!empty($userData)) {
 				$data['page'] = "AdminEmployee";
 				$this->load->view('HeaderAndFooter/Header.php');
@@ -60,7 +60,7 @@ class Employees extends CI_Controller {
 
 		if(!empty($data['employeeData'])){
 			if($this->session->userdata('isLogIn') === true){
-				$userData = $query = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
+				$userData = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
 				if (!empty($userData)) {
 					$data['page'] = "EmployeeEditPage";
 					$this->load->view('HeaderAndFooter/Header.php');

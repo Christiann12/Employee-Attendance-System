@@ -15,7 +15,7 @@ class AttendanceList extends CI_Controller {
 	{
         
 		if($this->session->userdata('isLogIn') === true){
-			$userData = $query = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
+			$userData = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
 			if (!empty($userData)) {
 				$data['page'] = "AttendanceList";
 				$this->load->view('HeaderAndFooter/Header.php');
@@ -62,7 +62,8 @@ class AttendanceList extends CI_Controller {
 			$row['data8'] = $listItem->lname;
 			$row['data4'] = $listItem->timein.' - '.$listItem->timeout;
 			$row['data5'] = $listItem->late;
-			$row['data6'] = $listItem->hours;
+			$row['data6'] = $listItem->ut_ot;
+			$row['data8'] = $listItem->workhour;
 			$row['data7'] = $listItem->datetimein;
 			$data[] = $row;
 		}

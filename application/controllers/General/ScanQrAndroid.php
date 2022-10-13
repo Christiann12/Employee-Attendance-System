@@ -14,7 +14,7 @@ class ScanQrAndroid extends CI_Controller {
 	public function index()
 	{
         if($this->session->userdata('isLogInEmployee') === true){
-			$userData = $query = $this->db->get_where('employee', array('empId' => $this->session->userdata('employeeId')))->row();
+			$userData = $this->db->get_where('employee', array('empId' => $this->session->userdata('employeeId')))->row();
 			if (!empty($userData)) {
 				$this->load->view('Pages/General/QrScanAndroid.php');
 			} else {

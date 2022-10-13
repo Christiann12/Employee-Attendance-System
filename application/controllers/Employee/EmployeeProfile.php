@@ -18,7 +18,7 @@ class EmployeeProfile extends CI_Controller {
 		$data['lateCount'] = $this->Attendance_model->getTardinessMeasure('Late');
 		$data['OnTimeCount'] = $this->Attendance_model->getTardinessMeasure('On Time');
         if($this->session->userdata('isLogInEmployee') === true){
-			$userData = $query = $this->db->get_where('employee', array('empId' => $this->session->userdata('employeeId')))->row();
+			$userData = $this->db->get_where('employee', array('empId' => $this->session->userdata('employeeId')))->row();
 			if (!empty($userData)) {
 				$data['page'] = "EmployeeProfile";
 				$this->load->view('HeaderAndFooter/HeaderEmployee.php');

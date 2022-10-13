@@ -53,6 +53,7 @@
                         <th class="headertable">Time</th>
                         <th class="headertable">Late/EarlyIn</th>
                         <th class="headertable">UT/OT</th>
+                        <th class="headertable">Hours Worked</th>
                         <th class="headertable">Date Timein</th>
                     </tr>
                 </thead>

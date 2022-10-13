@@ -20,7 +20,12 @@ class Attendance_model extends CI_Model {
                 'type' => 'VARCHAR',
                 'constraint' =>20,
                 ),
-                'hours' => array(
+                'ut_ot' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 100,
+                'default' => 'unknown'
+                ),
+                'workhour' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 100,
                 'default' => 'unknown'

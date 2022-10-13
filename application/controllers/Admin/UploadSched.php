@@ -16,7 +16,7 @@ class UploadSched extends CI_Controller {
 	{
         
 		if($this->session->userdata('isLogIn') === true){
-			$userData = $query = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
+			$userData = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
 			if (!empty($userData)) {
 				$data['page'] = "UploadSched";
 				$this->load->view('HeaderAndFooter/Header.php');

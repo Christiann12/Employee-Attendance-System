@@ -52,7 +52,7 @@ class Dashboard extends CI_Controller {
 		$data['OnTimeCountDecember'] = $this->Attendance_model->getMonthCountOntime(date("m", strtotime("December")));
 		
         if($this->session->userdata('isLogIn') === true){
-			$userData = $query = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
+			$userData = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
 			if (!empty($userData)) {
 				$data['page'] = "AdminDashboard";
 				$this->load->view('HeaderAndFooter/Header.php');

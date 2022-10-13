@@ -22,7 +22,7 @@ class EmployeeDashboard extends CI_Controller {
 		$data['buttonStatus'] = $this->buttonStatus();
 
         if($this->session->userdata('isLogInEmployee') === true){
-			$userData = $query = $this->db->get_where('employee', array('empId' => $this->session->userdata('employeeId')))->row();
+			$userData = $this->db->get_where('employee', array('empId' => $this->session->userdata('employeeId')))->row();
 			if(!empty($userData)){
 				$data['page'] = "EmployeeDashboard";
 				$this->load->view('HeaderAndFooter/HeaderEmployee.php');
@@ -59,12 +59,18 @@ class EmployeeDashboard extends CI_Controller {
 	}
 	public function buttonStatus(){
 		$result = $this->Employee_model->getEmp($this->session->userdata('employeeId'));
-
+		$attenDet = $this->db->get_where('attendance', array(
+			'empId' => $this->session->userdata('employeeId'),
+			'timeout' => 'timeout',
+		))->row();
 		$timein = date("H:i",strtotime($result->timein."-15 min"));
-		$timeout = date("H:i",strtotime($result->timeout));
+		$timeout = date("H:i",strtotime($result->timeout.""));
 		$now = date("H:i");
 
 		if($this->isBetween($timein,$timeout,$now)){
+			return true;
+		}
+		else if(!empty($attenDet)){
 			return true;
 		}
 		else if($result->timeout == 'timeout' || $result->timein == 'timein' || $result->dayoff == 'dayoff'){

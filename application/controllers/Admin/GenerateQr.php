@@ -14,7 +14,7 @@ class GenerateQr extends CI_Controller {
 	public function index()
 	{
 		if($this->session->userdata('isLogIn') === true){
-			$userData = $query = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
+			$userData = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
 			if (!empty($userData)) {
 				$data['page'] = "GenerateQr";
 				$this->load->view('HeaderAndFooter/Header.php');
@@ -53,7 +53,7 @@ class GenerateQr extends CI_Controller {
 		$data['data'] = $this->Employee_model->getData();
 
 		if($this->session->userdata('isLogIn') === true){
-			$userData = $query = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
+			$userData = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
 			if (!empty($userData)) {
 				$this->load->view('Pages/General/QrPage.php',$data);
 			} else {

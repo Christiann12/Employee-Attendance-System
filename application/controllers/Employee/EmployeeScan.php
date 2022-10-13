@@ -34,34 +34,23 @@ class EmployeeScan extends CI_Controller {
                 'timeout' => $currentTime,
             );
 
-            if(date('l',strtotime($attendanceDetail->datetimein)) == $data['empData']->dayoff){
-                $postData['hours'] = 'Overtime-DayOff';
+            if(strtolower(date('l',strtotime($attendanceDetail->datetimein))) == strtolower($data['empData']->dayoff)){
+                $postData['ut_ot'] = 'Overtime-DayOff';
+                $postData['workhour'] = gmdate("H:i:s", ( strtotime($currentTime) - strtotime($attendanceDetail->timein) ));
             }
             else if ($this->isBetween($timein,$timeout,$currentTime)){
-                $postData['hours'] = 'Under Time';
+                $postData['ut_ot'] = 'Under Time';
+                $postData['workhour'] = gmdate("H:i:s", ( strtotime($currentTime) - strtotime($attendanceDetail->timein) ));
+            }
+            else if ($timeout == $currentTime || $this->isBetween($timeout,date("H:i" , strtotime($timeout."+15min")),$currentTime)){
+                $postData['ut_ot'] = 'Under Time';
+                $postData['workhour'] = gmdate("H:i:s", ( strtotime($currentTime) - strtotime($attendanceDetail->timein) ));
             }
             else{
-                if($timeout == $currentTime){
-                    $postData['hours'] = 'On Time';
-                }
-                else if($timeout < $currentTime){
-                    $temp = (strtotime($currentTime) - strtotime($timeout)) / 60;
-                    if(floor($temp/15) == 0){
-                        $postData['hours'] ='On Time';
-                    }
-                    else{
-                        $postData['hours'] = floor($temp/15).' Overtime';
-                    }
-                }
-                else if($timeout > $currentTime){
-                    $temp = (strtotime('today '.$currentTime) - strtotime('yesterday '.$timeout)) / 60;
-                    if(floor($temp/15) == 0){
-                        $postData['hours'] ='On Time';
-                    }
-                    else{
-                        $postData['hours'] = floor($temp/15).' Overtime';
-                    }
-                }
+                $postData['ut_ot'] = 'Over Time';
+                $postData['workhour'] = gmdate("H:i:s", ( strtotime($currentTime) - strtotime($attendanceDetail->timein) )) <= strtotime("16 hour") ? 
+                gmdate("H:i:s", ( strtotime($currentTime) - strtotime($attendanceDetail->timein) )) :
+                gmdate("H:i:s", ( strtotime(date("16:00")) - strtotime(date("0:00")))) ;
             }
 
             if($this->Attendance_model->updateRecord($postData)){

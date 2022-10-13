@@ -17,7 +17,7 @@ class UserManagement extends CI_Controller {
 	{
         
 		if($this->session->userdata('isLogIn') === true){
-			$userData = $query = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
+			$userData = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
 			if (!empty($userData)) {
 				$data['page'] = "UserManagement";
 				$this->load->view('HeaderAndFooter/Header.php');
@@ -56,7 +56,7 @@ class UserManagement extends CI_Controller {
         $data['userData'] = $this->User_model->getUser($this->encryption->decrypt($urlData) == '' ? null : $this->encryption->decrypt($urlData));
 		if(!empty($data['userData'])){
 			if($this->session->userdata('isLogIn') === true){
-				$userData = $query = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
+				$userData = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
 				if (!empty($userData)) {
 					$data['page'] = "UserEditPage";
 					$this->load->view('HeaderAndFooter/Header.php');

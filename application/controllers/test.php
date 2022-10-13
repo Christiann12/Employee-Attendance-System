@@ -8,12 +8,12 @@ class Test extends CI_Controller {
 		date_default_timezone_set('Asia/Singapore');
         $this->load->library('user_agent');
 
-		$timein = date("H:i" , strtotime("7:00"));
-		$timeout = date("H:i" , strtotime("15:00"));
+		$timein = date("H:i" , strtotime("21:00"));
+		$timeout = date("H:i" , strtotime("5:00"));
 
-		$timeinniemp = date("H:i" , strtotime("6:50"));
+		$timeinniemp = date("H:i" , strtotime("20:54"));
 
-		$currentTime = date("00:00");
+		$currentTime = date("H:i",strtotime("5:00"));
 
 		$test = "empty";
 

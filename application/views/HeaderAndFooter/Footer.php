@@ -410,6 +410,10 @@
 							className: 'data'
 						},
 						{
+							data: 'data8',
+							className: 'data'
+						},
+						{
 							data: 'data7',
 							className: 'data'
 						},
