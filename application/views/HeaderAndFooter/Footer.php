@@ -561,7 +561,7 @@
 							$('#uploadButton_schedule').html('Import Done');
 							setInterval(function(){
 								window.location.href = "<?= base_url('UploadSched')?>";
-							}, 500);
+							}, 2000);
 						},
 						error: function( jqXhr ) {
 							
@@ -601,7 +601,7 @@
 							var x =  setInterval(function(){
 								clearInterval(x);
 								window.location.href = "<?= base_url('TimeSheet')?>";
-							}, 500);
+							}, 2000);
 						},
 						error: function( jqXhr ) {
 							
