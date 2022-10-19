@@ -8,7 +8,7 @@ class UploadSched extends CI_Controller {
 		date_default_timezone_set('Asia/Singapore');
 		$this->load->helper('url');
 		$this->load->library('session');
-        $this->load->library('csvimport');
+        $this->load->library('Csvimport');
 		$this->load->model('Admin/Employee_model');
 		$this->load->model('Admin/UserLog_model');
 	}
@@ -52,7 +52,7 @@ class UploadSched extends CI_Controller {
 	}
 	//Upload Logic
     public function import(){
-		$file_data = $this->csvimport->get_array($_FILES["csv_file"]["tmp_name"]);
+		$file_data = $this->Csvimport->get_array($_FILES["csv_file"]["tmp_name"]);
 		$data = array();
 		$status = 'Still Good';
 		$count = 0;

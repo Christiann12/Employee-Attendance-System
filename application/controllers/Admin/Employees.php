@@ -12,7 +12,7 @@ class Employees extends CI_Controller {
 		//libraries
 		$this->load->library('session');
 		$this->load->library('encryption');
-		$this->load->library('csvimport');
+		$this->load->library('Csvimport');
 		//model
 		$this->load->model('Admin/Employee_model');
 		$this->load->model('Admin/User_model');
@@ -210,7 +210,7 @@ class Employees extends CI_Controller {
 	}
 	// import function 
 	public function import(){
-		$file_data = $this->csvimport->get_array($_FILES["csv_file"]["tmp_name"]);
+		$file_data = $this->Csvimport->get_array($_FILES["csv_file"]["tmp_name"]);
 		$status = 'Still Good';
 		$rowCount = $this->db->select("CAST(SUBSTR(empId,11,LENGTH(empId)) as UNSIGNED) as newid")->from('employee')->order_by('newid', 'DESC')->limit(1)->get()->row();
 		$newId = !empty($rowCount) ? (int)$rowCount->newid : 0;
