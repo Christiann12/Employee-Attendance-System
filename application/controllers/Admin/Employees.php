@@ -212,9 +212,9 @@ class Employees extends CI_Controller {
 	public function import(){
 		$file_data = $this->Csvimport->get_array($_FILES["csv_file"]["tmp_name"]);
 		$status = 'Still Good';
-		$rowCount = $this->db->select("CAST(SUBSTR(empId,11,LENGTH(empId)) as UNSIGNED) as newid")->from('employee')->order_by('newid', 'DESC')->limit(1)->get()->row();
-		$newId = !empty($rowCount) ? (int)$rowCount->newid : 0;
-		$data = array();
+		// $rowCount = $this->db->select("CAST(SUBSTR(empId,11,LENGTH(empId)) as UNSIGNED) as newid")->from('employee')->order_by('newid', 'DESC')->limit(1)->get()->row();
+		// $newId = !empty($rowCount) ? (int)$rowCount->newid : 0;
+		// $data = array();
 
 		if(!array_key_exists('firstname',$file_data[0]) || !array_key_exists('lastname',$file_data[0]) || !array_key_exists('branch',$file_data[0])){
 			$status = "Required header is missing or wrong!";
@@ -225,43 +225,9 @@ class Employees extends CI_Controller {
 		}
 		
 		if($status === 'Still Good'){
-			foreach($file_data as $csvitem){
-				// check if blank
-				if($csvitem["firstname"] == '' || $csvitem["lastname"] == '' || $csvitem["branch"] == ''){
-					$status = "There's a blank record!";
-					break;
-				}
-				// check if has number
-				if( preg_match('~[0-9]+~', $csvitem["firstname"]) || preg_match('~[0-9]+~', $csvitem["lastname"]) || preg_match('~[0-9]+~', $csvitem["branch"])){
-					$status = "There's a numerical value in a record!";
-					break;
-				}
-				// check if has special character
-				if( preg_match('/[\'^£$%&*(!)}+{@#~?><>\[\],|=_¬-]/', $csvitem["firstname"]) || preg_match('/[\'^£$%&*(!)}+{@#~?><>\[\],|=_¬-]/', $csvitem["lastname"])){
-					$status = "There's a value with a special character";
-					break;
-				}
-
-				$row = array();
-				
-				$row["empId"] =  "EMP-".date('Y').'-0'.$newId+=1;
-				$row["secretId"] = "scrt".$this->randStrGen(1,12);
-				$row["fname"] = ucfirst(strtolower($csvitem["firstname"]));
-				$row["lname"] = ucfirst(strtolower($csvitem["lastname"]));
-				$row["location"] = ucfirst(strtolower($csvitem["branch"]));
-				$data[] = $row;
-			}
+			
 			if($status === 'Still Good'){
-				if($this->Employee_model->addEmployeeBatch($data)){
-					$this->UserLog_model->addLog('Import Employee',$this->session->userdata('userId'),True);
-				}
-				else{
-					$test = array();
-					// $this->output->set_status_header('400'); //Triggers the jQuery error callback
-					$test['message'] = 'Something went wrong, please try again later';
-					$this->UserLog_model->addLog('Import Employee',$this->session->userdata('userId'),False);
-					echo json_encode(['code'=>400, 'message'=>$test['message']]);
-				}
+				
 			}
 			else {
 				$test = array();
