@@ -43,7 +43,7 @@ class EmployeeScan extends CI_Controller {
                 $postData['workhour'] = gmdate("H:i:s", ( strtotime($currentTime) - strtotime($attendanceDetail->timein) ));
             }
             else if ($timeout == $currentTime || $this->isBetween($timeout,date("H:i" , strtotime($timeout."+15min")),$currentTime)){
-                $postData['ut_ot'] = 'Under Time';
+                $postData['ut_ot'] = 'On Time';
                 $postData['workhour'] = gmdate("H:i:s", ( strtotime($currentTime) - strtotime($attendanceDetail->timein) ));
             }
             else{

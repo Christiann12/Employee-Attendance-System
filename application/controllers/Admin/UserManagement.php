@@ -11,8 +11,9 @@ class UserManagement extends CI_Controller {
 		$this->load->library('encryption');
 		$this->load->library('session');
 		$this->load->model('Admin/User_model');
+		$this->load->model('Admin/UserLog_model');
 	}
-	//load page
+	//load Usermanagement page
 	public function index()
 	{
         
@@ -50,6 +51,7 @@ class UserManagement extends CI_Controller {
 			}
 		}
 	}
+	//load Edit Page
 	public function editUser($id = '')
 	{
 		$urlData = urldecode($this->safe_decode($id));
@@ -114,14 +116,17 @@ class UserManagement extends CI_Controller {
 		if($this->form_validation->run() === true){
 			if ($this->User_model->addUser($postData)){
 				$this->session->set_flashdata('successAddUser','Add Success');
+				$this->UserLog_model->addLog('Add Admin Account',$this->session->userdata('userId'),True);
 			}
 			else{
 				$this->session->set_flashdata('failAddUser','Add Failed');
+				$this->UserLog_model->addLog('Add Admin Account',$this->session->userdata('userId'),False);
 			}
             redirect('UserManagement');
         }
         else{
 			$this->session->set_flashdata('failAddUser',validation_errors());
+			$this->UserLog_model->addLog('Add Admin Account',$this->session->userdata('userId'),False);
             redirect('UserManagement');
         }
 	}
@@ -152,6 +157,9 @@ class UserManagement extends CI_Controller {
 		if($this->form_validation->run() === true){
 			if ($this->User_model->editUser($postData)){
 				$this->session->set_flashdata('successEditUser','Edit Success');
+				
+				$this->UserLog_model->addLog('Edit Admin Account',$this->session->userdata('userId'),True);
+
 				if($this->session->userdata('userId') == $this->input->post('userIdField')){
 					$this->session->set_userdata([
 						'isLogIn'     => true,
@@ -165,11 +173,13 @@ class UserManagement extends CI_Controller {
 			}
 			else{
 				$this->session->set_flashdata('failEditUser','Edit Failed');
+				$this->UserLog_model->addLog('Edit Admin Account',$this->session->userdata('userId'),False);
 			}
             redirect('EditUser/'.$this->safe_encode(urlencode($this->encryption->encrypt($this->input->post("userIdField")))));
         }
         else{
 			$this->session->set_flashdata('failEditUser',validation_errors());
+			$this->UserLog_model->addLog('Edit Admin Account',$this->session->userdata('userId'),False);
             redirect('EditUser/'.$this->safe_encode(urlencode($this->encryption->encrypt($this->input->post("userIdField")))));
         }
 	}
@@ -179,13 +189,16 @@ class UserManagement extends CI_Controller {
 		$newId = $this->encryption->decrypt($urlData) == '' ? null : $this->encryption->decrypt($urlData);
 		if($newId != $this->session->userdata('userId')){
 			if($this->User_model->deleteUser($newId)){
+				$this->UserLog_model->addLog('Delete Admin Account',$this->session->userdata('userId'),True);
 				$this->session->set_flashdata('successAddUser','Delete Success');
 			}
 			else{
+				$this->UserLog_model->addLog('Delete Admin Account',$this->session->userdata('userId'),False);
 				$this->session->set_flashdata('failAddUser','Delete Failed');
 			}
 		}
 		else{
+			$this->UserLog_model->addLog('Delete Admin Account',$this->session->userdata('userId'),False);
 			$this->session->set_flashdata('failAddUser','You can\'t delete your account!');
 		}
 		
@@ -215,15 +228,19 @@ class UserManagement extends CI_Controller {
 						'value'  => $token,
 						'expire' => '1209600',  // Two weeks
 					);
-
+					
 					set_cookie($cookie);
 					$data = array(
 						'remember_me_token' => $token
 					);
-					$this->db->where('userId',$userData->userId)->update('users',$data); 
 
+					//Update remember me token
+					$this->db->where('userId',$userData->userId)->update('users',$data); 
+					
+					//Create Flash Message
 					$this->session->set_flashdata('successLogin','Login Successful');
-		
+					
+					//Set Session
 					$this->session->set_userdata([
 						'isLogIn'     => true,
 						'userRole'     => $userData->userRole,
@@ -233,6 +250,8 @@ class UserManagement extends CI_Controller {
 						'email'       => $userData->email,
 					]);
 					
+					$this->UserLog_model->addLog('Login',$userData->userId,True);
+
 					redirect('AdminDashboard');
 				}
 				else{
@@ -248,7 +267,8 @@ class UserManagement extends CI_Controller {
 						'lastName'  => $userData->lname,
 						'email'       => $userData->email,
 					]);
-					
+
+					$this->UserLog_model->addLog('Login',$userData->userId,True);
 					redirect('AdminDashboard');
 				}
 			}
@@ -310,7 +330,9 @@ class UserManagement extends CI_Controller {
 		$json_data['data'] = $data;
 		echo json_encode($json_data);
 	}
+	//signout
 	public function signout(){
+
 		if(!empty(get_cookie('remember_me_token'))){
 			delete_cookie('remember_me_token');
 			$data = array(
@@ -318,12 +340,17 @@ class UserManagement extends CI_Controller {
 			);
 			$this->db->where('userId',$this->session->userdata('userId'))->update('users',$data); 
 		}
+
+		$this->UserLog_model->addLog('Logout',$this->session->userdata('userId'),True);
+
 		$array_items = array('isLogIn', 'userId', 'firstName', 'lastName', 'email','userRole');
+
 		$this->session->unset_userdata($array_items);
 		
 		redirect('AdminLogin');
 	}
-	//functions
+
+	//Custom functions
 	function safe_encode($string){
 		return str_replace("%", ":", $string);
 	}
