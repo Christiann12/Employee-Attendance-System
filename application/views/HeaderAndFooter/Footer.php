@@ -599,6 +599,7 @@
 							$('#uploadButtonTimeSheet').attr('disabled', false);
 							$('#uploadButtonTimeSheet').html('Import Done');
 							setInterval(function(){
+								var x = clearInterval(x);
 								window.location.href = "<?= base_url('TimeSheet')?>";
 							}, 500);
 						},
