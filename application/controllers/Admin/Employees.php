@@ -257,26 +257,26 @@ class Employees extends CI_Controller {
 				}
 				else{
 					$test = array();
-					$this->output->set_status_header('400'); //Triggers the jQuery error callback
+					// $this->output->set_status_header('400'); //Triggers the jQuery error callback
 					$test['message'] = 'Something went wrong, please try again later';
 					$this->UserLog_model->addLog('Import Employee',$this->session->userdata('userId'),False);
-					echo json_encode($test);
+					echo json_encode(['code'=>400, 'message'=>$test['message']]);
 				}
 			}
 			else {
 				$test = array();
-				$this->output->set_status_header('400'); //Triggers the jQuery error callback
+				// $this->output->set_status_header('400'); //Triggers the jQuery error callback
 				$test['message'] = $status;
 				$this->UserLog_model->addLog('Import Employee',$this->session->userdata('userId'),False);
-				echo json_encode($test);
+				echo json_encode(['code'=>400, 'message'=>$test['message']]);
 			}
 		}
 		else {
 			$test = array();
-			$this->output->set_status_header('400'); //Triggers the jQuery error callback
+			// $this->output->set_status_header('400'); //Triggers the jQuery error callback
 			$test['message'] = $status;
 			$this->UserLog_model->addLog('Import Employee',$this->session->userdata('userId'),False);
-			echo json_encode($test);
+			echo json_encode(['code'=>400, 'message'=>$test['message']]);
 		}
 		
 	}
