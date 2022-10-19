@@ -117,7 +117,14 @@ class Employees extends CI_Controller {
 	public function saveEdit(){
 		$this->form_validation->set_rules('employeeFirstName', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
 		$this->form_validation->set_rules('employeeLastName', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
+		$this->form_validation->set_rules('employeeBranch', 'Branch Location' ,'required|callback_checkFieldIfHasNum|max_length[100]');
 		
+		if($this->input->post("timein") != '' || $this->input->post("timeout") != '' || $this->input->post("dayoff") != ''){
+			$this->form_validation->set_rules('timein', 'Time In' ,'required|max_length[50]');
+			$this->form_validation->set_rules('timeout', 'Time Out' ,'required|max_length[50]');
+			$this->form_validation->set_rules('dayoff', 'Day Off' ,'required|max_length[50]');
+		}
+
 		$postData = array(
             "empId" => $this->input->post("employeeId"),
             "fname" => ucfirst(strtolower($this->input->post("employeeFirstName"))),
@@ -125,6 +132,7 @@ class Employees extends CI_Controller {
 			"timein" => (empty($this->input->post("timein")) ? 'timein' : $this->input->post("timein")),
             "timeout" => (empty($this->input->post("timeout")) ? 'timeout' : $this->input->post("timeout")),
 			"dayoff" => (empty($this->input->post("dayoff")) ? 'dayoff' : $this->input->post("dayoff")),
+			"location" => ucfirst(strtolower($this->input->post("employeeBranch"))),
         );
 
 		if($this->form_validation->run() === true){
