@@ -522,7 +522,7 @@
 							$('#uploadButton').html('Import Done');
 							setInterval(function(){
 								window.location.href = "<?= base_url('AdminEmployees')?>";
-							}, 500);
+							}, 2000);
 						},
 						error: function( jqXhr ) {
 							
@@ -600,8 +600,8 @@
 							$('#uploadButtonTimeSheet').html('Import Done');
 							var x =  setInterval(function(){
 								clearInterval(x);
-								window.location.href = "https://www.google.com";
-							}, 1000);
+								window.location.href = "<?= base_url('TimeSheet')?>";
+							}, 500);
 						},
 						error: function( jqXhr ) {
 							
