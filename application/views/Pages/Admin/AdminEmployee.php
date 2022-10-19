@@ -48,6 +48,11 @@
                     <input name="employeeLastName" type="text" id="employeeLastName" class="inputDesign form-control" placeholder="E.g Dela Cruz" value="">
                 </div>
 
+                <div class="form-label-group mt-3">
+                    <label for="employeeLocation" class="labelDesign spacing">Branch</label>
+                    <input name="employeeLocation" type="text" id="employeeLocation" class="inputDesign form-control" placeholder="E.g Branch - City" value="">
+                </div>
+
                 <button type="submit" class="btn my-3" >Submit</button>
             <?php echo form_close() ?>
         </div>
@@ -59,8 +64,10 @@
                 <thead>
                     <tr>
                         <th class="headertable">ID</th>
+                        <th class="headertable">ID</th>
                         <th class="headertable">First Name</th>
                         <th class="headertable">Last Name</th>
+                        <th class="headertable">Branch</th>
                         <th class="headertable">Schedule</th>
                         <th class="headertable">Day off</th>
                         <th class="headertable">Action</th>

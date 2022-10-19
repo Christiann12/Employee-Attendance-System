@@ -119,4 +119,11 @@ class Attendance_model extends CI_Model {
     public function getTardinessMeasure($mode =''){
         return $this->db->select('*')->from($this->table)->where('empId',$this->session->userdata('employeeId'))->where('MONTH(datetimein)',date('m'))->where('YEAR(datetimein)',date('Y'))->where('late',$mode)->get()->num_rows();
     }
+    // upload batch
+    public function addBatch($data = []){
+        $this->db->query('LOCK TABLE attendance WRITE');
+        $result =  $this->db->insert_batch($this->table, $data);
+        $this->db->query('UNLOCK TABLES');
+        return $result;
+    }
 }

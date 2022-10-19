@@ -9,6 +9,7 @@ class GenerateQr extends CI_Controller {
 		$this->load->helper('url');
 		$this->load->library('session');
 		$this->load->model('Admin/Employee_model');
+		$this->load->model('Admin/UserLog_model');
 	}
 
 	public function index()
@@ -55,6 +56,7 @@ class GenerateQr extends CI_Controller {
 		if($this->session->userdata('isLogIn') === true){
 			$userData = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
 			if (!empty($userData)) {
+				$this->UserLog_model->addLog('View all employee QR Code',$this->session->userdata('userId'),True);
 				$this->load->view('Pages/General/QrPage.php',$data);
 			} else {
 				redirect('AdminLogin');
@@ -73,6 +75,7 @@ class GenerateQr extends CI_Controller {
 						'lastName'  => $userData->lname,
 						'email'       => $userData->email,
 					]);
+					$this->UserLog_model->addLog('View all employee QR Code',$this->session->userdata('userId'),True);
 					$this->load->view('Pages/General/QrPage.php',$data);
 				} else {
 					redirect('AdminLogin');

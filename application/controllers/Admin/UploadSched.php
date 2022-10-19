@@ -10,10 +10,11 @@ class UploadSched extends CI_Controller {
 		$this->load->library('session');
         $this->load->library('csvimport');
 		$this->load->model('Admin/Employee_model');
+		$this->load->model('Admin/UserLog_model');
 	}
 
-	public function index()
-	{
+	//Load Upload Sched Page
+	public function index(){
         
 		if($this->session->userdata('isLogIn') === true){
 			$userData = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
@@ -49,7 +50,7 @@ class UploadSched extends CI_Controller {
 			}
 		}
 	}
-
+	//Upload Logic
     public function import(){
 		$file_data = $this->csvimport->get_array($_FILES["csv_file"]["tmp_name"]);
 		$data = array();
@@ -107,12 +108,18 @@ class UploadSched extends CI_Controller {
 				$data[] = $row;
 			}
 			if($status === 'Still Good'){
-				$this->Employee_model->editSchedule($data);
+				if ($this->Employee_model->editSchedule($data)) {
+					$this->UserLog_model->addLog('Upload Schedule',$this->session->userdata('userId'),True);
+				} else {
+					$this->UserLog_model->addLog('Upload Schedule',$this->session->userdata('userId'),False);
+				}
+				
 			}
 			else{
 				$test = array();
 				$this->output->set_status_header('400'); //Triggers the jQuery error callback
 				$test['message'] = $status;
+				$this->UserLog_model->addLog('Upload Schedule',$this->session->userdata('userId'),False);
 				echo json_encode($test);
 			}
 		}
@@ -120,6 +127,7 @@ class UploadSched extends CI_Controller {
 			$test = array();
 			$this->output->set_status_header('400'); //Triggers the jQuery error callback
 			$test['message'] = $status;
+			$this->UserLog_model->addLog('Upload Schedule',$this->session->userdata('userId'),False);
 			echo json_encode($test);
 		}
 		

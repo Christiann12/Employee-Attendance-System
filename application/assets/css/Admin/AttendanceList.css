@@ -54,3 +54,35 @@
     background-color: #bebebe !important;
     color: black;
 }
+
+.attendancelist .section3 {
+    background-color: white;
+    margin: 80px 80px 80px 80px;
+    border-radius: 15px;
+}
+.attendancelist .section3 .header{
+    padding: 30px 30px 10px 30px;
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    color: #000000;
+    margin-bottom: 60px;
+}
+
+.attendancelist .section3 .importform{
+    padding: 10px 30px 10px 30px;
+    /* background-color: red; */
+}
+
+.attendancelist .section3 .buttons{
+    padding: 10px 30px 30px 30px;
+    /* background-color: red; */
+}
+
+.attendancelist .section3 .btn{
+    /* padding: 10px 100px;  */
+    background: #1A1A1D; color: white;
+    border: 1px solid #1A1A1D !important;
+}

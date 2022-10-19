@@ -16,8 +16,9 @@ class Employees extends CI_Controller {
 		//model
 		$this->load->model('Admin/Employee_model');
 		$this->load->model('Admin/User_model');
+		$this->load->model('Admin/UserLog_model');
 	}
-
+	//Display Employee Page
 	public function index(){
 		
 		if($this->session->userdata('isLogIn') === true){
@@ -54,6 +55,7 @@ class Employees extends CI_Controller {
 			}
 		}
 	}
+	//Display Edit Page
 	public function editEmployee($id = ''){
 		$urlData = urldecode($this->safe_decode($id));
 		$data['employeeData'] = $this->Employee_model->getEmp($this->encryption->decrypt($urlData) == '' ? null : $this->encryption->decrypt($urlData));
@@ -98,21 +100,31 @@ class Employees extends CI_Controller {
 			redirect('AdminEmployees');
 		}
 	}
+	//Delete Employee
 	public function deleteEmployee($id = ''){
 		$urlData = urldecode($this->safe_decode($id));
 		if ($this->Employee_model->deleteEmployee($this->encryption->decrypt($urlData) == '' ? null : $this->encryption->decrypt($urlData))){
 			$this->session->set_flashdata('successAddEmployee','Delete Success');
+			$this->UserLog_model->addLog('Delete Employee',$this->session->userdata('userId'),True);
 		}
 		else{
 			$this->session->set_flashdata('failAddEmployee','Delete Failed');
+			$this->UserLog_model->addLog('Delete Employee',$this->session->userdata('userId'),False);
 		}
 		redirect('AdminEmployees');
 	}
-	//save employee
+	//Update employee
 	public function saveEdit(){
 		$this->form_validation->set_rules('employeeFirstName', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
 		$this->form_validation->set_rules('employeeLastName', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
+		$this->form_validation->set_rules('employeeBranch', 'Branch Location' ,'required|callback_checkFieldIfHasNum|max_length[100]');
 		
+		if($this->input->post("timein") != '' || $this->input->post("timeout") != '' || $this->input->post("dayoff") != ''){
+			$this->form_validation->set_rules('timein', 'Time In' ,'required|max_length[50]');
+			$this->form_validation->set_rules('timeout', 'Time Out' ,'required|max_length[50]');
+			$this->form_validation->set_rules('dayoff', 'Day Off' ,'required|max_length[50]');
+		}
+
 		$postData = array(
             "empId" => $this->input->post("employeeId"),
             "fname" => ucfirst(strtolower($this->input->post("employeeFirstName"))),
@@ -120,50 +132,59 @@ class Employees extends CI_Controller {
 			"timein" => (empty($this->input->post("timein")) ? 'timein' : $this->input->post("timein")),
             "timeout" => (empty($this->input->post("timeout")) ? 'timeout' : $this->input->post("timeout")),
 			"dayoff" => (empty($this->input->post("dayoff")) ? 'dayoff' : $this->input->post("dayoff")),
+			"location" => ucfirst(strtolower($this->input->post("employeeBranch"))),
         );
 
 		if($this->form_validation->run() === true){
 			if ($this->Employee_model->saveEdit($postData)){
 				$this->session->set_flashdata('successEditEmployee','Edit Success');
+				$this->UserLog_model->addLog('Update Employee',$this->session->userdata('userId'),True);
 			}
 			else{
 				$this->session->set_flashdata('failEditEmployee','Edit Failed');
+				$this->UserLog_model->addLog('Update Employee',$this->session->userdata('userId'),False);
 			}
             redirect('EditEmployee/'.$this->safe_encode(urlencode($this->encryption->encrypt($this->input->post("employeeId")))));
         }
         else{
 			$this->session->set_flashdata('failEditEmployee',validation_errors());
+			$this->UserLog_model->addLog('Update Employee',$this->session->userdata('userId'),False);
             redirect('EditEmployee/'.$this->safe_encode(urlencode($this->encryption->encrypt($this->input->post("employeeId")))));
         }
 	}
-	//save employee
+	//Add employee
 	public function addEmployee(){
 		$this->form_validation->set_rules('employeeFirstName', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
 		$this->form_validation->set_rules('employeeLastName', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
+		$this->form_validation->set_rules('employeeLocation', 'Branch' ,'required|callback_checkFieldIfHasNum|max_length[100]');
 		
-		$rowCount = $this->db->get('employee')->num_rows()+1;
+		$rowCount = $this->db->select("CAST(SUBSTR(empId,11,LENGTH(empId)) as UNSIGNED) as newid")->from('employee')->order_by('newid', 'DESC')->limit(1)->get()->row();
+		$newId = !empty($rowCount) ? (int)$rowCount->newid : 0;
 		$postData = array(
-            "empId" => "EMP-".date('Y').'-0'.$rowCount++,
+            "empId" => "EMP-".date('Y').'-0'. $newId+=1 ,
 			"secretId" => "scrt".$this->randStrGen(1,12),
             "fname" => ucfirst(strtolower($this->input->post("employeeFirstName"))),
             "lname" => ucfirst(strtolower($this->input->post("employeeLastName"))),
+            "location" => ucfirst(strtolower($this->input->post("employeeLocation"))),
         );
-
+		
 		if($this->form_validation->run() === true){
 			if ($this->Employee_model->addEmployee($postData)){
 				$this->session->set_flashdata('successAddEmployee','Add Success');
+				$this->UserLog_model->addLog('Add Employee',$this->session->userdata('userId'),True);
 			}
 			else{
 				$this->session->set_flashdata('failAddEmployee','Add Failed');
+				$this->UserLog_model->addLog('Add Employee',$this->session->userdata('userId'),False);
 			}
             redirect('AdminEmployees');
         }
         else{
+			$this->UserLog_model->addLog('Add Employee',$this->session->userdata('userId'),False);
 			$this->session->set_flashdata('failAddEmployee',validation_errors());
             redirect('AdminEmployees');
         }
 	}
-
 	//get table data
 	public function EmployeeTableAjax(){
 		$data1 = $this->Employee_model->getTableData();
@@ -174,10 +195,12 @@ class Employees extends CI_Controller {
 		foreach($data1 as $listItem){
 			$row = array();
 			$row['data1'] = $listItem->empId;
+			$row['data8'] = $listItem->newId;
 			$row['data2'] = $listItem->fname;
 			$row['data3'] = $listItem->lname;
-			$row['data4'] = $listItem->timein.' - '.$listItem->timeout;
-			$row['data5'] = $listItem->dayoff;
+			$row['data9'] = $listItem->location;
+			$row['data4'] = $listItem->timein != 'timein' || $listItem->timeout != 'timeout' ? $listItem->timein.' - '.$listItem->timeout : 'No Schedule Available';
+			$row['data5'] = $listItem->dayoff != 'dayoff' ? $listItem->dayoff : 'No Dayoff Available';
 			$row['data6'] = $listItem->secretId;
 			$row['data7'] = $this->safe_encode(urlencode($this->encryption->encrypt($listItem->empId)));
 			$data[] = $row;
@@ -189,26 +212,27 @@ class Employees extends CI_Controller {
 	public function import(){
 		$file_data = $this->csvimport->get_array($_FILES["csv_file"]["tmp_name"]);
 		$status = 'Still Good';
-		$rowCount = $this->db->get('employee')->num_rows()+1;
+		$rowCount = $this->db->select("CAST(SUBSTR(empId,11,LENGTH(empId)) as UNSIGNED) as newid")->from('employee')->order_by('newid', 'DESC')->limit(1)->get()->row();
+		$newId = !empty($rowCount) ? (int)$rowCount->newid : 0;
 		$data = array();
 
-		if(!array_key_exists('firstname',$file_data[0]) || !array_key_exists('lastname',$file_data[0])){
+		if(!array_key_exists('firstname',$file_data[0]) || !array_key_exists('lastname',$file_data[0]) || !array_key_exists('branch',$file_data[0])){
 			$status = "Required header is missing or wrong!";
 			
 		}
-		if(count($file_data) * 3 != count($file_data,1)){
+		if(count($file_data) * 4 != count($file_data,1)){
 			$status = "Invalid format of data, please double check the file for inconsistencies then try again.";
 		}
 		
 		if($status === 'Still Good'){
 			foreach($file_data as $csvitem){
 				// check if blank
-				if($csvitem["firstname"] == '' || $csvitem["lastname"] == ''){
+				if($csvitem["firstname"] == '' || $csvitem["lastname"] == '' || $csvitem["branch"] == ''){
 					$status = "There's a blank record!";
 					break;
 				}
 				// check if has number
-				if( preg_match('~[0-9]+~', $csvitem["firstname"]) || preg_match('~[0-9]+~', $csvitem["lastname"])){
+				if( preg_match('~[0-9]+~', $csvitem["firstname"]) || preg_match('~[0-9]+~', $csvitem["lastname"]) || preg_match('~[0-9]+~', $csvitem["branch"])){
 					$status = "There's a numerical value in a record!";
 					break;
 				}
@@ -220,19 +244,30 @@ class Employees extends CI_Controller {
 
 				$row = array();
 				
-				$row["empId"] =  "EMP-".date('Y').'-0'.$rowCount++;
+				$row["empId"] =  "EMP-".date('Y').'-0'.$newId+=1;
 				$row["secretId"] = "scrt".$this->randStrGen(1,12);
 				$row["fname"] = ucfirst(strtolower($csvitem["firstname"]));
 				$row["lname"] = ucfirst(strtolower($csvitem["lastname"]));
+				$row["location"] = ucfirst(strtolower($csvitem["branch"]));
 				$data[] = $row;
 			}
 			if($status === 'Still Good'){
-				$this->Employee_model->addEmployeeBatch($data);
+				if($this->Employee_model->addEmployeeBatch($data)){
+					$this->UserLog_model->addLog('Import Employee',$this->session->userdata('userId'),True);
+				}
+				else{
+					$test = array();
+					$this->output->set_status_header('400'); //Triggers the jQuery error callback
+					$test['message'] = 'Something went wrong, please try again later';
+					$this->UserLog_model->addLog('Import Employee',$this->session->userdata('userId'),False);
+					echo json_encode($test);
+				}
 			}
 			else {
 				$test = array();
 				$this->output->set_status_header('400'); //Triggers the jQuery error callback
 				$test['message'] = $status;
+				$this->UserLog_model->addLog('Import Employee',$this->session->userdata('userId'),False);
 				echo json_encode($test);
 			}
 		}
@@ -240,6 +275,7 @@ class Employees extends CI_Controller {
 			$test = array();
 			$this->output->set_status_header('400'); //Triggers the jQuery error callback
 			$test['message'] = $status;
+			$this->UserLog_model->addLog('Import Employee',$this->session->userdata('userId'),False);
 			echo json_encode($test);
 		}
 		

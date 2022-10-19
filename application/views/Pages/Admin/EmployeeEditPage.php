@@ -39,6 +39,11 @@
                 </div>
 
                 <div class="form-label-group mt-3">
+                    <label for="employeeBranch" class="labelDesign spacing">Branch</label>
+                    <input name="employeeBranch" type="text" id="employeeBranch" class="inputDesign form-control" placeholder="E.g Branch - City" value="<?php echo $employeeData->location?>">
+                </div>
+
+                <div class="form-label-group mt-3">
                     <label for="timein" class="labelDesign spacing">Time in</label>
                     <input name="timein" type="time" id="timein" class="inputDesign form-control" placeholder="Time in" value="<?php echo $employeeData->timein?>">
                 </div>

@@ -3,6 +3,23 @@
         <p class="greeting">Time Sheet</p>
         <p class="clock"id="ct7"><?php echo date('m/d/Y - g:i:s A') ?></p>
     </div>
+    <div class="section3">
+        <p class="header m-0">Upload Time Sheet</p>
+        <small class="text-muted mt-0" style="margin-left: 30px;">Use this in case the system went down and there are offline attendance list.</small>
+        
+        <form class="mt-3" method="post" id="import_csv_timesheet" enctype="multipart/form-data">
+            
+            <div class="form-label-group importform">
+                <label for="csv_file" class="labelDesign mr-3">Import Csv: </label>
+                <input type="file" name="csv_file" id="csv_file" required accept=".csv" />
+            </div>
+            <div class="buttons">
+                <button id="uploadButtonTimeSheet" type="submit" class="btn" >Upload</button>
+                <a download href="<?php echo base_url("application/assets/csv/csvformattimesheet.csv"); ?>" class="btn ml-5"> Sample CSV</a>
+            </div>
+        </form>
+
+    </div>
     <div class="section1">
         <!-- <p class="header m-0">Attendance List</p> -->
         <div class="filterform ">
@@ -10,7 +27,7 @@
 
                 <div class="form-label-group mt-5">
                     <label for="empIdFilter" class="labelDesign spacing">Employee ID</label>
-                    <input name="empIdFilter" type="text" id="empIdFilter" class="inputDesign form-control" placeholder="E.g EMP-xxxxxxxx" value="">
+                    <input name="empIdFilter" type="text" id="empIdFilter" class="inputDesign form-control" placeholder="E.g EMP-xxxx-xxx" value="">
                 </div>
 
                 <div class="form-label-group mt-3">
@@ -48,6 +65,7 @@
                 <thead>
                     <tr>
                         <th class="headertable">Attendance ID</th>
+                        <th class="headertable">EMP ID</th>
                         <th class="headertable">First Name</th>
                         <th class="headertable">Last Name</th>
                         <th class="headertable">Time</th>

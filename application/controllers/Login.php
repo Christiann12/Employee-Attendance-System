@@ -10,6 +10,7 @@ class Login extends CI_Controller {
 		$this->load->helper('cookie');
 		$this->load->library('session');
 		$this->load->model('Admin/User_model');
+		$this->load->model('Admin/UserLog_model');
 	}
 
 	public function index()
