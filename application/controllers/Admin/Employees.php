@@ -210,19 +210,19 @@ class Employees extends CI_Controller {
 	}
 	// import function 
 	public function import(){
-		$file_data = $this->Csvimport->get_array($_FILES["csv_file"]["tmp_name"]);
+		// $file_data = $this->Csvimport->get_array($_FILES["csv_file"]["tmp_name"]);
 		$status = 'Still Good';
 		// $rowCount = $this->db->select("CAST(SUBSTR(empId,11,LENGTH(empId)) as UNSIGNED) as newid")->from('employee')->order_by('newid', 'DESC')->limit(1)->get()->row();
 		// $newId = !empty($rowCount) ? (int)$rowCount->newid : 0;
 		// $data = array();
 
-		if(!array_key_exists('firstname',$file_data[0]) || !array_key_exists('lastname',$file_data[0]) || !array_key_exists('branch',$file_data[0])){
-			$status = "Required header is missing or wrong!";
+		// if(!array_key_exists('firstname',$file_data[0]) || !array_key_exists('lastname',$file_data[0]) || !array_key_exists('branch',$file_data[0])){
+		// 	$status = "Required header is missing or wrong!";
 			
-		}
-		if(count($file_data) * 4 != count($file_data,1)){
-			$status = "Invalid format of data, please double check the file for inconsistencies then try again.";
-		}
+		// }
+		// if(count($file_data) * 4 != count($file_data,1)){
+		// 	$status = "Invalid format of data, please double check the file for inconsistencies then try again.";
+		// }
 		
 		if($status === 'Still Good'){
 			
