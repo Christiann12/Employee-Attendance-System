@@ -598,8 +598,8 @@
 							$('#import_csv_timesheet')[0].reset();
 							$('#uploadButtonTimeSheet').attr('disabled', false);
 							$('#uploadButtonTimeSheet').html('Import Done');
-							setInterval(function(){
-								var x = clearInterval(x);
+							var x =  setInterval(function(){
+								clearInterval(x);
 								window.location.href = "<?= base_url('TimeSheet')?>";
 							}, 500);
 						},
