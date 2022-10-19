@@ -25,7 +25,14 @@
     <link rel="stylesheet" href="<?php echo base_url(); ?>application/assets/css/Admin/AttendanceList.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>application/assets/css/Admin/UploadSched.css">
     
-   
+    <style>
+        .btn-size{
+            width: 50px;
+            height: 35px;
+            background-color: #edf5e1 !important;
+            font-size: 10px !important;
+        }
+    </style>
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
     <title>EAS System</title>
     

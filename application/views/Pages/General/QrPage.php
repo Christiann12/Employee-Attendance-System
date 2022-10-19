@@ -57,13 +57,41 @@
         <script>
 
             $(document).ready( function () {
-				var restorepage = $('body').html();
-				var printcontent = $('#' + 'primaryContainer').clone();
-				$('body').empty().html(printcontent);
+				// var restorepage = $('body').html();
+				// var printcontent = $('#' + 'primaryContainer').clone();
+				// $('body').empty().html(printcontent);
 				window.print();
-				$('body').html(restorepage);
-				
+				// $('body').html(restorepage);
+                
+                // setTimeout(function () { window.location.href = "http://www.w3schools.com";; }, 100);
+
 			});	
+
+            (function() {
+
+                var beforePrint = function() {
+                    
+                };
+
+                var afterPrint = function() {
+                    window.location.href = "<?= base_url('GenerateQr'); ?>";
+                };
+
+                if (window.matchMedia) {
+                    var mediaQueryList = window.matchMedia('print');
+                    mediaQueryList.addListener(function(mql) {
+                        if (mql.matches) {
+                            
+                        } else {
+                            window.location.href = "<?= base_url('GenerateQr')?>";
+                        }
+                    });
+                }
+
+                window.onbeforeprint = beforePrint;
+                window.onafterprint = afterPrint;
+
+            }());
 			
 		</script>
     </body>

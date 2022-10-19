@@ -71,14 +71,17 @@ class Employee_model extends CI_Model {
     }
      // upload batch
      public function addEmployeeBatch($data = []){
-        return $this->db->insert_batch($this->table, $data);
+        $this->db->query('LOCK TABLE employee WRITE');
+        $result =  $this->db->insert_batch($this->table, $data);
+        $this->db->query('UNLOCK TABLES');
+        return $result;
     }
     public function saveEdit($data = []){
         return $this->db->where('empId',$data['empId'])->update($this->table,$data); 
     }
     //get table data
     public function getTableData(){
-        return $this->db->select("*")->from($this->table)->get()->result();
+        return $this->db->select("CAST(SUBSTR(empId,11,LENGTH(empId)) as UNSIGNED) as newId,employee.*")->from('employee')->order_by('newId','DESC')->get()->result();
     }
     public function getEmp($id = ''){
         return $this->db->select("*")->from($this->table)->where('empId',$id)->get()->row();
@@ -99,8 +102,12 @@ class Employee_model extends CI_Model {
     }
     // import schedule
     public function editSchedule($data = []){
-        return $this->db->update_batch($this->table, $data, 'empId'); 
+        $this->db->query('LOCK TABLE employee WRITE');
+        $result = $this->db->update_batch($this->table, $data, 'empId'); 
+        $this->db->query('UNLOCK TABLES'); 
+        return $result;
     }
+
     // schudule table
     public function getTableFiltered(){
         return $this->db->select("*")->from($this->table)->where('timein !=','timein')->where('timeout !=','timeout')->where('dayoff !=','dayoff')->get()->result();
@@ -128,5 +135,9 @@ class Employee_model extends CI_Model {
     }
     public function getTotalNoEmp(){
         return $this->db->select("*")->from($this->table)->get()->num_rows();
+    }
+
+    public function getDataNew(){
+        return json_encode($this->db->select("SUBSTR(empId,11,LENGTH(empId)) as newid")->from($this->table)->get()->result());
     }
 }

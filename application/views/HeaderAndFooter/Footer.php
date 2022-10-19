@@ -124,7 +124,7 @@
 					},
 					
 					// "serverSide":true,
-					"responsive": true,
+					// "responsive": true,
 					// "bPaginate": true,
 					// "sPaginationType": "full_numbers",
 					"ajax": {
@@ -133,6 +133,10 @@
 						// "data": {txtSearch:''}
 					},
 					columns: [
+						{
+							data: 'data8',
+							className: 'data d-none',
+						},
 						{
 							data: 'data1',
 							className: 'data'
@@ -143,6 +147,10 @@
 						},
 						{
 							data: 'data3',
+							className: 'data'
+						},
+						{
+							data: 'data9',
 							className: 'data'
 						},
 						{
@@ -163,8 +171,14 @@
 								var deleteLink = '<?php  echo base_url('DeleteEmployee/') ?>' + data.data7;
 								return '<a class="btn btn-success rounded-1 " href="'+editLink+'">Edit</a><a class="btn btn-danger rounded-1 ml-1" onclick="return ConfirmDelete()" href="'+deleteLink+'">Delete</a>';
 							}
-						}
+						},
+						
 					],
+					"columnDefs":[{
+						"targets":[1],
+						"orderable":false,
+						// className : "d-none"
+					},],
 					// "order":[],
 					"searching": true,
 					"dom": "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>><'row'<'col-sm-12't>><'row'<'col-sm-6'i><'col-sm-6'p>>",
@@ -177,9 +191,9 @@
 							footer: true,
 							// text: '<i class="fa fa-copy"></i>',
 							text: 'Copy',
-							className: 'btn-sm',
+							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4]
+								columns: [ 1,2,3,4,5]
 							}
 						},
 						// 'excelHtml5',
@@ -188,9 +202,9 @@
 							footer: true,
 							// text: '<i class="fa fa-copy"></i>',
 							text: 'Excel',
-							className: 'btn-sm',
+							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4]
+								columns: [ 1,2,3,4,5]
 							}
 						},
 						// 'csvHtml5',
@@ -199,9 +213,9 @@
 							footer: true,
 							// text: '<i class="fa fa-copy"></i>',
 							text: 'CSV',
-							className: 'btn-sm',
+							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4]
+								columns: [ 1,2,3,4,5]
 							}
 						},
 						// 'pdfHtml5',
@@ -210,9 +224,9 @@
 							footer: true,
 							// text: '<i class="fa fa-copy"></i>',
 							text: 'PDF',
-							className: 'btn-sm',
+							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4]
+								columns: [ 1,2,3,4,5]
 							}
 						},
 						// 'print',
@@ -221,9 +235,9 @@
 							footer: true,
 							// text: '<i class="fa fa-copy"></i>',
 							text: 'Print',
-							className: 'btn-sm',
+							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4]
+								columns: [ 1,2,3,4,5]
 							}
 						},
 					]
@@ -283,7 +297,7 @@
 							render: function(data) {
 								// console.log()
 								var qrlink = 'https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=' + data.data6;
-								return '<a download class="btn btn-primary rounded-1" href="'+qrlink+'" >Open QR</a>';
+								return '<a download class="btn btn-primary rounded-1" href="'+qrlink+'">Open QR</a>';
 							}
 						}
 					],
@@ -390,6 +404,10 @@
 							className: 'data'
 						},
 						{
+							data: 'data2',
+							className: 'data'
+						},
+						{
 							data: 'data3',
 							className: 'data'
 						},
@@ -410,7 +428,7 @@
 							className: 'data'
 						},
 						{
-							data: 'data8',
+							data: 'data9',
 							className: 'data'
 						},
 						{
@@ -428,9 +446,9 @@
 							footer: true,
 							// text: '<i class="fa fa-copy"></i>',
 							text: 'Copy',
-							className: 'btn-sm',
+							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
 							}
 						},
 						// 'excelHtml5',
@@ -439,9 +457,9 @@
 							footer: true,
 							// text: '<i class="fa fa-copy"></i>',
 							text: 'Excel',
-							className: 'btn-sm',
+							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
 							}
 						},
 						// 'csvHtml5',
@@ -450,9 +468,9 @@
 							footer: true,
 							// text: '<i class="fa fa-copy"></i>',
 							text: 'CSV',
-							className: 'btn-sm',
+							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
 							}
 						},
 						// 'pdfHtml5',
@@ -461,9 +479,9 @@
 							footer: true,
 							// text: '<i class="fa fa-copy"></i>',
 							text: 'PDF',
-							className: 'btn-sm',
+							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
 							}
 						},
 						// 'print',
@@ -472,9 +490,9 @@
 							footer: true,
 							// text: '<i class="fa fa-copy"></i>',
 							text: 'Print',
-							className: 'btn-sm',
+							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
 							}
 						},
 					]
@@ -504,7 +522,7 @@
 							$('#uploadButton').html('Import Done');
 							setInterval(function(){
 								window.location.href = "<?= base_url('AdminEmployees')?>";
-							}, 2000);
+							}, 500);
 						},
 						error: function( jqXhr ) {
 							
@@ -543,7 +561,7 @@
 							$('#uploadButton_schedule').html('Import Done');
 							setInterval(function(){
 								window.location.href = "<?= base_url('UploadSched')?>";
-							}, 2000);
+							}, 500);
 						},
 						error: function( jqXhr ) {
 							
@@ -559,6 +577,46 @@
 				});
 			});
 		</script>
+		<!-- import offline log  -->
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$('#import_csv_timesheet').on('submit', function(event){
+					//alert('test');
+					event.preventDefault();
+					$.ajax({
+						url:"<?php echo base_url('Admin/AttendanceList/import'); ?>",
+						method:"POST",
+						data:new FormData(this),
+						contentType:false,
+						cache:false,
+						processData:false,
+						beforeSend:function(){
+							$('#uploadButtonTimeSheet').html('Importing...');
+						},
+						success:function(data)
+						{
+							$('#import_csv_timesheet')[0].reset();
+							$('#uploadButtonTimeSheet').attr('disabled', false);
+							$('#uploadButtonTimeSheet').html('Import Done');
+							setInterval(function(){
+								window.location.href = "<?= base_url('TimeSheet')?>";
+							}, 500);
+						},
+						error: function( jqXhr ) {
+							
+							if( jqXhr.status == 400 ) { //Validation error or other reason for Bad Request 400
+								var json = JSON.parse( jqXhr.responseText );
+								alert(json.message);
+								$('#import_csv_timesheet')[0].reset();
+								// $('#uploadButtonTimeSheet').attr('disabled', false);
+								$('#uploadButtonTimeSheet').html('Upload');
+							}
+						}
+					})
+				});
+			});
+		</script>
+		<!-- graph js  -->
 		<script>
 			
 			document.addEventListener('DOMContentLoaded', function () {
@@ -656,5 +714,6 @@
 				});
 			});
 		</script>
+		
     </body>
 </html>

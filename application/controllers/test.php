@@ -41,6 +41,14 @@ class Test extends CI_Controller {
 		return ($f < $i && $i < $t) || ($f < $i->modify('+1 day') && $i < $t);
 	}
 
+	function test(){
+		$this->load->model('Admin/Employee_model');
+		// $rowCount = $this->db->select("empId,CAST(SUBSTR(empId,5,4) as DATE) as Year")->from('employee')->order_by('empId', 'DESC')->limit(10)->get()->result();
+		// $newId = (int)$rowCount->newid;
+		// echo !empty($rowCount) ? $newId+=1: 'asd';
+		print_r($rowCount);
+	}
+
 	// time in 0:00
 	// time out 7:00
 
