@@ -400,41 +400,65 @@
 					},
 					columns: [
 						{
-							data: 'data1',
+							data: 'attendanceId',
 							className: 'data'
 						},
 						{
-							data: 'data2',
+							data: 'empId',
 							className: 'data'
 						},
 						{
-							data: 'data3',
+							data: 'fname',
 							className: 'data'
 						},
 						{
-							data: 'data8',
+							data: 'lname',
 							className: 'data'
 						},
 						{
-							data: 'data4',
+							data: 'time1',
 							className: 'data'
 						},
 						{
-							data: 'data5',
+							data: 'time2',
 							className: 'data'
 						},
 						{
-							data: 'data6',
+							data: 'Hours_Worked_Regular',
 							className: 'data'
 						},
 						{
-							data: 'data9',
+							data: 'Hours_Worked_OT',
 							className: 'data'
 						},
 						{
-							data: 'data7',
+							data: 'Break_Hour',
 							className: 'data'
 						},
+						{
+							data: 'Late',
+							className: 'data'
+						},
+						{
+							data: 'UT_OT',
+							className: 'data'
+						},
+						{
+							data: 'OverBreak',
+							className: 'data'
+						},
+						// {
+						// 	data: 'data6',
+						// 	className: 'data'
+						// },
+						// {
+						// 	data: 'data9',
+						// 	className: 'data'
+						// },
+						// {
+						// 	data: 'data7',
+						// 	className: 'data'
+						// },
 					],
 					// "order":[],
 					"searching": true,

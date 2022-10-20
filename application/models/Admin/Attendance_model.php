@@ -20,40 +20,25 @@ class Attendance_model extends CI_Model {
                 'type' => 'VARCHAR',
                 'constraint' =>20,
                 ),
-                'ut_ot' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 100,
-                'default' => 'unknown'
-                ),
-                'workhour' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 100,
-                'default' => 'unknown'
-                ),
-                'late' => array(
+                'timeinf' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 50,
-                'default' => 'unknown'
+                'default' => 'EMPTY'
                 ),
-                'timein' => array(
+                'timeoutf' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 50,
-                'default' => 'timein'
+                'default' => 'EMPTY'
                 ),
-                'timeout' => array(
+                'timeins' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 50,
-                'default' => 'timeout'
+                'default' => 'EMPTY'
                 ),
-                'timeinsched' => array(
+                'timeouts' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 50,
-                'default' => 'timeinsched'
-                ),
-                'timeoutsched' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 50,
-                'default' => 'timeoutsched'
+                'default' => 'EMPTY'
                 ),
                 'datetimein' => array(
                 'type' => 'VARCHAR',

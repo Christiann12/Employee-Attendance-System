@@ -57,16 +57,28 @@ class AttendanceList extends CI_Controller {
 		$data = array();
 
 		foreach($data1 as $listItem){
+			$empData = $this->Employee_model->getEmp($listItem->empId);
+			$regularHour = $this->calculateWorkHour($listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->datetimein,$empData->dayoff);
+			$overTimeHour = $this->calculateWorkHourOT($listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->datetimein,$empData->dayoff);
+			$UT_OT = $this->checkifUT_OT($listItem->datetimein,$empData->dayoff,$listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$overTimeHour,$regularHour);
+			$breakHour = $this->calculateBreakHour($listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->datetimein,$empData->dayoff);
+			$late = $this->checkiflate($listItem->timeinf,$empData->timein,$empData->timeout,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->datetimein,$empData->dayoff);
+
 			$row = array();
-			$row['data1'] = $listItem->attendanceId;
-			$row['data2'] = $listItem->empId;
-			$row['data3'] = $listItem->fname;
-			$row['data8'] = $listItem->lname;
-			$row['data4'] = $listItem->timein.' - '.$listItem->timeout;
-			$row['data5'] = $listItem->late;
-			$row['data6'] = $listItem->ut_ot;
-			$row['data9'] = $listItem->workhour;
-			$row['data7'] = $listItem->datetimein;
+			$row['attendanceId'] = $listItem->attendanceId;
+			$row['empId'] = $listItem->empId;
+			$row['fname'] = $listItem->fname;
+			$row['lname'] = $listItem->lname;
+			$row['time1'] = $listItem->timeinf.' - '.$listItem->timeoutf;
+			$row['time2'] = $listItem->timeins.' - '.$listItem->timeouts;
+			$row['Hours_Worked_Regular'] = $regularHour;
+			$row['Hours_Worked_OT'] = $overTimeHour;
+			$row['Break_Hour'] = $breakHour[0];
+			$row['Late'] = $late;
+			$row['UT_OT'] = $UT_OT;
+			$row['OverBreak'] = $breakHour[1];
+			
+			// $row['data7'] = $listItem->datetimein;
 			$data[] = $row;
 		}
 		$json_data['data'] = $data;
@@ -77,17 +89,17 @@ class AttendanceList extends CI_Controller {
 		$status = 'Still Good';
 		$data = array();
 
-		if(!array_key_exists('empId',$file_data[0]) || !array_key_exists('timein',$file_data[0]) || !array_key_exists('timeout',$file_data[0]) || !array_key_exists('datetimein',$file_data[0]) || !array_key_exists('datetimeout',$file_data[0])){
+		if(!array_key_exists('empId',$file_data[0]) || !array_key_exists('timein_beforebreak',$file_data[0]) || !array_key_exists('timeout_beforebreak',$file_data[0]) || !array_key_exists('timein_afterbreak',$file_data[0]) || !array_key_exists('timeout_afterbreak',$file_data[0]) || !array_key_exists('datetimein',$file_data[0]) || !array_key_exists('datetimeout',$file_data[0])){
 			$status = "Required header is missing or wrong!";
 		}
-		if(count($file_data) * 6 != count($file_data,1)){
+		if(count($file_data) * 8 != count($file_data,1)){
 			$status = "Invalid format of data, please double check the file for inconsistencies then try again.";
 		}
 
 		if ($status === 'Still Good') {
 			foreach ($file_data as $csvitem) {
 				// check if blank
-				if($csvitem["empId"] == '' || $csvitem["timein"] == '' || $csvitem["timeout"] == '' || $csvitem["datetimein"] == '' || $csvitem["datetimeout"] == '' ){
+				if($csvitem["empId"] == '' || $csvitem["timein_beforebreak"] == '' || $csvitem["timeout_beforebreak"] == '' || $csvitem["timein_afterbreak"] == '' ||  $csvitem["timeout_afterbreak"] == '' || $csvitem["datetimein"] == '' || $csvitem["datetimeout"] == '' ){
 					$status = "There's a blank record!";
 					break;
 				}
@@ -97,11 +109,10 @@ class AttendanceList extends CI_Controller {
 					break;
 				}
 				// check if valid time
-				if(!$this->checkTime($csvitem["timein"]) || !$this->checkTime($csvitem["timeout"])){
+				if((!$this->checkTime($csvitem["timein_beforebreak"]) || !$this->checkTime($csvitem["timeout_beforebreak"]) || !$this->checkTime($csvitem["timein_afterbreak"]) || !$this->checkTime($csvitem["timeout_afterbreak"])) ){
 					$status = "A record has an invalid timein or timeout";
 					break;
 				}
-
 				// check if valid time
 				if(!$this->checkDate($csvitem["datetimein"]) || !$this->checkDate($csvitem["datetimeout"])){
 					$status = "A record has an invalid date format";
@@ -117,42 +128,18 @@ class AttendanceList extends CI_Controller {
 
 				$row = array();
 
-				$empData = $this->Employee_model->getEmp($csvitem["empId"]);
+				
 
 				$row["empId"] = $csvitem["empId"];
-				$row["timein"] = $csvitem["timein"];
-				$row["timeout"] = $csvitem["timeout"];
-				$row["timeinsched"] = $empData->timein;
-				$row["timeoutsched"] = $empData->timeout;
+				$row["timeinf"] = $csvitem["timein_beforebreak"];
+				$row["timeoutf"] = $csvitem["timeout_beforebreak"];
+				$row["timeins"] = $csvitem["timein_afterbreak"];
+				$row["timeouts"] = $csvitem["timeout_afterbreak"];
 				$row["datetimein"] = date('Y-m-d', strtotime($csvitem["datetimein"]));
 				$row["datetimeout"] = date('Y-m-d', strtotime($csvitem["datetimeout"]));
+				$row["pictureUrl"] = "On Premise";
 				
-				if ($this->isBetween($empData->timein,$empData->timeout,$csvitem["timein"])) 
-				{
-					$row["late"] = 'Late';
-				} else {	
-					$row["late"] = 'On time';
-				}
 				
-				if(strtolower(date('l',strtotime($csvitem["datetimein"]))) == strtolower($empData->dayoff)){
-					$row['ut_ot'] = 'Overtime-DayOff';
-					$row['workhour'] = gmdate("H:i:s", ( strtotime($csvitem["timeout"]) - strtotime($csvitem["timein"]) ));
-				}
-				else if ($this->isBetween($empData->timein,$empData->timeout,$csvitem["timeout"])){
-					$row['ut_ot'] = 'Under Time';
-					$row['workhour'] = gmdate("H:i:s", ( strtotime($csvitem["timeout"]) - strtotime($csvitem["timein"]) ));
-				}
-				else if ($empData->timeout == $csvitem["timeout"] || $this->isBetween($empData->timeout,date("H:i" , strtotime($empData->timeout."+15min")),$csvitem["timeout"])){
-					$row['ut_ot'] = 'On Time';
-					$row['workhour'] = gmdate("H:i:s", ( strtotime($csvitem["timeout"]) - strtotime($csvitem["timein"]) ));
-				}
-				else{
-					$row['ut_ot'] = 'Over Time';
-					$row['workhour'] = gmdate("H:i:s", ( strtotime($csvitem["timeout"]) - strtotime($csvitem["timein"]) )) <= strtotime("16 hour") ? 
-					gmdate("H:i:s", ( strtotime($csvitem["timeout"]) - strtotime($csvitem["timein"]) )) :
-					gmdate("H:i:s", ( strtotime(date("16:00")) - strtotime(date("0:00")))) ;
-				}
-
 				$data[] = $row;
 			}
 			if ($status === 'Still Good') {
@@ -185,6 +172,9 @@ class AttendanceList extends CI_Controller {
 	}
 	//custom function
 	public function checkTime($date, $format = 'G:i'){
+		if($date = "EMPTY"){
+			return true;
+		}
 		$d = DateTime::createFromFormat($format, $date);
 		// The Y ( 4 digits year ) returns TRUE for any integer with any number of digits so changing the comparison from == to === fixes the issue.
 		return $d && $d->format($format) === $date;
@@ -218,6 +208,195 @@ class AttendanceList extends CI_Controller {
         } else {
             return true;
         }
+	}
+	
+	function calculateWorkHour($timeinf,$timeoutf,$timeins,$timeouts,$datetimein,$dayoff){
+
+		$timein1 = ($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY' ) ? $timeinf : "00:00:00";
+		$timeout1 = ($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY' ) ? $timeoutf : "00:00:00";
+		$timein2 = ($timeins != 'EMPTY'&&$timeouts != 'EMPTY' ) ? $timeins : "00:00:00";
+		$timeout2 = ($timeins != 'EMPTY'&&$timeouts != 'EMPTY' ) ? $timeouts : "00:00:00";
+		
+		if(strtolower(date('l',strtotime($datetimein))) == strtolower($dayoff)){
+			return "00:00:00";
+		}
+		else if ( ($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY' )|| ($timeins != 'EMPTY' && $timeouts != 'EMPTY')) {
+			$time1 = gmdate("H:i:s", ( strtotime($timeout1) - strtotime($timein1) )) ;
+			$time2 = gmdate("H:i:s", ( strtotime($timeout2) - strtotime($timein2) ))  ;
+
+			$secs = strtotime($time2)-strtotime("00:00:00");
+			$result = date("H:i:s",strtotime($time1)+$secs);
+
+			return (int) date("H",strtotime($result)) >= 8 ? "08:00:00" : $result;
+			// return $result;
+		} else {
+			return "00:00:00";
+		}
+		
+	}
+	function calculateWorkHourOT($timeinf,$timeoutf,$timeins,$timeouts,$datetimein,$dayoff){
+		
+		if(strtolower(date('l',strtotime($datetimein))) == strtolower($dayoff)){
+			if (($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY'&&$timeins != 'EMPTY'&&$timeouts != 'EMPTY' )) {
+				$time1 = gmdate("H:i:s", ( strtotime($timeoutf) - strtotime($timeinf) )) ;
+				$time2 = gmdate("H:i:s", ( strtotime($timeouts) - strtotime($timeins) ))  ;
+	
+				$secs = strtotime($time2)-strtotime("00:00:00");
+				$result = date("H:i:s",strtotime($time1)+$secs);
+	
+				// if((int) date("H",strtotime($result)) > 8 ){
+				// 	return "0:00:00";
+				// }
+
+				// $final = gmdate("H:i:s", ( strtotime($result) - strtotime("08:00:00") ));
+				
+				$test = floor((int) date("i",strtotime($result)) /15) * 15;
+	
+				return (int) date("H",strtotime($result)) >= 8  ? "08:00:00" : date("H",strtotime($result)) .':'.sprintf("%02d", $test).':'.date("s",strtotime($result)) ;
+				// return $result;
+			} 
+			else if(($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY' )&& ($timeins == 'EMPTY'&&$timeouts == 'EMPTY') ){
+				$time1 = gmdate("H:i:s", ( strtotime($timeoutf) - strtotime($timeinf) )) ;
+	
+				// if((int) date("H",strtotime($time1)) < 8 ){
+				// 	return "00:00:00";
+				// }
+				// $final = gmdate("H:i:s", ( strtotime($time1) - strtotime("08:00:00") ));
+				
+				$test = floor((int) date("i",strtotime($time1)) /15) * 15;
+	
+				return (int) date("H",strtotime($time1)) >= 8  ? "08:00:00" : date("H",strtotime($time1)) .':'.sprintf("%02d", $test).':'.date("s",strtotime($time1)) ;
+			}
+		}
+		else if (($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY'&&$timeins != 'EMPTY'&&$timeouts != 'EMPTY' )) {
+			$time1 = gmdate("H:i:s", ( strtotime($timeoutf) - strtotime($timeinf) )) ;
+			$time2 = gmdate("H:i:s", ( strtotime($timeouts) - strtotime($timeins) ))  ;
+
+			$secs = strtotime($time2)-strtotime("00:00:00");
+			$result = date("H:i:s",strtotime($time1)+$secs);
+
+			if((int) date("H",strtotime($result)) < 8 ){
+				return "00:00:00";
+			}
+			$final = gmdate("H:i:s", ( strtotime($result) - strtotime("08:00:00") ));
+			
+			$test = floor((int) date("i",strtotime($final)) /15) * 15;
+
+			return (int) date("H",strtotime($final)) >= 8  ? "08:00:00" : date("H",strtotime($final)) .':'.sprintf("%02d", $test).':'.date("s",strtotime($final)) ;
+			// return $result;
+		} 
+		else if(($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY' )&& ($timeins == 'EMPTY'&&$timeouts == 'EMPTY') ){
+			$time1 = gmdate("H:i:s", ( strtotime($timeoutf) - strtotime($timeinf) )) ;
+
+			if((int) date("H",strtotime($time1)) < 8 ){
+				return "00:00:00";
+			}
+			$final = gmdate("H:i:s", ( strtotime($time1) - strtotime("08:00:00") ));
+			
+			$test = floor((int) date("i",strtotime($final)) /15) * 15;
+
+			return (int) date("H",strtotime($final)) >= 8  ? "08:00:00" : date("H",strtotime($final)) .':'.sprintf("%02d", $test).':'.date("s",strtotime($final)) ;
+		}
+		else {
+			return "00:00:00";
+		}
+		
+	}
+	function calculateBreakHour($timeinf,$timeoutf,$timeins,$timeouts,$datetimein,$dayoff){
+
+		$timein1 = ($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY' ) ? $timeinf : "00:00:00";
+		$timeout1 = ($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY' ) ? $timeoutf : "00:00:00";
+		$timein2 = ($timeins != 'EMPTY'&&$timeouts != 'EMPTY' ) ? $timeins : "00:00:00";
+		$timeout2 = ($timeins != 'EMPTY'&&$timeouts != 'EMPTY' ) ? $timeouts : "00:00:00";
+		
+		if(strtolower(date('l',strtotime($datetimein))) == strtolower($dayoff)){
+			if (($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY'&&$timeins != 'EMPTY'&&$timeouts != 'EMPTY') || ($timeoutf != 'EMPTY'&&$timeins != 'EMPTY')) {
+
+				$time1 = gmdate("H:i:s", ( strtotime($timeins) - strtotime($timeoutf) )) ;
+
+
+				return[
+					(int) date("H",strtotime($time1)) < 1 || ((int) date("H",strtotime($time1)) == 1 && (int) date("i",strtotime($time1)) <= 0 ) ? "01:00:00" : $time1 ,
+					'Overtime-dayoff'
+				];
+				// return $time1;
+			} else {
+				return (
+					[
+						"00:00:00",
+						'Overtime-dayoff'
+					]
+				);
+			}
+			
+		}
+		else if (($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY'&&$timeins != 'EMPTY'&&$timeouts != 'EMPTY') || ($timeoutf != 'EMPTY'&&$timeins != 'EMPTY')) {
+
+			$time1 = gmdate("H:i:s", ( strtotime($timeins) - strtotime($timeoutf) )) ;
+
+			return (
+				[
+					(int) date("H",strtotime($time1)) < 1 || ((int) date("H",strtotime($time1)) == 1 && (int) date("i",strtotime($time1)) <= 0 ) ? "01:00:00" : $time1 ,
+					(int) date("H",strtotime($time1)) < 1 || ((int) date("H",strtotime($time1)) == 1 && (int) date("i",strtotime($time1)) <= 0 ) ? "On Time" : "Over Break"
+				]
+			);
+			// return $time1;
+		} else {
+			return (
+				[
+					"00:00:00",
+					'On Time'
+				]
+			);
+		}
+	}
+	function checkiflate($timeinf,$schedTimeIn,$schedTimeout,$timeoutf,$timeins,$timeouts,$datetimein,$dayoff){
+		if(strtolower(date('l',strtotime($datetimein))) == strtolower($dayoff)){
+			return 'Overtime-dayoff';
+		}
+		else if ($timeinf != 'EMPTY') {
+			if ($this->isBetween($schedTimeIn,$schedTimeout,$timeinf)) 
+			{
+				return 'Late';
+			} else {	
+				return 'On Time';
+			}
+		} else {
+			return '-';
+		}
+		
+	}
+	function checkifUT_OT($datetimein,$dayoff,$timeinf,$timeoutf,$timeins,$timeouts,$overTimeHour,$regularHour){
+		if ($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY'&&$timeins != 'EMPTY'&&$timeouts != 'EMPTY') {
+			if (strtolower(date('l',strtotime($datetimein))) == strtolower($dayoff)) {
+				return 'Overtime-dayoff';
+			} 
+			else if( (int) date("H",strtotime($regularHour)) == 8 && (int) date("H",strtotime($overTimeHour)) == 0 && (int) date("i",strtotime($overTimeHour)) == 0 ){
+				return 'On Time';
+			}
+			else if( (int) date("H",strtotime($overTimeHour)) > 0 || ((int) date("H",strtotime($overTimeHour)) == 0  && (int) date("i",strtotime($overTimeHour)) >= 15) ){
+				return 'Overtime';
+			}
+			else{
+				return 'Undertime';
+			}
+		} 
+		else if((($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY' )&& ($timeins == 'EMPTY'&&$timeouts == 'EMPTY') ) && (strtolower(date('l',strtotime($datetimein))) == strtolower($dayoff)) ){
+			return 'Overtime-dayoff';
+		}
+		else if((($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY' )&& ($timeins == 'EMPTY'&&$timeouts == 'EMPTY') ) && ( (int) date("H",strtotime($regularHour)) == 8 && (int) date("H",strtotime($overTimeHour)) == 0 && (int) date("i",strtotime($overTimeHour)) == 0) ){
+			return 'On Time';
+		}
+		else if((($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY' )&& ($timeins == 'EMPTY'&&$timeouts == 'EMPTY') ) && ((int) date("H",strtotime($overTimeHour)) > 0 || ((int) date("H",strtotime($overTimeHour)) == 0  && (int) date("i",strtotime($overTimeHour)) >= 15)) ){
+			return 'Overtime';
+		}
+		elseif (($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY' )&& ($timeins == 'EMPTY'&&$timeouts == 'EMPTY')) {
+			return 'Under Time';
+		}
+		else {
+			return '-';
+		}
+		
 	}
 	function isBetween($from, $till, $input) {
 		$f = DateTime::createFromFormat('!H:i', $from);
