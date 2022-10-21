@@ -22,7 +22,7 @@
 
         <div class="banner">
             <p class="greeting">
-                Time In Input Form
+                Time Out Input Form
             </p>
             <div class="inputForm">
                 <!-- RESULT NOTIFICATION  -->
@@ -36,7 +36,7 @@
                         <?php  echo $this->session->flashdata('failInput'); $this->session->unset_userdata ( 'failInput' );?>
                     </div>
                 <?php } ?>
-                <?php echo form_open_multipart('Employee/EmployeeScan/saveTimein') ?>
+                <?php echo form_open_multipart('Employee/EmployeeScan/saveTimeout') ?>
                     <div class="form-label-group d-none">
                         <input name="EmpId" type="text" id="EmpId" class="form-control" placeholder="Email/Username" value="<?php echo $empData->secretId; ?>">
                         <label for="EmpId" class="">Secret Id</label>

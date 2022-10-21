@@ -80,17 +80,42 @@
 					},
 					columns: [
 						{
-							data: 'data1',
+							data: 'date',
 							className: 'data'
 						},
 						{
-							data: 'data2',
+							data: 'timebefore',
 							className: 'data'
 						},
 						{
-							data: 'data3',
+							data: 'timeafter',
 							className: 'data'
 						},
+						{
+							data: 'Hours_Worked_Regular',
+							className: 'data'
+						},
+						{
+							data: 'Hours_Worked_OT',
+							className: 'data'
+						},
+						{
+							data: 'Break_Hour',
+							className: 'data'
+						},
+						{
+							data: 'Late',
+							className: 'data'
+						},
+						{
+							data: 'UT_OT',
+							className: 'data'
+						},
+						{
+							data: 'OverBreak',
+							className: 'data'
+						},
+						
 					],
 					// "order":[],
 					"searching": false,

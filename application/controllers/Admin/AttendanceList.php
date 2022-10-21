@@ -60,7 +60,7 @@ class AttendanceList extends CI_Controller {
 			$empData = $this->Employee_model->getEmp($listItem->empId);
 			$regularHour = $this->calculateWorkHour($listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->datetimein,$empData->dayoff);
 			$overTimeHour = $this->calculateWorkHourOT($listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->datetimein,$empData->dayoff);
-			$UT_OT = $this->checkifUT_OT($listItem->datetimein,$empData->dayoff,$listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$overTimeHour,$regularHour);
+			$UT_OT = $this->checkifUT_OT($listItem->datetimein,$empData->dayoff,$listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$overTimeHour,$regularHour,$listItem->pictureUrlTimeout);
 			$breakHour = $this->calculateBreakHour($listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->datetimein,$empData->dayoff);
 			$late = $this->checkiflate($listItem->timeinf,$empData->timein,$empData->timeout,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->datetimein,$empData->dayoff);
 
@@ -77,6 +77,7 @@ class AttendanceList extends CI_Controller {
 			$row['Late'] = $late;
 			$row['UT_OT'] = $UT_OT;
 			$row['OverBreak'] = $breakHour[1];
+			$row['Date_Time_In'] = $listItem->datetimein;
 			
 			// $row['data7'] = $listItem->datetimein;
 			$data[] = $row;
@@ -128,16 +129,27 @@ class AttendanceList extends CI_Controller {
 
 				$row = array();
 
+				$empData = $this->Employee_model->getEmp($csvitem["empId"]);
 				
+				if ($this->isBetween($empData->timein,$empData->timeout,$csvitem["timein_beforebreak"])) 
+				{
+					
+					$row["late"] = "Late";
+				} else {	
+					
+					$row["late"] = "On Time";
+				}
+			
 
-				$row["empId"] = $csvitem["empId"];
+				$row["empId"] = strtoupper($csvitem["empId"]);
 				$row["timeinf"] = $csvitem["timein_beforebreak"];
 				$row["timeoutf"] = $csvitem["timeout_beforebreak"];
 				$row["timeins"] = $csvitem["timein_afterbreak"];
 				$row["timeouts"] = $csvitem["timeout_afterbreak"];
 				$row["datetimein"] = date('Y-m-d', strtotime($csvitem["datetimein"]));
 				$row["datetimeout"] = date('Y-m-d', strtotime($csvitem["datetimeout"]));
-				$row["pictureUrl"] = "On Premise";
+				$row["pictureUrlTimein"] = "On Premise";
+				$row["pictureUrlTimeOut"] = "On Premise";
 				
 				
 				$data[] = $row;
@@ -317,18 +329,18 @@ class AttendanceList extends CI_Controller {
 
 				return[
 					(int) date("H",strtotime($time1)) < 1 || ((int) date("H",strtotime($time1)) == 1 && (int) date("i",strtotime($time1)) <= 0 ) ? "01:00:00" : $time1 ,
-					'Overtime-dayoff'
+					'<p class="text-primary text-wrap"><strong>Overtime dayoff</strong></p>'
 				];
+
 				// return $time1;
 			} else {
 				return (
 					[
 						"00:00:00",
-						'Overtime-dayoff'
+						'<p class="text-primary text-wrap"><strong>Overtime dayoff</strong></p>'
 					]
 				);
 			}
-			
 		}
 		else if (($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY'&&$timeins != 'EMPTY'&&$timeouts != 'EMPTY') || ($timeoutf != 'EMPTY'&&$timeins != 'EMPTY')) {
 
@@ -337,7 +349,7 @@ class AttendanceList extends CI_Controller {
 			return (
 				[
 					(int) date("H",strtotime($time1)) < 1 || ((int) date("H",strtotime($time1)) == 1 && (int) date("i",strtotime($time1)) <= 0 ) ? "01:00:00" : $time1 ,
-					(int) date("H",strtotime($time1)) < 1 || ((int) date("H",strtotime($time1)) == 1 && (int) date("i",strtotime($time1)) <= 0 ) ? "On Time" : "Over Break"
+					(int) date("H",strtotime($time1)) < 1 || ((int) date("H",strtotime($time1)) == 1 && (int) date("i",strtotime($time1)) <= 0 ) ? '<p class="text-success"><strong>On Time</strong></p>' : '<p class="text-danger"><strong>Over Break</strong></p>'
 				]
 			);
 			// return $time1;
@@ -345,58 +357,59 @@ class AttendanceList extends CI_Controller {
 			return (
 				[
 					"00:00:00",
-					'On Time'
+					'-'
 				]
 			);
 		}
 	}
 	function checkiflate($timeinf,$schedTimeIn,$schedTimeout,$timeoutf,$timeins,$timeouts,$datetimein,$dayoff){
 		if(strtolower(date('l',strtotime($datetimein))) == strtolower($dayoff)){
-			return 'Overtime-dayoff';
+			return '<p class="text-primary text-wrap"><strong>Overtime dayoff</strong></p>';
 		}
 		else if ($timeinf != 'EMPTY') {
 			if ($this->isBetween($schedTimeIn,$schedTimeout,$timeinf)) 
 			{
-				return 'Late';
+				return '<p class="text-danger"><strong>Late</strong></p>';
 			} else {	
-				return 'On Time';
+				return '<p class="text-success"><strong>On Time</strong></p>';
 			}
 		} else {
 			return '-';
 		}
-		
 	}
-	function checkifUT_OT($datetimein,$dayoff,$timeinf,$timeoutf,$timeins,$timeouts,$overTimeHour,$regularHour){
-		if ($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY'&&$timeins != 'EMPTY'&&$timeouts != 'EMPTY') {
+	function checkifUT_OT($datetimein,$dayoff,$timeinf,$timeoutf,$timeins,$timeouts,$overTimeHour,$regularHour,$pictureUrlTimeout){
+		if($pictureUrlTimeout == 'empty'){
+			return '-';
+		}
+		else if ($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY'&&$timeins != 'EMPTY'&&$timeouts != 'EMPTY') {
 			if (strtolower(date('l',strtotime($datetimein))) == strtolower($dayoff)) {
-				return 'Overtime-dayoff';
+				return '<p class="text-primary text-wrap"><strong>Overtime dayoff</strong></p>';
 			} 
 			else if( (int) date("H",strtotime($regularHour)) == 8 && (int) date("H",strtotime($overTimeHour)) == 0 && (int) date("i",strtotime($overTimeHour)) == 0 ){
-				return 'On Time';
+				return '<p class="text-success"><strong>On Time</strong></p>';
 			}
 			else if( (int) date("H",strtotime($overTimeHour)) > 0 || ((int) date("H",strtotime($overTimeHour)) == 0  && (int) date("i",strtotime($overTimeHour)) >= 15) ){
-				return 'Overtime';
+				return '<p class="text-warning"><strong>Overtime</strong></p>';
 			}
 			else{
-				return 'Undertime';
+				return '<p class="text-danger"><strong>Undertime</strong></p>';
 			}
 		} 
 		else if((($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY' )&& ($timeins == 'EMPTY'&&$timeouts == 'EMPTY') ) && (strtolower(date('l',strtotime($datetimein))) == strtolower($dayoff)) ){
-			return 'Overtime-dayoff';
+			return '<p class="text-primary text-wrap"><strong>Overtime dayoff</strong></p>';
 		}
 		else if((($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY' )&& ($timeins == 'EMPTY'&&$timeouts == 'EMPTY') ) && ( (int) date("H",strtotime($regularHour)) == 8 && (int) date("H",strtotime($overTimeHour)) == 0 && (int) date("i",strtotime($overTimeHour)) == 0) ){
-			return 'On Time';
+			return '<p class="text-success"><strong>On Time</strong></p>';
 		}
 		else if((($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY' )&& ($timeins == 'EMPTY'&&$timeouts == 'EMPTY') ) && ((int) date("H",strtotime($overTimeHour)) > 0 || ((int) date("H",strtotime($overTimeHour)) == 0  && (int) date("i",strtotime($overTimeHour)) >= 15)) ){
-			return 'Overtime';
+			return '<p class="text-warning"><strong>Overtime</strong></p>';
 		}
 		elseif (($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY' )&& ($timeins == 'EMPTY'&&$timeouts == 'EMPTY')) {
-			return 'Under Time';
+			return '<p class="text-danger"><strong>UnderTime</strong></p>';
 		}
 		else {
 			return '-';
 		}
-		
 	}
 	function isBetween($from, $till, $input) {
 		$f = DateTime::createFromFormat('!H:i', $from);

@@ -447,6 +447,10 @@
 							data: 'OverBreak',
 							className: 'data'
 						},
+						{
+							data: 'Date_Time_In',
+							className: 'data'
+						},
 						// {
 						// 	data: 'data6',
 						// 	className: 'data'
@@ -472,7 +476,7 @@
 							text: 'Copy',
 							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 							}
 						},
 						// 'excelHtml5',
@@ -483,7 +487,7 @@
 							text: 'Excel',
 							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 							}
 						},
 						// 'csvHtml5',
@@ -494,7 +498,7 @@
 							text: 'CSV',
 							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 							}
 						},
 						// 'pdfHtml5',
@@ -505,7 +509,7 @@
 							text: 'PDF',
 							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 							}
 						},
 						// 'print',
@@ -516,7 +520,7 @@
 							text: 'Print',
 							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 							}
 						},
 					]

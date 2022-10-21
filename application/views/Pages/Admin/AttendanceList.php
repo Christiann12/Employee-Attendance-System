@@ -64,18 +64,19 @@
             <table id="attendancetable" class="responsive display nowrap cell-border hover" width="100%">
                 <thead>
                     <tr>
-                        <th style="width:5%;" class="headertable">Attendance ID</th>
-                        <th class="headertable">EMP ID</th>
-                        <th class="headertable">First Name</th>
-                        <th class="headertable">Last Name</th>
-                        <th class="headertable">Time Before Break</th>
-                        <th class="headertable">Time After Break</th>
-                        <th class="headertable">Regular Hour</th>
-                        <th class="headertable">OT Hour</th>
-                        <th class="headertable">Break Hour</th>
-                        <th class="headertable">Late</th>
-                        <th class="headertable">UT_OT</th>
-                        <th class="headertable">OverBreak</th>
+                        <th class="headertable text-wrap ">Attendance ID</th>
+                        <th class="headertable text-wrap ">EMP ID</th>
+                        <th class="headertable text-wrap ">First Name</th>
+                        <th class="headertable text-wrap ">Last Name</th>
+                        <th class="headertable text-wrap ">Time Before Break</th>
+                        <th class="headertable text-wrap ">Time After Break</th>
+                        <th class="headertable text-wrap ">Regular Hour</th>
+                        <th class="headertable text-wrap ">OT Hour</th>
+                        <th class="headertable text-wrap ">Break Hour</th>
+                        <th class="headertable text-wrap mobile-p ">Late</th>
+                        <th class="headertable text-wrap mobile-p ">UT_OT</th>
+                        <th class="headertable text-wrap mobile-p ">OverBreak</th>
+                        <th class="headertable text-wrap mobile-p ">Date Time in</th>
                         <!-- <th class="headertable">Time</th>
                         <th class="headertable">Late/EarlyIn</th>
                         <th class="headertable">UT/OT</th>

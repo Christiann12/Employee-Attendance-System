@@ -22,44 +22,10 @@ class EmployeeScan extends CI_Controller {
             $this->load->view('Pages/General/InputInformationTimein.php',$data);
         }
         else{
-
-            $timein = date("H:i" , strtotime($data['empData']->timein));
-            $timeout = date("H:i" , strtotime($data['empData']->timeout));
-
-            $currentTime = date("H:i");
-            
-            $postData = array(
-                'empId' => $data['empData']->empId,
-                "datetimeout" => date('Y-m-d'),
-                'timeout' => $currentTime,
-            );
-
-            if(strtolower(date('l',strtotime($attendanceDetail->datetimein))) == strtolower($data['empData']->dayoff)){
-                $postData['ut_ot'] = 'Overtime-DayOff';
-                $postData['workhour'] = gmdate("H:i:s", ( strtotime($currentTime) - strtotime($attendanceDetail->timein) ));
-            }
-            else if ($this->isBetween($timein,$timeout,$currentTime)){
-                $postData['ut_ot'] = 'Under Time';
-                $postData['workhour'] = gmdate("H:i:s", ( strtotime($currentTime) - strtotime($attendanceDetail->timein) ));
-            }
-            else if ($timeout == $currentTime || $this->isBetween($timeout,date("H:i" , strtotime($timeout."+15min")),$currentTime)){
-                $postData['ut_ot'] = 'On Time';
-                $postData['workhour'] = gmdate("H:i:s", ( strtotime($currentTime) - strtotime($attendanceDetail->timein) ));
-            }
-            else{
-                $postData['ut_ot'] = 'Over Time';
-                $postData['workhour'] = gmdate("H:i:s", ( strtotime($currentTime) - strtotime($attendanceDetail->timein) )) <= strtotime("16 hour") ? 
-                gmdate("H:i:s", ( strtotime($currentTime) - strtotime($attendanceDetail->timein) )) :
-                gmdate("H:i:s", ( strtotime(date("16:00")) - strtotime(date("0:00")))) ;
-            }
-
-            if($this->Attendance_model->updateRecord($postData)){
-                redirect('EmployeeDashboard');
-            }
-        
-        
+            $this->load->view('Pages/General/InputInformationTimeout.php',$data);
         }
 	}
+
     public function saveTimein(){
         $empData = $this->Employee_model->getEmpData($this->input->post("EmpId"));
         $this->form_validation->set_rules('EmpId', 'Name' ,'required');
@@ -96,9 +62,7 @@ class EmployeeScan extends CI_Controller {
 
         $postData = array(
             "empId" => $empData->empId,
-            "timein" => $currentTime,
-            "timeinsched" => $empData->timein,
-            "timeoutsched" => $empData->timeout,
+            "timeinf" => $currentTime,
             "datetimein" => date('Y-m-d'),
             "late" => $status_in,
         );
@@ -110,7 +74,7 @@ class EmployeeScan extends CI_Controller {
             } 
             else{
                 $upload =  $this->upload->data();
-                $postData['pictureUrl'] = $upload['file_name'];
+                $postData['pictureUrlTimein	'] = $upload['file_name'];
                 if($this->Attendance_model->create($postData)){
 					$this->session->set_flashdata('successInput','Success!');
                     redirect('EmployeeDashboard');
@@ -125,6 +89,87 @@ class EmployeeScan extends CI_Controller {
             $this->session->set_flashdata('failInput',validation_errors());
             redirect('EmployeeScan/'.$this->input->post("EmpId"));
         }
+    }
+    public function saveTimeOut(){
+        $empData = $this->Employee_model->getEmpData($this->input->post("EmpId"));
+        $attendanceDetail = $this->Attendance_model->getTimeIn($empData->empId);
+        $this->form_validation->set_rules('EmpId', 'Name' ,'required');
+        if (empty($_FILES['attachment']['name'])){
+			$this->form_validation->set_rules('attachment', 'Attachment' ,'required');
+		}
+
+        //load config for upload library
+		$config['upload_path']   = APPPATH.'assets/attachments/images/';
+		$config['allowed_types'] = 'jpg|jpeg|jpe|png';
+		$config['max_size']      = 0;
+		$config['max_width']     = 0;
+		$config['max_height']    = 0;
+		$config['overwrite']     = false;
+
+        // Helpers
+		$this->load->helper('url');
+		$this->load->library('upload', $config);
+		$filename = "";
+		
+		$name = 'attachment';
+            
+        $postData = array(
+            "empId" => $empData->empId,
+            "datetimeout" => date('Y-m-d'),
+        );
+        if($attendanceDetail->timeoutf == 'EMPTY'){
+            $postData['timeoutf'] = date("H:i");;
+        }
+        else{
+            $postData['timeouts'] = date("H:i");;
+        }
+        if($this->form_validation->run() === true){
+            if ( ! $this->upload->do_upload($name) ) {
+                $this->session->set_flashdata('failInput',$this->upload->display_errors());
+                redirect('EmployeeScan/'.$this->input->post("EmpId"));
+            } 
+            else{
+                $upload =  $this->upload->data();
+                $postData['pictureUrlTimeout'] = $upload['file_name'];
+                if($this->Attendance_model->updateRecord($postData,$attendanceDetail->attendanceId)){
+					$this->session->set_flashdata('successInput','Success!');
+                    redirect('EmployeeDashboard');
+				}
+				else {
+					$this->session->set_flashdata('failInput','Time out Failed');
+                    redirect('EmployeeScan/'.$this->input->post("EmpId"));
+				}
+            }
+        }
+        else{
+            $this->session->set_flashdata('failInput',validation_errors());
+            redirect('EmployeeScan/'.$this->input->post("EmpId"));
+        }
+    }  
+    public function break($id=""){
+        $data['empData'] = $this->Employee_model->getEmpData($id);
+        $attendanceDetail = $this->Attendance_model->getTimeIn($data['empData']->empId);
+        $currentTime = date("H:i");
+        $postData = array();
+        
+        if($attendanceDetail->timeoutf == "EMPTY"){
+            $postData['timeoutf'] = $currentTime;
+        }
+        else if($attendanceDetail->timeins == "EMPTY"){
+            $postData['timeins'] = $currentTime;
+        }
+
+        if (!empty($postData)) {
+            if($this->Attendance_model->updateRecord($postData,$attendanceDetail->attendanceId)){
+                redirect('EmployeeDashboard');
+            }
+            else{
+                redirect('EmployeeDashboard');
+            }
+        } else {
+            redirect('EmployeeDashboard');
+        }
+        
     }
     function isBetween($from, $till, $input) {
 		$f = DateTime::createFromFormat('!H:i', $from);

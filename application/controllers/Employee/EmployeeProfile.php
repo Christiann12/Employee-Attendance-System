@@ -21,6 +21,7 @@ class EmployeeProfile extends CI_Controller {
 			$userData = $this->db->get_where('employee', array('empId' => $this->session->userdata('employeeId')))->row();
 			if (!empty($userData)) {
 				$data['page'] = "EmployeeProfile";
+				$data['empData'] = $userData;
 				$this->load->view('HeaderAndFooter/HeaderEmployee.php');
 				$this->load->view('Pages/Employee/WrapperEmployee.php',$data);
 				$this->load->view('HeaderAndFooter/FooterEmployee.php',$data);

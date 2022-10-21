@@ -8,10 +8,10 @@
     <div class="profile">
         <center>
             <div><img src="<?php echo base_url(); ?>application/assets/images/logo1.png" alt=""></div>
-            <p class="name py-4"><?php echo $this->session->userdata('firstNameEmployee').' '.$this->session->userdata('lastNameEmployee'); ?></p>
-            <p class="empId">ID: <?php echo $this->session->userdata('employeeId')?></p>
-            <p class="schedule">Schedule: <?php echo $this->session->userdata('employeeTimein').'-'.$this->session->userdata('employeeTimeout'); ?></p>
-            <p class="dayoff">Dayoff: <?php echo $this->session->userdata('employeeDayoff');?></p>
+            <p class="name py-4"><?php echo $empData->fname.' '.$empData->lname; ?></p>
+            <p class="empId">ID: <?php echo $empData->empId?></p>
+            <p class="schedule">Schedule: <?php echo $empData->timein.'-'.$empData->timeout; ?></p>
+            <p class="dayoff">Dayoff: <?php echo $empData->dayoff;?></p>
         </center>
     </div>
 

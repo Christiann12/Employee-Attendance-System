@@ -50,7 +50,17 @@ class Attendance_model extends CI_Model {
                 'constraint' => 50,
                 'default' => 'datetimeout'
                 ),
-                'pictureUrl' => array(
+                'late' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50,
+                'default' => 'EMPTY'
+                ),
+                'pictureUrlTimein' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+                'default' => 'empty'
+                ),
+                'pictureUrlTimeout' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 255,
                 'default' => 'empty'
@@ -81,13 +91,24 @@ class Attendance_model extends CI_Model {
         return $this->db->select("*")->from($this->table)->where('empId',$id)->where('date',date("Y-m-d"))->where('timein !=','timein')->get()->row();
     }
     public function getTimeIn($id = ''){
-        return $this->db->select("*")->from($this->table)->where('empId',$id)->where('timeout','timeout')->get()->row();
+        return $this->db->select("*")->from($this->table)
+            ->group_start()
+                ->where('empId',$id)
+                ->where('timeinf !=','EMPTY')
+                ->where('pictureUrlTimeout','empty')
+            ->group_end()
+            ->group_start()
+                ->where('timeoutf','EMPTY')
+                ->or_where('timeouts','EMPTY')
+            ->group_end()
+        ->get()
+        ->row();
     }
-    public function updateRecord($data = []){
-        return $this->db->where('empId',$data['empId'])->where('timeout','timeout')->update($this->table,$data); 
+    public function updateRecord($data = [],$id = ''){
+        return $this->db->where('attendanceId',$id)->update($this->table,$data); 
     }
     public function getTableDataByEmployee(){
-        return $this->db->select("*")->from($this->table)->where('empId',$this->session->userdata('employeeId'))->get()->result();
+        return $this->db->select("*")->from($this->table)->where('empId',$this->session->userdata('employeeId'))->where('MONTH(datetimein)',date('m'))->where('YEAR(datetimein)',date('Y'))->get()->result();
     }
     public function getNoPresent(){
         return $this->db->select('COUNT("empId")')->from($this->table)->where('datetimein',date('Y-m-d'))->group_by('empId')->get()->num_rows();
