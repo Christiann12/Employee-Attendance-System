@@ -156,7 +156,13 @@ class EmployeeScan extends CI_Controller {
             $postData['timeoutf'] = $currentTime;
         }
         else if($attendanceDetail->timeins == "EMPTY"){
-            $postData['timeins'] = $currentTime;
+            // $hours = gmdate("H:i:s", ( strtotime(date("H:i")) - strtotime($attendanceDetail->timeoutf) )) ;
+            // if((int) date('H',strtotime($hours)) < 1 ){
+            //     $postData['timeins'] = date("H:i",strtotime($attendanceDetail->timeoutf."+1 hour"));
+            // }
+            // else{
+                $postData['timeins'] = $currentTime;
+            // }
         }
 
         if (!empty($postData)) {

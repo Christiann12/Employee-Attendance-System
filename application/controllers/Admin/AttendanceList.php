@@ -9,6 +9,7 @@ class AttendanceList extends CI_Controller {
 		$this->load->helper('url');
 		$this->load->library('session');
 		$this->load->library('csvimport');
+		$this->load->helper('cookie');
 		$this->load->model('Admin/Attendance_model');
 		$this->load->model('Admin/Employee_model');
 		$this->load->model('Admin/UserLog_model');
@@ -62,7 +63,7 @@ class AttendanceList extends CI_Controller {
 			$overTimeHour = $this->calculateWorkHourOT($listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->datetimein,$empData->dayoff);
 			$UT_OT = $this->checkifUT_OT($listItem->datetimein,$empData->dayoff,$listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$overTimeHour,$regularHour,$listItem->pictureUrlTimeout);
 			$breakHour = $this->calculateBreakHour($listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->datetimein,$empData->dayoff);
-			$late = $this->checkiflate($listItem->timeinf,$empData->timein,$empData->timeout,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->datetimein,$empData->dayoff);
+			$late = $this->checkiflate($listItem->late);
 
 			$row = array();
 			$row['attendanceId'] = $listItem->attendanceId;
@@ -239,6 +240,12 @@ class AttendanceList extends CI_Controller {
 			$secs = strtotime($time2)-strtotime("00:00:00");
 			$result = date("H:i:s",strtotime($time1)+$secs);
 
+			$sample =  gmdate("H:i:s", ( strtotime("01:00:00") - strtotime(gmdate("H:i:s", ( strtotime($timeins) - strtotime($timeoutf) ))) ));
+			
+			if((int) date('H', strtotime($sample)) < 1){
+				$result = gmdate("H:i:s", ( strtotime($result) - strtotime($sample) ));
+			}	
+
 			return (int) date("H",strtotime($result)) >= 8 ? "08:00:00" : $result;
 			// return $result;
 		} else {
@@ -290,8 +297,15 @@ class AttendanceList extends CI_Controller {
 			if((int) date("H",strtotime($result)) < 8 ){
 				return "00:00:00";
 			}
+
+			$sample =  gmdate("H:i:s", ( strtotime("01:00:00") - strtotime(gmdate("H:i:s", ( strtotime($timeins) - strtotime($timeoutf) ))) ));
+			
+			if((int) date('H', strtotime($sample)) < 1){
+				$result = gmdate("H:i:s", ( strtotime($result) - strtotime($sample) ));
+			}	
 			$final = gmdate("H:i:s", ( strtotime($result) - strtotime("08:00:00") ));
 			
+
 			$test = floor((int) date("i",strtotime($final)) /15) * 15;
 
 			return (int) date("H",strtotime($final)) >= 8  ? "08:00:00" : date("H",strtotime($final)) .':'.sprintf("%02d", $test).':'.date("s",strtotime($final)) ;
@@ -362,20 +376,27 @@ class AttendanceList extends CI_Controller {
 			);
 		}
 	}
-	function checkiflate($timeinf,$schedTimeIn,$schedTimeout,$timeoutf,$timeins,$timeouts,$datetimein,$dayoff){
-		if(strtolower(date('l',strtotime($datetimein))) == strtolower($dayoff)){
-			return '<p class="text-primary text-wrap"><strong>Overtime dayoff</strong></p>';
-		}
-		else if ($timeinf != 'EMPTY') {
-			if ($this->isBetween($schedTimeIn,$schedTimeout,$timeinf)) 
-			{
-				return '<p class="text-danger"><strong>Late</strong></p>';
-			} else {	
-				return '<p class="text-success"><strong>On Time</strong></p>';
-			}
+	// function checkiflate($timeinf,$schedTimeIn,$schedTimeout,$timeoutf,$timeins,$timeouts,$datetimein,$dayoff){
+	function checkiflate($late){
+		// if(strtolower(date('l',strtotime($datetimein))) == strtolower($dayoff)){
+		// 	return '<p class="text-primary text-wrap"><strong>Overtime dayoff</strong></p>';
+		// }
+		// else if ($timeinf != 'EMPTY') {
+		// 	if ($this->isBetween($schedTimeIn,$schedTimeout,$timeinf)) 
+		// 	{
+		// 		return '<p class="text-danger"><strong>Late</strong></p>';
+		// 	} else {	
+		// 		return '<p class="text-success"><strong>On Time</strong></p>';
+		// 	}
+		// } else {
+		// 	return '-';
+		// }
+		if ($late == 'Late') {
+			return '<p class="text-danger"><strong>Late</strong></p>';
 		} else {
-			return '-';
+			return '<p class="text-success"><strong>On Time</strong></p>';
 		}
+		
 	}
 	function checkifUT_OT($datetimein,$dayoff,$timeinf,$timeoutf,$timeins,$timeouts,$overTimeHour,$regularHour,$pictureUrlTimeout){
 		if($pictureUrlTimeout == 'empty'){

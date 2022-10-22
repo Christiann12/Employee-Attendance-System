@@ -94,8 +94,15 @@ class EmployeeDashboard extends CI_Controller {
 		$timeout = date("H:i",strtotime($empData->timeout.""));
 		$now = date("H:i");
 
+		$sample = gmdate("H:i:s", ( strtotime($empData->timeout) - strtotime($empData->timein) ) );
+
 		if(!empty($attendanceDetail) && ($attendanceDetail->timeins == 'EMPTY' || $attendanceDetail->timeoutf == 'EMPTY')){
-			return true;
+			if ( (int) date("H", strtotime($sample)) >= 8 ) {
+				return true;
+			} else {
+				return false;
+			}
+			
 		}
 		else if($empData->timeout == 'timeout' || $empData->timein == 'timein' || $empData->dayoff == 'dayoff'){
 			return false;
@@ -206,12 +213,18 @@ class EmployeeDashboard extends CI_Controller {
 			$secs = strtotime($time2)-strtotime("00:00:00");
 			$result = date("H:i:s",strtotime($time1)+$secs);
 
+
+			$sample =  gmdate("H:i:s", ( strtotime("01:00:00") - strtotime(gmdate("H:i:s", ( strtotime($timeins) - strtotime($timeoutf) ))) ));
+			
+			if((int) date('H', strtotime($sample)) < 1){
+				$result = gmdate("H:i:s", ( strtotime($result) - strtotime($sample) ));
+			}	
+
 			return (int) date("H",strtotime($result)) >= 8 ? "08:00:00" : $result;
 			// return $result;
 		} else {
 			return "00:00:00";
 		}
-		
 	}
 	function calculateWorkHourOT($timeinf,$timeoutf,$timeins,$timeouts,$datetimein,$dayoff){
 		
@@ -257,6 +270,11 @@ class EmployeeDashboard extends CI_Controller {
 			if((int) date("H",strtotime($result)) < 8 ){
 				return "00:00:00";
 			}
+			$sample =  gmdate("H:i:s", ( strtotime("01:00:00") - strtotime(gmdate("H:i:s", ( strtotime($timeins) - strtotime($timeoutf) ))) ));
+			
+			if((int) date('H', strtotime($sample)) < 1){
+				$result = gmdate("H:i:s", ( strtotime($result) - strtotime($sample) ));
+			}	
 			$final = gmdate("H:i:s", ( strtotime($result) - strtotime("08:00:00") ));
 			
 			$test = floor((int) date("i",strtotime($final)) /15) * 15;

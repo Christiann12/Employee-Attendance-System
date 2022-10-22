@@ -73,10 +73,10 @@
                         <th class="headertable text-wrap ">Regular Hour</th>
                         <th class="headertable text-wrap ">OT Hour</th>
                         <th class="headertable text-wrap ">Break Hour</th>
-                        <th class="headertable text-wrap mobile-p ">Late</th>
-                        <th class="headertable text-wrap mobile-p ">UT_OT</th>
-                        <th class="headertable text-wrap mobile-p ">OverBreak</th>
-                        <th class="headertable text-wrap mobile-p ">Date Time in</th>
+                        <th class="headertable text-wrap ">Late</th>
+                        <th class="headertable text-wrap ">UT_OT</th>
+                        <th class="headertable text-wrap ">OverBreak</th>
+                        <th class="headertable text-wrap ">Date Time in</th>
                         <!-- <th class="headertable">Time</th>
                         <th class="headertable">Late/EarlyIn</th>
                         <th class="headertable">UT/OT</th>
