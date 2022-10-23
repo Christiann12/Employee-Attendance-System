@@ -59,6 +59,13 @@ class EmployeeScan extends CI_Controller {
 		} else {
 			$status_in = 'On time';
 		}
+        if (strtolower(date('l')) == strtolower($empData->dayoff)) 
+        {
+            $row["dayoff"] = "Yes";
+        } else {	
+            
+            $row["dayoff"] = "No";
+        }
 
         $postData = array(
             "empId" => $empData->empId,
@@ -66,7 +73,14 @@ class EmployeeScan extends CI_Controller {
             "datetimein" => date('Y-m-d'),
             "late" => $status_in,
         );
-
+        
+        if (strtolower(date('l')) == strtolower($empData->dayoff)) 
+        {
+            $postData["dayoff"] = "Yes";
+        } else {	
+            
+            $postData["dayoff"] = "No";
+        }
         if($this->form_validation->run() === true){
             if ( ! $this->upload->do_upload($name) ) {
                 $this->session->set_flashdata('errorEmpDasboard',$this->upload->display_errors());

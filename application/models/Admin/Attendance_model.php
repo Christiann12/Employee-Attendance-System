@@ -65,6 +65,11 @@ class Attendance_model extends CI_Model {
                 'constraint' => 255,
                 'default' => 'empty'
                 ),
+                'dayoff' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 30,
+                'default' => 'empty'
+                ),
             ); 
             $this->dbforge->add_field($fields);
             // define primary key

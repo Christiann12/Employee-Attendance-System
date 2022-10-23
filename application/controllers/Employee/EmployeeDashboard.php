@@ -134,7 +134,7 @@ class EmployeeDashboard extends CI_Controller {
 			$row['Hours_Worked_Regular'] = $regularHour;
 			$row['Hours_Worked_OT'] = $overTimeHour;
 			$row['Break_Hour'] = $breakHour[0];
-			$row['Dayoff'] = $this->checkIfDayOff($empData->dayoff,$listItem->datetimein);
+			$row['Dayoff'] = $this->checkIfDayOff($listItem->dayoff);
 			$row['Late'] = $late;
 			$row['UT_OT'] = $UT_OT;
 			$row['OverBreak'] = $breakHour[1];
@@ -417,9 +417,9 @@ class EmployeeDashboard extends CI_Controller {
 			return '-';
 		}
 	}
-	function checkIfDayOff($dayoff,$datetimein){
+	function checkIfDayOff($dayoff){
 		
-		if (strtolower(date('l',strtotime($datetimein))) == strtolower($dayoff)) {
+		if ($dayoff == 'Yes') {
 			return '<p class="text-primary text-wrap"><strong>Yes</strong></p>';
 		} 
 		else{
