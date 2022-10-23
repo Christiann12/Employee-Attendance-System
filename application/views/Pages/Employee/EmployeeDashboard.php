@@ -5,6 +5,17 @@
     </div>
     <div class="timesheet">
         <div class="containerPanel">
+            <!-- RESULT NOTIFICATION  -->
+            <?php if($this->session->flashdata('successEmpDashboard')){ ?>
+                <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show" class="alert alert-success" > 
+                    <?php  echo $this->session->flashdata('successEmpDashboard'); $this->session->unset_userdata ( 'successEmpDashboard' );?>
+                </div>
+            <?php } ?>  
+            <?php if ($this->session->flashdata('errorEmpDashboard')){ ?>
+                <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show" class="alert alert-danger" > 
+                    <?php  echo $this->session->flashdata('errorEmpDashboard'); $this->session->unset_userdata ( 'errorEmpDashboard' );?>
+                </div>
+            <?php } ?>
             <p class="title">Time Sheet</p>
             <center>
                
@@ -37,6 +48,7 @@
                         <th class="headertable text-wrap mobile-p">Regular Hour</th>
                         <th class="headertable text-wrap mobile-p">OT Hour</th>
                         <th class="headertable text-wrap mobile-p">Break Hour</th>
+                        <th class="headertable text-wrap mobile-p ">Dayoff</th>
                         <th class="headertable text-wrap mobile-p ">Late</th>
                         <th class="headertable text-wrap mobile-p ">UT_OT</th>
                         <th class="headertable text-wrap mobile-p ">OverBreak</th>

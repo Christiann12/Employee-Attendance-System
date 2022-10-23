@@ -16,6 +16,8 @@
 		
 		<script src="https://code.highcharts.com/highcharts.js"></script>
 
+		<script src="//unpkg.com/alpinejs" defer></script>
+
 		<!-- developer js -->
 		<script src="<?php echo base_url('application/assets/js/clock.js') ?>"></script>
 		<!-- confirm delete -->
@@ -424,6 +426,10 @@
 							className: 'data'
 						},
 						{
+							data: 'Date_Time_In',
+							className: 'data'
+						},
+						{
 							data: 'Hours_Worked_Regular',
 							className: 'data'
 						},
@@ -433,6 +439,10 @@
 						},
 						{
 							data: 'Break_Hour',
+							className: 'data'
+						},
+						{
+							data: 'Dayoff',
 							className: 'data'
 						},
 						{
@@ -447,22 +457,7 @@
 							data: 'OverBreak',
 							className: 'data'
 						},
-						{
-							data: 'Date_Time_In',
-							className: 'data'
-						},
-						// {
-						// 	data: 'data6',
-						// 	className: 'data'
-						// },
-						// {
-						// 	data: 'data9',
-						// 	className: 'data'
-						// },
-						// {
-						// 	data: 'data7',
-						// 	className: 'data'
-						// },
+						
 					],
 					// "order":[],
 					"searching": true,

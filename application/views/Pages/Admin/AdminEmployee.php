@@ -1,4 +1,19 @@
+
+
+<!--
+pop up css    
+position: fixed;
+width: 750px;
+top: 20%;
+left: 50%;
+margin-top: -100px; /* Negative half of height. */
+margin-left: -375px; /* Negative half of width. */
+z-index:100; -->
+
+
 <div class="adminemployee">
+
+
     <div class="banner">
         <p class="greeting">Employees</p>
         <p class="clock"id="ct7"><?php echo date('m/d/Y - g:i:s A') ?></p>
@@ -19,22 +34,25 @@
         </form>
 
     </div>
-    <div class="section1">
+    <div class="section1" id="test">
         <p class="header m-0">Employee Form</p>
         <div class="employeeform m-0">
 
-             <!-- RESULT NOTIFICATION  -->
-             <?php if($this->session->flashdata('successAddEmployee')){ ?>
-                <div class="alert alert-success" > 
-                    <?php  echo $this->session->flashdata('successAddEmployee'); $this->session->unset_userdata ( 'successAddEmployee' );?>
-                </div>
-            <?php } ?>  
+            <!-- RESULT NOTIFICATION  -->
+            <?php if($this->session->flashdata('successAddEmployee')){ ?>
+               
+               <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show" class="alert alert-success"> 
+                   <?php  echo $this->session->flashdata('successAddEmployee'); $this->session->unset_userdata ( 'successAddEmployee' );?>
+               </div>
+               
+           <?php } ?>  
+           
+           <?php if ($this->session->flashdata('failAddEmployee')){ ?>
+               <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show" class="alert alert-danger"> 
+                   <?php  echo $this->session->flashdata('failAddEmployee'); $this->session->unset_userdata ( 'failAddEmployee' );?>
+               </div>
+           <?php } ?>
 
-            <?php if ($this->session->flashdata('failAddEmployee')){ ?>
-                <div class="alert alert-danger" > 
-                    <?php  echo $this->session->flashdata('failAddEmployee'); $this->session->unset_userdata ( 'failAddEmployee' );?>
-                </div>
-            <?php } ?>
             <?php echo form_open_multipart('Admin/Employees/addEmployee') ?>
                 
                 <div class="form-label-group">

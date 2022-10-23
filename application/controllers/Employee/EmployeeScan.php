@@ -69,24 +69,24 @@ class EmployeeScan extends CI_Controller {
 
         if($this->form_validation->run() === true){
             if ( ! $this->upload->do_upload($name) ) {
-                $this->session->set_flashdata('failInput',$this->upload->display_errors());
+                $this->session->set_flashdata('errorEmpDasboard',$this->upload->display_errors());
                 redirect('EmployeeScan/'.$this->input->post("EmpId"));
             } 
             else{
                 $upload =  $this->upload->data();
                 $postData['pictureUrlTimein	'] = $upload['file_name'];
                 if($this->Attendance_model->create($postData)){
-					$this->session->set_flashdata('successInput','Success!');
+					$this->session->set_flashdata('successEmpDashboard','Success!');
                     redirect('EmployeeDashboard');
 				}
 				else {
-					$this->session->set_flashdata('failInput','Time in Failed');
+					$this->session->set_flashdata('errorEmpDasboard','Time in Failed');
                     redirect('EmployeeScan/'.$this->input->post("EmpId"));
 				}
             }
         }
         else{
-            $this->session->set_flashdata('failInput',validation_errors());
+            $this->session->set_flashdata('errorEmpDasboard',validation_errors());
             redirect('EmployeeScan/'.$this->input->post("EmpId"));
         }
     }
@@ -125,24 +125,24 @@ class EmployeeScan extends CI_Controller {
         }
         if($this->form_validation->run() === true){
             if ( ! $this->upload->do_upload($name) ) {
-                $this->session->set_flashdata('failInput',$this->upload->display_errors());
+                $this->session->set_flashdata('errorEmpDashboard',$this->upload->display_errors());
                 redirect('EmployeeScan/'.$this->input->post("EmpId"));
             } 
             else{
                 $upload =  $this->upload->data();
                 $postData['pictureUrlTimeout'] = $upload['file_name'];
                 if($this->Attendance_model->updateRecord($postData,$attendanceDetail->attendanceId)){
-					$this->session->set_flashdata('successInput','Success!');
+					$this->session->set_flashdata('successEmpDashboard','Success!');
                     redirect('EmployeeDashboard');
 				}
 				else {
-					$this->session->set_flashdata('failInput','Time out Failed');
+					$this->session->set_flashdata('errorEmpDashboard','Time out Failed');
                     redirect('EmployeeScan/'.$this->input->post("EmpId"));
 				}
             }
         }
         else{
-            $this->session->set_flashdata('failInput',validation_errors());
+            $this->session->set_flashdata('errorEmpDashboard',validation_errors());
             redirect('EmployeeScan/'.$this->input->post("EmpId"));
         }
     }  
@@ -156,23 +156,26 @@ class EmployeeScan extends CI_Controller {
             $postData['timeoutf'] = $currentTime;
         }
         else if($attendanceDetail->timeins == "EMPTY"){
-            // $hours = gmdate("H:i:s", ( strtotime(date("H:i")) - strtotime($attendanceDetail->timeoutf) )) ;
-            // if((int) date('H',strtotime($hours)) < 1 ){
-            //     $postData['timeins'] = date("H:i",strtotime($attendanceDetail->timeoutf."+1 hour"));
-            // }
-            // else{
-                $postData['timeins'] = $currentTime;
-            // }
+            $postData['timeins'] = $currentTime;
         }
 
         if (!empty($postData)) {
             if($this->Attendance_model->updateRecord($postData,$attendanceDetail->attendanceId)){
+                $this->session->set_flashdata('successEmpDashboard','Success Break');
+                if (!empty($postData['timeoutf'] )) {
+                    $this->session->set_flashdata('successEmpDashboard','Success Break Time Out');
+                } else {
+                    $this->session->set_flashdata('successEmpDashboard','Success Break Time In');
+                }
+                
                 redirect('EmployeeDashboard');
             }
             else{
+                $this->session->set_flashdata('successEmpDashboard','Failed');
                 redirect('EmployeeDashboard');
             }
         } else {
+            $this->session->set_flashdata('errorEmpDashboard','You can\'t take a break anymore');
             redirect('EmployeeDashboard');
         }
         

@@ -28,12 +28,12 @@
                 <div class="spacing1" style="">
                 <!-- RESULT NOTIFICATION  -->
                 <?php if($this->session->flashdata('successEditEmployee')){ ?>
-                    <div class="alert alert-success" > 
+                    <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show" class="alert alert-success" > 
                         <?php  echo $this->session->flashdata('successEditEmployee'); $this->session->unset_userdata ( 'successEditEmployee' );?>
                     </div>
                 <?php } ?>  
                 <?php if ($this->session->flashdata('errorEditEmployee')){ ?>
-                    <div class="alert alert-danger" > 
+                    <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show" class="alert alert-danger" > 
                         <?php  echo $this->session->flashdata('errorEditEmployee'); $this->session->unset_userdata ( 'errorEditEmployee' );?>
                     </div>
                 <?php } ?>
