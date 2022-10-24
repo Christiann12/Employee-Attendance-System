@@ -78,7 +78,6 @@
                         <th class="headertable text-wrap ">Late</th>
                         <th class="headertable text-wrap ">UT_OT</th>
                         <th class="headertable text-wrap ">OverBreak</th>
-                        <th class="headertable text-wrap ">LINK</th>
                     </tr>
                 </thead>
                 <tbody>
