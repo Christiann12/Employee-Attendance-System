@@ -80,6 +80,7 @@ class AttendanceList extends CI_Controller {
 			$row['UT_OT'] = $UT_OT;
 			$row['OverBreak'] = $breakHour[1];
 			$row['Date_Time_In'] = $listItem->datetimein;
+			$row['LINK'] = base_url('application/assets/attachments/images/'.$listItem->pictureUrlTimein);
 			
 			// $row['data7'] = $listItem->datetimein;
 			$data[] = $row;
