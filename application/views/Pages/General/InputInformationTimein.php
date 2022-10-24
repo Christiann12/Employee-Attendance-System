@@ -31,9 +31,9 @@
                         <?php  echo $this->session->flashdata('successEmpDashboard'); $this->session->unset_userdata ( 'successEmpDashboard' );?>
                     </div>
                 <?php } ?>  
-                <?php if ($this->session->flashdata('errorEmpDasboard')){ ?>
+                <?php if ($this->session->flashdata('errorEmpDashboard')){ ?>
                     <div class="alert alert-danger" > 
-                        <?php  echo $this->session->flashdata('errorEmpDasboard'); $this->session->unset_userdata ( 'errorEmpDasboard' );?>
+                        <?php  echo $this->session->flashdata('errorEmpDashboard'); $this->session->unset_userdata ( 'errorEmpDashboard' );?>
                     </div>
                 <?php } ?>
                 <?php echo form_open_multipart('Employee/EmployeeScan/saveTimein') ?>
