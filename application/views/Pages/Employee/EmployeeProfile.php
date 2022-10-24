@@ -8,10 +8,10 @@
     <div class="profile">
         <center>
             <div><img src="<?php echo base_url(); ?>application/assets/images/logo1.png" alt=""></div>
-            <p class="name py-4"><?php echo $this->session->userdata('firstNameEmployee').' '.$this->session->userdata('lastNameEmployee'); ?></p>
-            <p class="empId">ID: <?php echo $this->session->userdata('employeeId')?></p>
-            <p class="schedule">Schedule: <?php echo $this->session->userdata('employeeTimein').'-'.$this->session->userdata('employeeTimeout'); ?></p>
-            <p class="dayoff">Dayoff: <?php echo $this->session->userdata('employeeDayoff');?></p>
+            <p class="name py-4"><?php echo $empData->fname.' '.$empData->lname; ?></p>
+            <p class="empId">ID: <?php echo $empData->empId?></p>
+            <p class="schedule">Schedule: <?php echo $empData->timein.'-'.$empData->timeout; ?></p>
+            <p class="dayoff">Dayoff: <?php echo $empData->dayoff;?></p>
         </center>
     </div>
 
@@ -28,12 +28,12 @@
                 <div class="spacing1" style="">
                 <!-- RESULT NOTIFICATION  -->
                 <?php if($this->session->flashdata('successEditEmployee')){ ?>
-                    <div class="alert alert-success" > 
+                    <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show" class="alert alert-success" > 
                         <?php  echo $this->session->flashdata('successEditEmployee'); $this->session->unset_userdata ( 'successEditEmployee' );?>
                     </div>
                 <?php } ?>  
                 <?php if ($this->session->flashdata('errorEditEmployee')){ ?>
-                    <div class="alert alert-danger" > 
+                    <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show" class="alert alert-danger" > 
                         <?php  echo $this->session->flashdata('errorEditEmployee'); $this->session->unset_userdata ( 'errorEditEmployee' );?>
                     </div>
                 <?php } ?>
