@@ -16,6 +16,8 @@
 		
 		<script src="https://code.highcharts.com/highcharts.js"></script>
 
+		<script src="//unpkg.com/alpinejs" defer></script>
+
 		<!-- developer js -->
 		<script src="<?php echo base_url('application/assets/js/clock.js') ?>"></script>
 		<!-- confirm delete -->
@@ -400,41 +402,62 @@
 					},
 					columns: [
 						{
-							data: 'data1',
+							data: 'attendanceId',
 							className: 'data'
 						},
 						{
-							data: 'data2',
+							data: 'empId',
 							className: 'data'
 						},
 						{
-							data: 'data3',
+							data: 'fname',
 							className: 'data'
 						},
 						{
-							data: 'data8',
+							data: 'lname',
 							className: 'data'
 						},
 						{
-							data: 'data4',
+							data: 'time1',
 							className: 'data'
 						},
 						{
-							data: 'data5',
+							data: 'time2',
 							className: 'data'
 						},
 						{
-							data: 'data6',
+							data: 'Date_Time_In',
 							className: 'data'
 						},
 						{
-							data: 'data9',
+							data: 'Hours_Worked_Regular',
 							className: 'data'
 						},
 						{
-							data: 'data7',
+							data: 'Hours_Worked_OT',
 							className: 'data'
 						},
+						{
+							data: 'Break_Hour',
+							className: 'data'
+						},
+						{
+							data: 'Dayoff',
+							className: 'data'
+						},
+						{
+							data: 'Late',
+							className: 'data'
+						},
+						{
+							data: 'UT_OT',
+							className: 'data'
+						},
+						{
+							data: 'OverBreak',
+							className: 'data'
+						},
+						
 					],
 					// "order":[],
 					"searching": true,
@@ -448,7 +471,7 @@
 							text: 'Copy',
 							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 							}
 						},
 						// 'excelHtml5',
@@ -459,7 +482,7 @@
 							text: 'Excel',
 							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 							}
 						},
 						// 'csvHtml5',
@@ -470,7 +493,7 @@
 							text: 'CSV',
 							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 							}
 						},
 						// 'pdfHtml5',
@@ -481,7 +504,7 @@
 							text: 'PDF',
 							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 							}
 						},
 						// 'print',
@@ -492,7 +515,7 @@
 							text: 'Print',
 							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 							}
 						},
 					]

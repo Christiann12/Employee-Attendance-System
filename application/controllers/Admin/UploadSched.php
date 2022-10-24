@@ -11,6 +11,7 @@ class UploadSched extends CI_Controller {
         $this->load->library('csvimport');
 		$this->load->model('Admin/Employee_model');
 		$this->load->model('Admin/UserLog_model');
+		$this->load->model('Admin/Attendance_model');
 	}
 
 	//Load Upload Sched Page
@@ -95,6 +96,11 @@ class UploadSched extends CI_Controller {
 				// check if valid empId
 				if($this->checkEmpId($csvitem["empId"])){
 					$status = "An Employee ID listed does not exist";
+					break;
+				}
+				$attendanceDetail = $this->Attendance_model->getTimeIn($csvitem["empId"]);
+				if (!empty($attendanceDetail)) {
+					$status = "Employee ".$csvitem["empId"]." still has a pending timein/timeout. Please try again after their working hour.";
 					break;
 				}
 

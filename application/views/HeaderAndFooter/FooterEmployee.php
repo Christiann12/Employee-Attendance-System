@@ -16,6 +16,7 @@
 		
 		<script src="https://code.highcharts.com/highcharts.js"></script>
 
+		<script src="//unpkg.com/alpinejs" defer></script>
 		<!-- developer js -->
 		<script src="<?php echo base_url('application/assets/js/clock.js') ?>"></script>
 		<script src="<?php echo base_url('application/assets/js/easypiechart.js') ?>"></script>
@@ -80,17 +81,46 @@
 					},
 					columns: [
 						{
-							data: 'data1',
+							data: 'date',
 							className: 'data'
 						},
 						{
-							data: 'data2',
+							data: 'timebefore',
 							className: 'data'
 						},
 						{
-							data: 'data3',
+							data: 'timeafter',
 							className: 'data'
 						},
+						{
+							data: 'Hours_Worked_Regular',
+							className: 'data'
+						},
+						{
+							data: 'Hours_Worked_OT',
+							className: 'data'
+						},
+						{
+							data: 'Break_Hour',
+							className: 'data'
+						},
+						{
+							data: 'Dayoff',
+							className: 'data'
+						},
+						{
+							data: 'Late',
+							className: 'data'
+						},
+						{
+							data: 'UT_OT',
+							className: 'data'
+						},
+						{
+							data: 'OverBreak',
+							className: 'data'
+						},
+						
 					],
 					// "order":[],
 					"searching": false,

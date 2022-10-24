@@ -10,7 +10,7 @@
                 <div class="col-12 dashboardcard" style="background-color: #42BAB4;">
                     <center>
                         <i class="fa fa-file icon" aria-hidden="true"></i>
-                        <p class="cardheader"><?php echo $totalNumEmp; ?></p>
+                        <p class="cardheader"><?php echo !empty($totalNumEmp) ? $totalNumEmp : 0; ?></p>
                         <p class="carddesc">Total Number of employees</p>
                     </center>
                 </div>
@@ -19,7 +19,7 @@
                 <div class="col-12 dashboardcard" style="background-color: #46BC7E;">
                     <center>
                         <i class="fa fa-users icon" aria-hidden="true"></i>
-                        <p class="cardheader"><?php echo $activeEmp; ?></p>
+                        <p class="cardheader"><?php echo !empty($activeEmp) ? $activeEmp : 0; ?></p>
                         <p class="carddesc">No. of employees with schedule</p>
                     </center>
                 </div>
@@ -28,7 +28,7 @@
                 <div class="col-12 dashboardcard" style="background-color: #EA677E;">
                     <center>
                         <i class="fa fa-user-plus icon" aria-hidden="true"></i>
-                        <p class="cardheader"><?php echo $noPresent; ?></p>
+                        <p class="cardheader"><?php echo !empty($noPresent) ? $noPresent : 0; ?></p>
                         <p class="carddesc">No. of employees present</p>
                     </center>
                 </div>
@@ -37,7 +37,7 @@
                 <div class="col-12 dashboardcard" style="background-color: #FDA86F;">
                     <center>
                         <i class="fa fa-clock-o icon" aria-hidden="true"></i>
-                        <p class="cardheader"><?php echo $noLate; ?></p>
+                        <p class="cardheader"><?php echo  !empty($noLate) ? $noLate : 0; ?></p>
                         <p class="carddesc">No. of employees who were late</p>
                     </center>
                 </div>

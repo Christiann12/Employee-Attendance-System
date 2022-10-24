@@ -17,6 +17,7 @@ class Employees extends CI_Controller {
 		$this->load->model('Admin/Employee_model');
 		$this->load->model('Admin/User_model');
 		$this->load->model('Admin/UserLog_model');
+		$this->load->model('Admin/Attendance_model');
 	}
 	//Display Employee Page
 	public function index(){
@@ -115,42 +116,50 @@ class Employees extends CI_Controller {
 	}
 	//Update employee
 	public function saveEdit(){
-		$this->form_validation->set_rules('employeeFirstName', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
-		$this->form_validation->set_rules('employeeLastName', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
-		$this->form_validation->set_rules('employeeBranch', 'Branch Location' ,'required|callback_checkFieldIfHasNum|max_length[100]');
-		
-		if($this->input->post("timein") != '' || $this->input->post("timeout") != '' || $this->input->post("dayoff") != ''){
-			$this->form_validation->set_rules('timein', 'Time In' ,'required|max_length[50]');
-			$this->form_validation->set_rules('timeout', 'Time Out' ,'required|max_length[50]');
-			$this->form_validation->set_rules('dayoff', 'Day Off' ,'required|max_length[50]');
+		$attendanceDetail = $this->Attendance_model->getTimeIn($this->input->post("employeeId"));
+		if(!empty($attendanceDetail)){
+			$this->session->set_flashdata('failEditEmployee','Employee still has a pending timein/timeout. Please try again after their working hour.');
+			$this->UserLog_model->addLog('Update Employee',$this->session->userdata('userId'),False);
+			redirect('EditEmployee/'.$this->safe_encode(urlencode($this->encryption->encrypt($this->input->post("employeeId")))));
 		}
+		else{
+			$this->form_validation->set_rules('employeeFirstName', 'First Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
+			$this->form_validation->set_rules('employeeLastName', 'Last Name' ,'required|callback_checkFieldIfHasNum|callback_checkFieldIfHasSP|max_length[50]');
+			$this->form_validation->set_rules('employeeBranch', 'Branch Location' ,'required|callback_checkFieldIfHasNum|max_length[100]');
+			
+			if($this->input->post("timein") != '' || $this->input->post("timeout") != '' || $this->input->post("dayoff") != ''){
+				$this->form_validation->set_rules('timein', 'Time In' ,'required|max_length[50]');
+				$this->form_validation->set_rules('timeout', 'Time Out' ,'required|max_length[50]');
+				$this->form_validation->set_rules('dayoff', 'Day Off' ,'required|max_length[50]');
+			}
 
-		$postData = array(
-            "empId" => $this->input->post("employeeId"),
-            "fname" => ucfirst(strtolower($this->input->post("employeeFirstName"))),
-            "lname" => ucfirst(strtolower($this->input->post("employeeLastName"))),
-			"timein" => (empty($this->input->post("timein")) ? 'timein' : $this->input->post("timein")),
-            "timeout" => (empty($this->input->post("timeout")) ? 'timeout' : $this->input->post("timeout")),
-			"dayoff" => (empty($this->input->post("dayoff")) ? 'dayoff' : $this->input->post("dayoff")),
-			"location" => ucfirst(strtolower($this->input->post("employeeBranch"))),
-        );
+			$postData = array(
+				"empId" => $this->input->post("employeeId"),
+				"fname" => ucfirst(strtolower($this->input->post("employeeFirstName"))),
+				"lname" => ucfirst(strtolower($this->input->post("employeeLastName"))),
+				"timein" => (empty($this->input->post("timein")) ? 'timein' : $this->input->post("timein")),
+				"timeout" => (empty($this->input->post("timeout")) ? 'timeout' : $this->input->post("timeout")),
+				"dayoff" => (empty($this->input->post("dayoff")) ? 'dayoff' : $this->input->post("dayoff")),
+				"location" => ucfirst(strtolower($this->input->post("employeeBranch"))),
+			);
 
-		if($this->form_validation->run() === true){
-			if ($this->Employee_model->saveEdit($postData)){
-				$this->session->set_flashdata('successEditEmployee','Edit Success');
-				$this->UserLog_model->addLog('Update Employee',$this->session->userdata('userId'),True);
+			if($this->form_validation->run() === true){
+				if ($this->Employee_model->saveEdit($postData)){
+					$this->session->set_flashdata('successEditEmployee','Edit Success');
+					$this->UserLog_model->addLog('Update Employee',$this->session->userdata('userId'),True);
+				}
+				else{
+					$this->session->set_flashdata('failEditEmployee','Edit Failed');
+					$this->UserLog_model->addLog('Update Employee',$this->session->userdata('userId'),False);
+				}
+				redirect('EditEmployee/'.$this->safe_encode(urlencode($this->encryption->encrypt($this->input->post("employeeId")))));
 			}
 			else{
-				$this->session->set_flashdata('failEditEmployee','Edit Failed');
+				$this->session->set_flashdata('failEditEmployee',validation_errors());
 				$this->UserLog_model->addLog('Update Employee',$this->session->userdata('userId'),False);
+				redirect('EditEmployee/'.$this->safe_encode(urlencode($this->encryption->encrypt($this->input->post("employeeId")))));
 			}
-            redirect('EditEmployee/'.$this->safe_encode(urlencode($this->encryption->encrypt($this->input->post("employeeId")))));
-        }
-        else{
-			$this->session->set_flashdata('failEditEmployee',validation_errors());
-			$this->UserLog_model->addLog('Update Employee',$this->session->userdata('userId'),False);
-            redirect('EditEmployee/'.$this->safe_encode(urlencode($this->encryption->encrypt($this->input->post("employeeId")))));
-        }
+		}
 	}
 	//Add employee
 	public function addEmployee(){

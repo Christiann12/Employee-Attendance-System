@@ -64,15 +64,20 @@
             <table id="attendancetable" class="responsive display nowrap cell-border hover" width="100%">
                 <thead>
                     <tr>
-                        <th class="headertable">Attendance ID</th>
-                        <th class="headertable">EMP ID</th>
-                        <th class="headertable">First Name</th>
-                        <th class="headertable">Last Name</th>
-                        <th class="headertable">Time</th>
-                        <th class="headertable">Late/EarlyIn</th>
-                        <th class="headertable">UT/OT</th>
-                        <th class="headertable">Hours Worked</th>
-                        <th class="headertable">Date Timein</th>
+                        <th class="headertable text-wrap ">Attendance ID</th>
+                        <th class="headertable text-wrap ">EMP ID</th>
+                        <th class="headertable text-wrap ">First Name</th>
+                        <th class="headertable text-wrap ">Last Name</th>
+                        <th class="headertable text-wrap ">Time Before Break</th>
+                        <th class="headertable text-wrap ">Time After Break</th>
+                        <th class="headertable text-wrap ">Date Time in</th>
+                        <th class="headertable text-wrap ">Regular Hour</th>
+                        <th class="headertable text-wrap ">OT Hour</th>
+                        <th class="headertable text-wrap ">Break Hour</th>
+                        <th class="headertable text-wrap ">Dayoff</th>
+                        <th class="headertable text-wrap ">Late</th>
+                        <th class="headertable text-wrap ">UT_OT</th>
+                        <th class="headertable text-wrap ">OverBreak</th>
                     </tr>
                 </thead>
                 <tbody>
