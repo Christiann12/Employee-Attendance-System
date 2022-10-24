@@ -121,10 +121,10 @@ class EmployeeDashboard extends CI_Controller {
 		foreach($data1 as $listItem){
 
 			$empData = $this->Employee_model->getEmp($listItem->empId);
-			$regularHour = $this->calculateWorkHour($listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->datetimein,$empData->dayoff);
-			$overTimeHour = $this->calculateWorkHourOT($listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->datetimein,$empData->dayoff);
-			$UT_OT = $this->checkifUT_OT($listItem->datetimein,$empData->dayoff,$listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$overTimeHour,$regularHour,$listItem->pictureUrlTimeout);
-			$breakHour = $this->calculateBreakHour($listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->datetimein,$empData->dayoff);
+			$regularHour = $this->calculateWorkHour($listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->dayoff);
+			$overTimeHour = $this->calculateWorkHourOT($listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->dayoff);
+			$UT_OT = $this->checkifUT_OT($listItem->datetimein,$empData->dayoff,$listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$overTimeHour,$regularHour,$listItem->pictureUrlTimeout,$listItem->dayoff);
+			$breakHour = $this->calculateBreakHour($listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->dayoff);
 			$late = $this->checkiflate($listItem->late);
 			
 			$row = array();
@@ -197,14 +197,14 @@ class EmployeeDashboard extends CI_Controller {
 		}
 		return $data;
 	}
-	function calculateWorkHour($timeinf,$timeoutf,$timeins,$timeouts,$datetimein,$dayoff){
+	function calculateWorkHour($timeinf,$timeoutf,$timeins,$timeouts,$dayoff){
 
 		$timein1 = ($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY' ) ? $timeinf : "00:00:00";
 		$timeout1 = ($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY' ) ? $timeoutf : "00:00:00";
 		$timein2 = ($timeins != 'EMPTY'&&$timeouts != 'EMPTY' ) ? $timeins : "00:00:00";
 		$timeout2 = ($timeins != 'EMPTY'&&$timeouts != 'EMPTY' ) ? $timeouts : "00:00:00";
 		
-		if(strtolower(date('l',strtotime($datetimein))) == strtolower($dayoff)){
+		if($dayoff == 'Yes'){
 			return "00:00:00";
 		}
 		else if ( ($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY' )|| ($timeins != 'EMPTY' && $timeouts != 'EMPTY')) {
@@ -232,9 +232,9 @@ class EmployeeDashboard extends CI_Controller {
 		}
 		
 	}
-	function calculateWorkHourOT($timeinf,$timeoutf,$timeins,$timeouts,$datetimein,$dayoff){
+	function calculateWorkHourOT($timeinf,$timeoutf,$timeins,$timeouts,$dayoff){
 		
-		if(strtolower(date('l',strtotime($datetimein))) == strtolower($dayoff)){
+		if($dayoff == 'Yes'){
 			if (($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY'&&$timeins != 'EMPTY'&&$timeouts != 'EMPTY' )) {
 				$time1 = gmdate("H:i:s", ( strtotime($timeoutf) - strtotime($timeinf) )) ;
 				$time2 = gmdate("H:i:s", ( strtotime($timeouts) - strtotime($timeins) ))  ;
@@ -307,14 +307,14 @@ class EmployeeDashboard extends CI_Controller {
 		}
 		
 	}
-	function calculateBreakHour($timeinf,$timeoutf,$timeins,$timeouts,$datetimein,$dayoff){
+	function calculateBreakHour($timeinf,$timeoutf,$timeins,$timeouts,$dayoff){
 
 		$timein1 = ($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY' ) ? $timeinf : "00:00:00";
 		$timeout1 = ($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY' ) ? $timeoutf : "00:00:00";
 		$timein2 = ($timeins != 'EMPTY'&&$timeouts != 'EMPTY' ) ? $timeins : "00:00:00";
 		$timeout2 = ($timeins != 'EMPTY'&&$timeouts != 'EMPTY' ) ? $timeouts : "00:00:00";
 		
-		if(strtolower(date('l',strtotime($datetimein))) == strtolower($dayoff)){
+		if($dayoff == 'Yes'){
 			if (($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY'&&$timeins != 'EMPTY'&&$timeouts != 'EMPTY') || ($timeoutf != 'EMPTY'&&$timeins != 'EMPTY')) {
 
 				$time1 = gmdate("H:i:s", ( strtotime($timeins) - strtotime($timeoutf) )) ;
@@ -378,11 +378,11 @@ class EmployeeDashboard extends CI_Controller {
 		}
 		
 	}
-	function checkifUT_OT($datetimein,$dayoff,$timeinf,$timeoutf,$timeins,$timeouts,$overTimeHour,$regularHour,$pictureUrlTimeout){
+	function checkifUT_OT($datetimein,$dayoff,$timeinf,$timeoutf,$timeins,$timeouts,$overTimeHour,$regularHour,$pictureUrlTimeout,$newdayoff){
 		if($pictureUrlTimeout == 'empty'){
 			return '-';
 		}
-		else if(strtolower(date('l',strtotime($datetimein))) != strtolower($dayoff)){
+		else if($newdayoff == 'No'){
 			if ($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY'&&$timeins != 'EMPTY'&&$timeouts != 'EMPTY') {
 			
 				if( (int) date("H",strtotime($regularHour)) == 8 && (int) date("H",strtotime($overTimeHour)) == 0 && (int) date("i",strtotime($overTimeHour)) == 0 ){
@@ -405,7 +405,7 @@ class EmployeeDashboard extends CI_Controller {
 				return '<p class="text-danger"><strong>UnderTime</strong></p>';
 			}
 		}
-		else if(strtolower(date('l',strtotime($datetimein))) == strtolower($dayoff)){
+		else if($newdayoff == 'Yes'){
 			if( (int) date("H",strtotime($overTimeHour)) == 8 && (int) date("i",strtotime($overTimeHour)) == 0 ){
 				return '<p class="text-success"><strong>On Time</strong></p>';
 			}

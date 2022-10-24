@@ -111,6 +111,7 @@ class AttendanceList extends CI_Controller {
 					$status = "An Employee ID listed does not exist";
 					break;
 				}
+				
 				// check if valid time
 				if((!$this->checkTime($csvitem["timein_beforebreak"]) || !$this->checkTime($csvitem["timeout_beforebreak"]) || !$this->checkTime($csvitem["timein_afterbreak"]) || !$this->checkTime($csvitem["timeout_afterbreak"])) ){
 					$status = "A record has an invalid timein or timeout";
