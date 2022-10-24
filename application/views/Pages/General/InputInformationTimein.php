@@ -26,14 +26,14 @@
             </p>
             <div class="inputForm">
                 <!-- RESULT NOTIFICATION  -->
-                <?php if($this->session->flashdata('successInput')){ ?>
+                <?php if($this->session->flashdata('successEmpDashboard')){ ?>
                     <div class="alert alert-success" > 
-                        <?php  echo $this->session->flashdata('successInput'); $this->session->unset_userdata ( 'successInput' );?>
+                        <?php  echo $this->session->flashdata('successEmpDashboard'); $this->session->unset_userdata ( 'successEmpDashboard' );?>
                     </div>
                 <?php } ?>  
-                <?php if ($this->session->flashdata('failInput')){ ?>
+                <?php if ($this->session->flashdata('errorEmpDashboard')){ ?>
                     <div class="alert alert-danger" > 
-                        <?php  echo $this->session->flashdata('failInput'); $this->session->unset_userdata ( 'failInput' );?>
+                        <?php  echo $this->session->flashdata('errorEmpDashboard'); $this->session->unset_userdata ( 'errorEmpDashboard' );?>
                     </div>
                 <?php } ?>
                 <?php echo form_open_multipart('Employee/EmployeeScan/saveTimein') ?>

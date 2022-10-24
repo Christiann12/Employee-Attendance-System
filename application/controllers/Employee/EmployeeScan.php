@@ -83,7 +83,7 @@ class EmployeeScan extends CI_Controller {
         }
         if($this->form_validation->run() === true){
             if ( ! $this->upload->do_upload($name) ) {
-                $this->session->set_flashdata('errorEmpDasboard',$this->upload->display_errors());
+                $this->session->set_flashdata('errorEmpDashboard',$this->upload->display_errors());
                 redirect('EmployeeScan/'.$this->input->post("EmpId"));
             } 
             else{
@@ -94,13 +94,13 @@ class EmployeeScan extends CI_Controller {
                     redirect('EmployeeDashboard');
 				}
 				else {
-					$this->session->set_flashdata('errorEmpDasboard','Time in Failed');
+					$this->session->set_flashdata('errorEmpDashboard','Time in Failed');
                     redirect('EmployeeScan/'.$this->input->post("EmpId"));
 				}
             }
         }
         else{
-            $this->session->set_flashdata('errorEmpDasboard',validation_errors());
+            $this->session->set_flashdata('errorEmpDashboard',validation_errors());
             redirect('EmployeeScan/'.$this->input->post("EmpId"));
         }
     }
