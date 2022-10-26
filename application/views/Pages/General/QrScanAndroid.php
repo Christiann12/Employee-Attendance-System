@@ -10,6 +10,7 @@
 
         <!-- developer css  -->
         <link rel="stylesheet" href="<?php echo base_url(); ?>application/assets/css/Employee/EmployeeAndroidScanQr.css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>application/assets/css/Employee/TimeinInput.css"/>
         <title>EAS System</title>
     </head>
     <body style=" font-family: Raleway; background-color: #edf5e1;">
@@ -24,6 +25,38 @@
                 
             </div>
             
+            <div class="banner">
+                <!-- <p class="greeting">
+                    Time In Input Form
+                </p> -->
+                <div class="inputForm">
+                    <!-- RESULT NOTIFICATION  -->
+                    <?php if($this->session->flashdata('uploadSuccess')){ ?>
+                        <div class="alert alert-success" > 
+                            <?php  echo $this->session->flashdata('uploadSuccess'); $this->session->unset_userdata ( 'uploadSuccess' );?>
+                        </div>
+                    <?php } ?>  
+                    <?php if ($this->session->flashdata('uploadFail')){ ?>
+                        <div class="alert alert-danger" > 
+                            <?php  echo $this->session->flashdata('uploadFail'); $this->session->unset_userdata ( 'uploadFail' );?>
+                        </div>
+                    <?php } ?>
+                    <?php echo form_open_multipart('General/ScanQrAndroid/upload') ?>
+                        <!-- <div class="form-label-group d-none">
+                            <input name="EmpId" type="text" id="EmpId" class="form-control" placeholder="Email/Username" value="<?php echo $empData->secretId; ?>">
+                            <label for="EmpId" class="">Secret Id</label>
+                        </div> -->
+                        
+                        <div class="form-label-gorup">
+                            <label for="attachment" class="">If scanning doesn't work, try uploading your QR Code</label>
+                            <div class="">
+                                <input type="file" name="attachment" id="attachment">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn">Submit</button>
+                    <?php echo form_close() ?>
+                </div>
+            </div>
             <!-- <input type="text" name="text" id="text" readonyy="" placeholder="scan qrcode" class="form-control"> -->
         </div>
 

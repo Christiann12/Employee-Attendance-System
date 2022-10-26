@@ -12,6 +12,7 @@
             <p class="empId">ID: <?php echo $empData->empId?></p>
             <p class="schedule">Schedule: <?php echo $empData->timein.'-'.$empData->timeout; ?></p>
             <p class="dayoff">Dayoff: <?php echo $empData->dayoff;?></p>
+            <a href="<?= base_url('Employee/EmployeeProfile/download/'.$empData->secretId ) ?>">Click here to download your QR Code</a>
         </center>
     </div>
 

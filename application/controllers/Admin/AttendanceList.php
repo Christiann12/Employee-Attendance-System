@@ -80,6 +80,8 @@ class AttendanceList extends CI_Controller {
 			$row['UT_OT'] = $UT_OT;
 			$row['OverBreak'] = $breakHour[1];
 			$row['Date_Time_In'] = $listItem->datetimein;
+			$row['timeinurl'] = $listItem->pictureUrlTimein == 'On Premise' ? 'On Premise':'<a href="'.base_url('application/assets/attachments/images/').$listItem->pictureUrlTimein.'">Click To Open</a>';
+			$row['timeouturl'] = $listItem->pictureUrlTimeout == 'On Premise' ? 'On Premise':'<a href="'.base_url('application/assets/attachments/images/').$listItem->pictureUrlTimeout.'">Click To Open</a>';
 			
 			// $row['data7'] = $listItem->datetimein;
 			$data[] = $row;

@@ -221,16 +221,16 @@
 							}
 						},
 						// 'pdfHtml5',
-						{
-							extend: 'pdfHtml5',
-							footer: true,
-							// text: '<i class="fa fa-copy"></i>',
-							text: 'PDF',
-							className: 'btn-size',
-							exportOptions: {
-								columns: [ 1,2,3,4,5]
-							}
-						},
+						// {
+						// 	extend: 'pdfHtml5',
+						// 	footer: true,
+						// 	// text: '<i class="fa fa-copy"></i>',
+						// 	text: 'PDF',
+						// 	className: 'btn-size',
+						// 	exportOptions: {
+						// 		columns: [ 1,2,3,4,5]
+						// 	}
+						// },
 						// 'print',
 						{
 							extend: 'print',
@@ -401,10 +401,10 @@
 						"data": {empId:empId,date:date}
 					},
 					columns: [
-						{
-							data: 'attendanceId',
-							className: 'data'
-						},
+						// {
+						// 	data: 'attendanceId',
+						// 	className: 'data'
+						// },
 						{
 							data: 'empId',
 							className: 'data'
@@ -457,8 +457,21 @@
 							data: 'OverBreak',
 							className: 'data'
 						},
+						{
+							data: 'timeinurl',
+							className: 'data'
+						},
+						{
+							data: 'timeouturl',
+							className: 'data'
+						},
 						
 					],
+					"columnDefs":[{
+						"targets":[0],
+						// "orderable":false,
+						// className : "d-none"
+					},],
 					// "order":[],
 					"searching": true,
 					"dom": "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>><'row'<'col-sm-12't>><'row'<'col-sm-6'i><'col-sm-6'p>>",
@@ -471,7 +484,7 @@
 							text: 'Copy',
 							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 							}
 						},
 						// 'excelHtml5',
@@ -482,7 +495,7 @@
 							text: 'Excel',
 							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 							}
 						},
 						// 'csvHtml5',
@@ -493,20 +506,20 @@
 							text: 'CSV',
 							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 							}
 						},
 						// 'pdfHtml5',
-						{
-							extend: 'pdfHtml5',
-							footer: true,
-							// text: '<i class="fa fa-copy"></i>',
-							text: 'PDF',
-							className: 'btn-size',
-							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-							}
-						},
+						// {
+						// 	extend: 'pdfHtml5',
+						// 	footer: true,
+						// 	// text: '<i class="fa fa-copy"></i>',
+						// 	text: 'PDF',
+						// 	className: 'btn-size',
+						// 	exportOptions: {
+						// 		columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+						// 	}
+						// },
 						// 'print',
 						{
 							extend: 'print',
@@ -515,7 +528,7 @@
 							text: 'Print',
 							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 							}
 						},
 					]
