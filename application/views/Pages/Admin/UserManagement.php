@@ -1,6 +1,6 @@
 <div class="usermanagement">
     <div class="banner">
-        <p class="greeting">Account Management</p>
+        <p class="greeting">User Management</p>
         <p class="clock" id="ct7"><?php echo date('m/d/Y - g:i:s A') ?></p>
     </div>
     <div class="section1">
