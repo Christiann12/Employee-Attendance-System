@@ -64,7 +64,7 @@
             <table id="attendancetable" class="responsive display nowrap cell-border hover" width="100%">
                 <thead>
                     <tr>
-                        <th class="headertable text-wrap ">Attendance ID</th>
+                        <!-- <th class="headertable text-wrap ">Attendance ID</th> -->
                         <th class="headertable text-wrap ">EMP ID</th>
                         <th class="headertable text-wrap ">First Name</th>
                         <th class="headertable text-wrap ">Last Name</th>
@@ -78,6 +78,8 @@
                         <th class="headertable text-wrap ">Late</th>
                         <th class="headertable text-wrap ">UT_OT</th>
                         <th class="headertable text-wrap ">OverBreak</th>
+                        <th class="headertable text-wrap mobile-p">Time In Picture</th>
+                        <th class="headertable text-wrap mobile-p">Time Out Picture</th>
                     </tr>
                 </thead>
                 <tbody>

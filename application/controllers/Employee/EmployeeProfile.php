@@ -103,6 +103,31 @@ class EmployeeProfile extends CI_Controller {
             redirect('EmployeeProfile');
         }
 	}
+	public function download($id = ''){
+		$url = 'https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl='.$id ;
+		//$file_name = APPPATH.'assets/attachments/images/QR.png';
+      
+		// Use file_get_contents() function to get the file
+		// from url and use file_put_contents() function to
+		// save the file by using base name
+		// if (file_put_contents($file_name, file_get_contents($url)))
+		// {
+		// 	echo "File downloaded successfully";
+		// }
+		// else
+		// {
+		// 	echo "File downloading failed.";
+		// }
+		header('Content-Description: File Transfer');
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment; filename="qrcode.png"');
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate');
+		header('Pragma: public');
+		// header('Content-Length: ' . filesize($url));
+		readfile($url);
+		// redirect('EmployeeProfile');
+	}
 	public function checkFieldIfHasNum($text = ''){
 		if( preg_match('~[0-9]+~', $text)){
 			$this->form_validation->set_message('checkFieldIfHasNum', 'The {field} has numeric value!');

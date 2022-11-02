@@ -47,5 +47,46 @@ class ScanQrAndroid extends CI_Controller {
 			}
 		}
 	}
-	
+	public function upload(){
+		if(empty($_FILES['attachment']['name'])){
+			$this->session->set_flashdata('uploadFail','Please Upload Your QR Code');
+			redirect('General/ScanQrAndroid');
+		}
+		if(!str_contains(strtolower($_FILES['attachment']['type']), 'image')){
+			$this->session->set_flashdata('uploadFail','Upload a correct file type');
+			redirect('General/ScanQrAndroid');
+		}
+
+		$test = APPPATH.'assets/attachments/images/temp'.$this->session->userdata('employeeId').'.png';
+		file_put_contents($test, file_get_contents($_FILES['attachment']['tmp_name']));
+		$file_name='temp'.$this->session->userdata('employeeId').'.png';
+		$file = base_url('application/assets/attachments/images/temp'.$this->session->userdata('employeeId').'.png');
+
+		$url = 'http://zxing.org/w/decode?u='.urlencode($file);
+		$handle = curl_init($url);
+		curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
+		$html = curl_exec($handle);
+		libxml_use_internal_errors(true); // Prevent HTML errors from displaying
+		$doc = new DOMDocument();
+		$doc->loadHTML($html);
+		$link = $doc->getElementsByTagName('pre')->item(0);
+		// echo 'Link text: ' . $link->nodeValue;
+
+		if(!empty($link)){
+			if($link->nodeValue != $this->session->userdata('secretIdEmployee')){
+				$this->session->set_flashdata('uploadFail','This is not your QR Code');
+				unlink(APPPATH.'assets/attachments/images/'.$file_name);
+				redirect('General/ScanQrAndroid');
+			}
+			else{
+				unlink(APPPATH.'assets/attachments/images/'.$file_name);
+				redirect('EmployeeScan/'.$link->nodeValue);
+			}
+		}
+		else{
+			$this->session->set_flashdata('uploadFail','The image is not a QR Code');
+			unlink(APPPATH.'assets/attachments/images/'.$file_name);
+			redirect('General/ScanQrAndroid');
+		}
+	}
 }

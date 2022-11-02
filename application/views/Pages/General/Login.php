@@ -19,7 +19,25 @@
 
     </head>
     <body class="loginBody">
-        
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Forgot Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Please Contact HR to have your password reset.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                </div>
+                </div>
+            </div>
+        </div>
         <div class="primaryContainer">
             <div class="loginPanel">
                <div class="">
@@ -59,7 +77,8 @@
                             </div>
                             <div class="col-6">
                                 <center>
-                                    <p style="text-align: right;" class="forgot-password d-none">Forgot Password?</p>
+                                    <!-- <p style="text-align: right;" class="forgot-password">Forgot Password?</p> -->
+                                    <p style="text-align: right;" class="" onclick=" location.href = '#'" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Forgot Password?</p>
                                 </center>
                             </div>
                         </div>
