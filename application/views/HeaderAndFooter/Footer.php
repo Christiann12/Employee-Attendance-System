@@ -194,6 +194,7 @@
 							// text: '<i class="fa fa-copy"></i>',
 							text: 'Copy',
 							className: 'btn-size',
+							title: '<?= date('Y-m-d-').time()?>-Employee',
 							exportOptions: {
 								columns: [ 1,2,3,4,5]
 							}
@@ -205,6 +206,7 @@
 							// text: '<i class="fa fa-copy"></i>',
 							text: 'Excel',
 							className: 'btn-size',
+							title: '<?= date('Y-m-d-').time()?>-Employee',
 							exportOptions: {
 								columns: [ 1,2,3,4,5]
 							}
@@ -216,6 +218,7 @@
 							// text: '<i class="fa fa-copy"></i>',
 							text: 'CSV',
 							className: 'btn-size',
+							title: '<?= date('Y-m-d-').time()?>-Employee',
 							exportOptions: {
 								columns: [ 1,2,3,4,5]
 							}
@@ -238,6 +241,7 @@
 							// text: '<i class="fa fa-copy"></i>',
 							text: 'Print',
 							className: 'btn-size',
+							title: '<?= date('Y-m-d-').time()?>-Employee',
 							exportOptions: {
 								columns: [ 1,2,3,4,5]
 							}
@@ -482,9 +486,10 @@
 							footer: true,
 							// text: '<i class="fa fa-copy"></i>',
 							text: 'Copy',
+							title: '<?= date('Y-m-d-').time()?>-Timesheet',
 							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 							}
 						},
 						// 'excelHtml5',
@@ -493,9 +498,10 @@
 							footer: true,
 							// text: '<i class="fa fa-copy"></i>',
 							text: 'Excel',
+							title: '<?= date('Y-m-d-').time()?>-Timesheet',
 							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 							}
 						},
 						// 'csvHtml5',
@@ -504,9 +510,10 @@
 							footer: true,
 							// text: '<i class="fa fa-copy"></i>',
 							text: 'CSV',
+							title: '<?= date('Y-m-d-').time()?>-Timesheet',
 							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 							}
 						},
 						// 'pdfHtml5',
@@ -517,7 +524,7 @@
 						// 	text: 'PDF',
 						// 	className: 'btn-size',
 						// 	exportOptions: {
-						// 		columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+						// 		columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 						// 	}
 						// },
 						// 'print',
@@ -526,9 +533,10 @@
 							footer: true,
 							// text: '<i class="fa fa-copy"></i>',
 							text: 'Print',
+							title: '<?= date('Y-m-d-').time()?>-Timesheet',
 							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 							}
 						},
 					]
