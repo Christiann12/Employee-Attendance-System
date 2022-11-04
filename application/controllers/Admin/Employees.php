@@ -225,11 +225,15 @@ class Employees extends CI_Controller {
 		$newId = !empty($rowCount) ? (int)$rowCount->newid : 0;
 		$data = array();
 
-		if(!array_key_exists('firstname',$file_data[0]) || !array_key_exists('lastname',$file_data[0]) || !array_key_exists('branch',$file_data[0])){
+		if(empty($file_data)){
+			$status = "CSV file is empty";
+			
+		}
+		else if(!array_key_exists('firstname',$file_data[0]) || !array_key_exists('lastname',$file_data[0]) || !array_key_exists('branch',$file_data[0])){
 			$status = "Required header is missing or wrong!";
 			
 		}
-		if(count($file_data) * 4 != count($file_data,1)){
+		else if(count($file_data) * 4 != count($file_data,1)){
 			$status = "Invalid format of data, please double check the file for inconsistencies then try again.";
 		}
 		
