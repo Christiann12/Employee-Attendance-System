@@ -16,7 +16,7 @@
                     <?php  echo $this->session->flashdata('errorEmpDashboard'); $this->session->unset_userdata ( 'errorEmpDashboard' );?>
                 </div>
             <?php } ?>
-            <p class="title">Time Sheet</p>
+            <p class="title">Attendance</p>
             <center>
                
                 <?php if($empData->timeout != 'timeout' || $empData->timein != 'timein' || $empData->dayoff != 'dayoff'  ){ ?>

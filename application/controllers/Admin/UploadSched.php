@@ -57,11 +57,15 @@ class UploadSched extends CI_Controller {
 		$data = array();
 		$status = 'Still Good';
 		$count = 0;
-		if(!array_key_exists('empId',$file_data[0]) || !array_key_exists('timein',$file_data[0]) || !array_key_exists('timeout',$file_data[0]) || !array_key_exists('dayoff',$file_data[0])){
+		if(empty($file_data)){
+			$status = "CSV file is empty";
+			
+		}
+		else if(!array_key_exists('empId',$file_data[0]) || !array_key_exists('timein',$file_data[0]) || !array_key_exists('timeout',$file_data[0]) || !array_key_exists('dayoff',$file_data[0])){
 			$status = "Required header  is missing or wrong!";
 			
 		}
-		if(count($file_data) * 5 != count($file_data,1)){
+		else if(count($file_data) * 5 != count($file_data,1)){
 			$status = "Invalid format of data, please double check the file for inconsistencies then try again.";
 			
 		}
