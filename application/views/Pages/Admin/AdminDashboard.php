@@ -4,7 +4,7 @@
         <p class="clock"id="ct7"><?php echo date('m/d/Y - g:i:s A') ?></p>
     </div>
     <div class="section1">
-        <p class="header">For this month</p>
+        <p class="header">Overview</p>
         <div class="row">
             <div class="col-12 col-sm-12 col-md-6 col-lg-3 ">
                 <div class="col-12 dashboardcard" style="background-color: #42BAB4;">
@@ -29,7 +29,7 @@
                     <center>
                         <i class="fa fa-user-plus icon" aria-hidden="true"></i>
                         <p class="cardheader"><?php echo !empty($noPresent) ? $noPresent : 0; ?></p>
-                        <p class="carddesc">No. of employees present</p>
+                        <p class="carddesc">Present Employees Today</p>
                     </center>
                 </div>
             </div>
@@ -38,7 +38,7 @@
                     <center>
                         <i class="fa fa-clock-o icon" aria-hidden="true"></i>
                         <p class="cardheader"><?php echo  !empty($noLate) ? $noLate : 0; ?></p>
-                        <p class="carddesc">No. of employees who were late</p>
+                        <p class="carddesc">Late Employees Today</p>
                     </center>
                 </div>
             </div>
