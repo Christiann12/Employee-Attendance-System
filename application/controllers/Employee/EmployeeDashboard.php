@@ -15,14 +15,13 @@ class EmployeeDashboard extends CI_Controller {
 
 	public function index()
 	{
-		$data['empData'] = $this->Employee_model->getEmp($this->session->userdata('employeeId'));
-		$data['circularData'] = $this->circularProgressBar();
-		$data['lateCount'] = $this->Attendance_model->getTardinessMeasure('Late');
-		$data['OnTimeCount'] = $this->Attendance_model->getTardinessMeasure('On Time');
-		$data['buttonStatus'] = $this->buttonStatus();
-		$data['buttonStatusBreak'] = $this->buttonStatusBreak();
-
         if($this->session->userdata('isLogInEmployee') === true){
+			$data['empData'] = $this->Employee_model->getEmp($this->session->userdata('employeeId'));
+			$data['circularData'] = $this->circularProgressBar();
+			$data['lateCount'] = $this->Attendance_model->getTardinessMeasure('Late');
+			$data['OnTimeCount'] = $this->Attendance_model->getTardinessMeasure('On Time');
+			$data['buttonStatus'] = $this->buttonStatus();
+			$data['buttonStatusBreak'] = $this->buttonStatusBreak();
 			$userData = $this->db->get_where('employee', array('empId' => $this->session->userdata('employeeId')))->row();
 			if(!empty($userData)){
 				$data['page'] = "EmployeeDashboard";
