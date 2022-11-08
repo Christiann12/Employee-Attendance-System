@@ -129,7 +129,7 @@ class EmployeeLogin extends CI_Controller {
 
 				set_cookie($countCookie);
 
-				$this->session->set_flashdata('errorLoginEmployee','Incorrect Email or Password');
+				$this->session->set_flashdata('errorLoginEmployee','Incorrect Employee ID or Password');
 				redirect('');
 			}
 		}

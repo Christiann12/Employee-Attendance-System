@@ -41,14 +41,14 @@ z-index:100; -->
             <!-- RESULT NOTIFICATION  -->
             <?php if($this->session->flashdata('successAddEmployee')){ ?>
                
-               <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show" class="alert alert-success"> 
+               <div x-data="{show: true}" x-init="setTimeout(() => show = false, 5000)" x-show="show" class="alert alert-success"> 
                    <?php  echo $this->session->flashdata('successAddEmployee'); $this->session->unset_userdata ( 'successAddEmployee' );?>
                </div>
                
            <?php } ?>  
            
            <?php if ($this->session->flashdata('failAddEmployee')){ ?>
-               <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show" class="alert alert-danger"> 
+               <div x-data="{show: true}" x-init="setTimeout(() => show = false, 5000)" x-show="show" class="alert alert-danger"> 
                    <?php  echo $this->session->flashdata('failAddEmployee'); $this->session->unset_userdata ( 'failAddEmployee' );?>
                </div>
            <?php } ?>

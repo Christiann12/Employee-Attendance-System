@@ -10,12 +10,12 @@
 
             <!-- RESULT NOTIFICATION  -->
             <?php if($this->session->flashdata('successAddUser')){ ?>
-            <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show" class="alert alert-success">
+            <div x-data="{show: true}" x-init="setTimeout(() => show = false, 5000)" x-show="show" class="alert alert-success">
                 <?php  echo $this->session->flashdata('successAddUser'); $this->session->unset_userdata ( 'successAddUser' );?>
             </div>
             <?php } ?>
             <?php if ($this->session->flashdata('failAddUser')){ ?>
-            <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show" class="alert alert-danger">
+            <div x-data="{show: true}" x-init="setTimeout(() => show = false, 5000)" x-show="show" class="alert alert-danger">
                 <?php  echo $this->session->flashdata('failAddUser'); $this->session->unset_userdata ( 'failAddUser' );?>
             </div>
             <?php } ?>

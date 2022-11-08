@@ -28,12 +28,12 @@
             <div class="inputForm">
                 <!-- RESULT NOTIFICATION  -->
                 <?php if($this->session->flashdata('successEmpDashboard')){ ?>
-                    <div class="alert alert-success" > 
+                    <div  x-data="{show: true}" x-init="setTimeout(() => show = false, 5000)" x-show="show" class="alert alert-success" > 
                         <?php  echo $this->session->flashdata('successEmpDashboard'); $this->session->unset_userdata ( 'successEmpDashboard' );?>
                     </div>
                 <?php } ?>  
                 <?php if ($this->session->flashdata('errorEmpDashboard')){ ?>
-                    <div class="alert alert-danger" > 
+                    <div  x-data="{show: true}" x-init="setTimeout(() => show = false, 5000)" x-show="show" class="alert alert-danger" > 
                         <?php  echo $this->session->flashdata('errorEmpDashboard'); $this->session->unset_userdata ( 'errorEmpDashboard' );?>
                     </div>
                 <?php } ?>
@@ -57,5 +57,6 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>		
 		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+        <script src="//unpkg.com/alpinejs" defer></script>
     </body>
 </html>

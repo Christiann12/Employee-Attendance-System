@@ -52,18 +52,18 @@
                     <div class="m-auto spacing1" style="width: 50%;">
                         <!-- RESULT NOTIFICATION  -->
                         <?php if($this->session->flashdata('successLogin')){ ?>
-                            <div class="alert alert-success" > 
+                            <div  x-data="{show: true}" x-init="setTimeout(() => show = false, 5000)" x-show="show" class="alert alert-success" > 
                                 <?php  echo $this->session->flashdata('successLogin'); $this->session->unset_userdata ( 'successLogin' );?>
                             </div>
                         <?php } ?>  
                         <?php if ($this->session->flashdata('errorLogin')){ ?>
-                            <div class="alert alert-danger" > 
+                            <div  x-data="{show: true}" x-init="setTimeout(() => show = false, 5000)" x-show="show" class="alert alert-danger" > 
                                 <?php  echo $this->session->flashdata('errorLogin'); $this->session->unset_userdata ( 'errorLogin' );?>
                             </div>
                         <?php } ?>
                         <div class="form-label-group">
                             <input name="emailLogin" type="email" id="email" class="form-control" placeholder="Email/Username">
-                            <label for="emailLogin" class="">Email/Username</label>
+                            <label for="emailLogin" class="">Email</label>
                         </div>
 
                         <div class="form-label-group">
@@ -138,5 +138,6 @@
 
               }, 1000);
         </script>
+        <script src="//unpkg.com/alpinejs" defer></script>
     </body>
 </html>
