@@ -8,6 +8,7 @@ class UploadSched extends CI_Controller {
 		date_default_timezone_set('Asia/Singapore');
 		$this->load->helper('url');
 		$this->load->library('session');
+		$this->load->helper('cookie');
         $this->load->library('csvimport');
 		$this->load->model('Admin/Employee_model');
 		$this->load->model('Admin/UserLog_model');

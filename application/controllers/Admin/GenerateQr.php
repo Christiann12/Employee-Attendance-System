@@ -7,6 +7,7 @@ class GenerateQr extends CI_Controller {
 		parent::__construct();
 		date_default_timezone_set('Asia/Singapore');
 		$this->load->helper('url');
+		$this->load->helper('cookie');
 		$this->load->library('session');
 		$this->load->model('Admin/Employee_model');
 		$this->load->model('Admin/UserLog_model');
