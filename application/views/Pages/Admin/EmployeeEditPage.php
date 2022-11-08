@@ -10,13 +10,13 @@
 
              <!-- RESULT NOTIFICATION  -->
              <?php if($this->session->flashdata('successEditEmployee')){ ?>
-                <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show" class="alert alert-success" > 
+                <div x-data="{show: true}" x-init="setTimeout(() => show = false, 5000)" x-show="show" class="alert alert-success" > 
                     <?php  echo $this->session->flashdata('successEditEmployee'); $this->session->unset_userdata ( 'successEditEmployee' );?>
                 </div>
             <?php } ?>  
 
             <?php if ($this->session->flashdata('failEditEmployee')){ ?>
-                <div x-data="{show: true}" x-init="setTimeout(() => show = false, 3000)" x-show="show" class="alert alert-danger" > 
+                <div x-data="{show: true}" x-init="setTimeout(() => show = false, 5000)" x-show="show" class="alert alert-danger" > 
                     <?php  echo $this->session->flashdata('failEditEmployee'); $this->session->unset_userdata ( 'failEditEmployee' );?>
                 </div>
             <?php } ?>
@@ -70,6 +70,17 @@
                                 echo form_dropdown('dayoff', $dayList, $employeeData->dayoff, 'class="form-control" id="dayoff" '); 
                             ?>
                     </div>
+                </div>
+
+                <div class="form-label-group mt-3">
+                    <label for="userPassword" class="labelDesign">Password</label>
+                    <input name="userPassword" type="password" id="userPassword" class="inputDesign form-control" placeholder="E.g ********" >
+                    <small id="passwordHelp" class="form-text text-muted">Password must contain at least 1 special character, uppercase letter, lowercase letter, and must be at least 8 characters long.</small>
+                </div>
+
+                <div class="form-label-group mt-3">
+                    <label for="userRePassword" class="labelDesign">Confirm Password</label>
+                    <input name="userRePassword" type="password" id="userRePassword" class="inputDesign form-control" placeholder="E.g ********" >
                 </div>
 
                 <button type="submit" class="btn my-3" >Submit</button>

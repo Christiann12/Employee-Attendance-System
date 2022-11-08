@@ -132,6 +132,10 @@ class Employees extends CI_Controller {
 				$this->form_validation->set_rules('timeout', 'Time Out' ,'required|max_length[50]');
 				$this->form_validation->set_rules('dayoff', 'Day Off' ,'required|max_length[50]');
 			}
+			if($this->input->post("userPassword") != ''){
+				$this->form_validation->set_rules('userPassword', 'Password' ,'required|callback_checkPasswordStrength|max_length[50]');
+				$this->form_validation->set_rules('userRePassword', 'Confirm Password' ,'required|matches[userPassword]');
+			}
 
 			$postData = array(
 				"empId" => $this->input->post("employeeId"),
@@ -142,6 +146,10 @@ class Employees extends CI_Controller {
 				"dayoff" => (empty($this->input->post("dayoff")) ? 'dayoff' : $this->input->post("dayoff")),
 				"location" => ucfirst(strtolower($this->input->post("employeeBranch"))),
 			);
+
+			if($this->input->post("userPassword") != ''){
+				$postData['password'] = md5($this->input->post("userPassword"));
+			}
 
 			if($this->form_validation->run() === true){
 				if ($this->Employee_model->saveEdit($postData)){
@@ -332,6 +340,27 @@ class Employees extends CI_Controller {
 	public function checkFieldIfHasSP($text = ''){
 		if( preg_match('/[\'^£$%&*(!)}+{@#~?><>\[\],|=_¬-]/', $text)){
 			$this->form_validation->set_message('checkFieldIfHasSP', 'The {field} has special character!');
+            return false;
+		}
+		else{
+			return true;
+		}
+	}
+	public function checkPasswordStrength($password = ''){
+		if( strlen($password) < 8 ){
+			$this->form_validation->set_message('checkPasswordStrength', 'The {field} must be 8 characters long');
+            return false;
+		}
+		if( !preg_match('/[\'^£$%&*(!)}+{@#~?><>\[\],|=_¬-]/', $password)){
+			$this->form_validation->set_message('checkPasswordStrength', 'The {field} must contain atleast 1 special character');
+            return false;
+		}
+		if( !preg_match('/[A-Z]/', $password)){
+			$this->form_validation->set_message('checkPasswordStrength', 'The {field} must contain atleast 1 upper character');
+            return false;
+		}
+		if( !preg_match('/[a-z]/', $password)){
+			$this->form_validation->set_message('checkPasswordStrength', 'The {field} must contain atleast 1 lower character');
             return false;
 		}
 		else{
