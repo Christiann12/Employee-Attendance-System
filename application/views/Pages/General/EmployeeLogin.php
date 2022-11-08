@@ -53,12 +53,12 @@
                         <div class="spacing1" style="">
                         <!-- RESULT NOTIFICATION  -->
                         <?php if($this->session->flashdata('successLoginEmployee')){ ?>
-                            <div class="alert alert-success" > 
+                            <div x-data="{show: true}" x-init="setTimeout(() => show = false, 5000)" x-show="show" class="alert alert-success" > 
                                 <?php  echo $this->session->flashdata('successLoginEmployee'); $this->session->unset_userdata ( 'successLoginEmployee' );?>
                             </div>
                         <?php } ?>  
                         <?php if ($this->session->flashdata('errorLoginEmployee')){ ?>
-                            <div class="alert alert-danger" > 
+                            <div x-data="{show: true}" x-init="setTimeout(() => show = false, 5000)" x-show="show" class="alert alert-danger" > 
                                 <?php  echo $this->session->flashdata('errorLoginEmployee'); $this->session->unset_userdata ( 'errorLoginEmployee' );?>
                             </div>
                         <?php } ?>
@@ -138,5 +138,6 @@
 
               }, 1000);
         </script>
+        <script src="//unpkg.com/alpinejs" defer></script>
     </body>
 </html>
