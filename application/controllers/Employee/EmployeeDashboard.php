@@ -15,8 +15,6 @@ class EmployeeDashboard extends CI_Controller {
 
 	public function index()
 	{
-		
-
         if($this->session->userdata('isLogInEmployee') === true){
 			$data['empData'] = $this->Employee_model->getEmp($this->session->userdata('employeeId'));
 			$data['circularData'] = $this->circularProgressBar();

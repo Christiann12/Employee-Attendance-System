@@ -422,6 +422,10 @@
 							className: 'data'
 						},
 						{
+							data: 'empsched',
+							className: 'data'
+						},
+						{
 							data: 'time1',
 							className: 'data'
 						},
@@ -471,7 +475,7 @@
 						},
 						
 					],
-					order: [[5, 'desc']],
+					order: [[6, 'desc']],
 					"columnDefs":[{
 						"targets":[0],
 						// "orderable":false,
@@ -490,7 +494,7 @@
 							title: '<?= date('Y-m-d-').time()?>-Timesheet',
 							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,13]
 							}
 						},
 						// 'excelHtml5',
@@ -502,7 +506,7 @@
 							title: '<?= date('Y-m-d-').time()?>-Timesheet',
 							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,13]
 							}
 						},
 						// 'csvHtml5',
@@ -514,7 +518,7 @@
 							title: '<?= date('Y-m-d-').time()?>-Timesheet',
 							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,13]
 							}
 						},
 						// 'pdfHtml5',
@@ -525,7 +529,7 @@
 						// 	text: 'PDF',
 						// 	className: 'btn-size',
 						// 	exportOptions: {
-						// 		columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+						// 		columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,13]
 						// 	}
 						// },
 						// 'print',
@@ -537,7 +541,272 @@
 							title: '<?= date('Y-m-d-').time()?>-Timesheet',
 							className: 'btn-size',
 							exportOptions: {
-								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+								columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,13]
+							}
+						},
+					]
+				});
+			}
+		</script>
+		<!-- Late report table script  -->
+		<script>
+			$(document).ready( function () {
+				
+				$('#latereport').DataTable().destroy();
+				// var VtxtSearch=$("#txtSearchChild").val();
+				loadlatereport();
+			});	
+			// $("#attendanceFilter").submit(function(event){
+			// 	event.preventDefault();
+			// 	var empId=$("#empIdFilter").val();
+			// 	var date=$("#dateFilter").val();
+			// 	$('#latereport').DataTable().destroy();
+			// 	loadlatereport(empId,date);
+			// });
+			function loadlatereport(){
+				// alert('thiswork');
+				var dataTable = $('#latereport').DataTable({
+					
+					"lengthMenu": [[10, 25, 100, 1000, 3000, -1], [10, 25, 100, 1000, 3000]],
+					"processing":true,
+					"language": {
+						processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '
+					},
+					// "serverSide":true,
+					"responsive": true,
+
+					"ajax": {
+						"url": "<?php echo base_url('Admin/AttendanceList/latereport')?>",
+						"type": "POST",
+					},
+					// "order":[],
+					// "searching": true,
+					"dom": "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>><'row'<'col-sm-12't>><'row'<'col-sm-6'i><'col-sm-6'p>>",
+					columns: [
+
+						{
+							data: 'empId',
+							className: 'data'
+						},
+						{
+							data: 'fname',
+							className: 'data'
+						},		
+						{
+							data: 'lname',
+							className: 'data'
+						},		
+						{
+							data: 'count',
+							className: 'data'
+						},		
+					],
+					buttons: [
+						// 'copyHtml5',
+						{
+							extend: 'copyHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'Copy',
+							title: '<?= date('Y-m-d-').time()?>-latereport',
+							className: 'btn-size',
+							exportOptions: {
+								columns: [ 0,1,2,3]
+							}
+						},
+						// 'excelHtml5',
+						{
+							extend: 'excelHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'Excel',
+							title: '<?= date('Y-m-d-').time()?>-latereport',
+							className: 'btn-size',
+							exportOptions: {
+								columns: [ 0,1,2,3]
+							}
+						},
+						// 'csvHtml5',
+						{
+							extend: 'csvHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'CSV',
+							title: '<?= date('Y-m-d-').time()?>-latereport',
+							className: 'btn-size',
+							exportOptions: {
+								columns: [ 0,1,2,3]
+							}
+						},
+						{
+							extend: 'print',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'Print',
+							title: '<?= date('Y-m-d-').time()?>-latereport',
+							className: 'btn-size',
+							exportOptions: {
+								columns: [ 0,1,2,3]
+							}
+						},
+					]
+				});
+			}
+		</script>
+		<!-- Undertime report table script  -->
+		<script>
+			$(document).ready( function () {
+				
+				$('#undertime').DataTable().destroy();
+				// var VtxtSearch=$("#txtSearchChild").val();
+				loadundertime();
+			});	
+			// $("#attendanceFilter").submit(function(event){
+			// 	event.preventDefault();
+			// 	var empId=$("#empIdFilter").val();
+			// 	var date=$("#dateFilter").val();
+			// 	$('#undertime').DataTable().destroy();
+			// 	loadundertime(empId,date);
+			// });
+			function loadundertime(){
+				// alert('thiswork');
+				var dataTable = $('#undertime').DataTable({
+					
+					"lengthMenu": [[10, 25, 100, 1000, 3000, -1], [10, 25, 100, 1000, 3000]],
+					"processing":true,
+					"language": {
+						processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '
+					},
+				
+					"responsive": true,
+					"dom": "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>><'row'<'col-sm-12't>><'row'<'col-sm-6'i><'col-sm-6'p>>",
+				
+					buttons: [
+						// 'copyHtml5',
+						{
+							extend: 'copyHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'Copy',
+							title: '<?= date('Y-m-d-').time()?>-latereport',
+							className: 'btn-size',
+							exportOptions: {
+								columns: [ 0,1,2,3]
+							}
+						},
+						// 'excelHtml5',
+						{
+							extend: 'excelHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'Excel',
+							title: '<?= date('Y-m-d-').time()?>-latereport',
+							className: 'btn-size',
+							exportOptions: {
+								columns: [ 0,1,2,3]
+							}
+						},
+						// 'csvHtml5',
+						{
+							extend: 'csvHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'CSV',
+							title: '<?= date('Y-m-d-').time()?>-latereport',
+							className: 'btn-size',
+							exportOptions: {
+								columns: [ 0,1,2,3]
+							}
+						},
+						{
+							extend: 'print',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'Print',
+							title: '<?= date('Y-m-d-').time()?>-latereport',
+							className: 'btn-size',
+							exportOptions: {
+								columns: [ 0,1,2,3]
+							}
+						},
+					]
+				});
+			}
+		</script>
+		<!-- Overbreak report table script  -->
+		<script>
+			$(document).ready( function () {
+				
+				$('#overbreak').DataTable().destroy();
+				// var VtxtSearch=$("#txtSearchChild").val();
+				loadoverbreak();
+			});	
+			// $("#attendanceFilter").submit(function(event){
+			// 	event.preventDefault();
+			// 	var empId=$("#empIdFilter").val();
+			// 	var date=$("#dateFilter").val();
+			// 	$('#overbreak').DataTable().destroy();
+			// 	loadoverbreak(empId,date);
+			// });
+			function loadoverbreak(){
+				// alert('thiswork');
+				var dataTable = $('#overbreak').DataTable({
+					
+					"lengthMenu": [[10, 25, 100, 1000, 3000, -1], [10, 25, 100, 1000, 3000]],
+					"processing":true,
+					"language": {
+						processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '
+					},
+				
+					"responsive": true,
+					"dom": "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>><'row'<'col-sm-12't>><'row'<'col-sm-6'i><'col-sm-6'p>>",
+				
+					buttons: [
+						// 'copyHtml5',
+						{
+							extend: 'copyHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'Copy',
+							title: '<?= date('Y-m-d-').time()?>-latereport',
+							className: 'btn-size',
+							exportOptions: {
+								columns: [ 0,1,2,3]
+							}
+						},
+						// 'excelHtml5',
+						{
+							extend: 'excelHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'Excel',
+							title: '<?= date('Y-m-d-').time()?>-latereport',
+							className: 'btn-size',
+							exportOptions: {
+								columns: [ 0,1,2,3]
+							}
+						},
+						// 'csvHtml5',
+						{
+							extend: 'csvHtml5',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'CSV',
+							title: '<?= date('Y-m-d-').time()?>-latereport',
+							className: 'btn-size',
+							exportOptions: {
+								columns: [ 0,1,2,3]
+							}
+						},
+						{
+							extend: 'print',
+							footer: true,
+							// text: '<i class="fa fa-copy"></i>',
+							text: 'Print',
+							title: '<?= date('Y-m-d-').time()?>-latereport',
+							className: 'btn-size',
+							exportOptions: {
+								columns: [ 0,1,2,3]
 							}
 						},
 					]

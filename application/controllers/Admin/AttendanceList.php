@@ -19,6 +19,8 @@ class AttendanceList extends CI_Controller {
         
 		if($this->session->userdata('isLogIn') === true){
 			$userData = $this->db->get_where('users', array('userId' => $this->session->userdata('userId')))->row();
+			$data['underTimeReport'] = $this->undertimereport();
+			$data['overbreakreport'] = $this->overbreakreport();
 			if (!empty($userData)) {
 				$data['page'] = "AttendanceList";
 				$this->load->view('HeaderAndFooter/Header.php');
@@ -52,6 +54,71 @@ class AttendanceList extends CI_Controller {
 			}
 		}
 	}
+	public function overbreakreport(){
+		$data1 = $this->Attendance_model->getUndertimeReport();
+
+		$data = array();
+		$dummy = array();
+		foreach($data1 as $listItem){
+			$empData = $this->Employee_model->getEmp($listItem->empId);
+			$regularHour = $this->calculateWorkHour($listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->dayoff);
+			$overTimeHour = $this->calculateWorkHourOT($listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->dayoff);
+			$UT_OT = $this->checkifUT_OT($listItem->datetimein,$empData->dayoff,$listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$overTimeHour,$regularHour,$listItem->pictureUrlTimeout,$listItem->dayoff);
+			$breakHour = $this->calculateBreakHour($listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->dayoff);
+			$late = $this->checkiflate($listItem->late);
+
+			if($breakHour[1] == '<p class="text-danger"><strong>Over Break</strong></p>'){
+				$dummy[$listItem->empId] = (empty($dummy[$listItem->empId]) ? 1 : $dummy[$listItem->empId]+1);
+			}
+
+		}
+		return $dummy;
+
+	}
+	public function undertimereport(){
+		$data1 = $this->Attendance_model->getUndertimeReport();
+
+		$data = array();
+		$dummy = array();
+		foreach($data1 as $listItem){
+			$empData = $this->Employee_model->getEmp($listItem->empId);
+			$regularHour = $this->calculateWorkHour($listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->dayoff);
+			$overTimeHour = $this->calculateWorkHourOT($listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->dayoff);
+			$UT_OT = $this->checkifUT_OT($listItem->datetimein,$empData->dayoff,$listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$overTimeHour,$regularHour,$listItem->pictureUrlTimeout,$listItem->dayoff);
+			$breakHour = $this->calculateBreakHour($listItem->timeinf,$listItem->timeoutf,$listItem->timeins,$listItem->timeouts,$listItem->dayoff);
+			$late = $this->checkiflate($listItem->late);
+
+			if($UT_OT == '<p class="text-danger"><strong>Undertime</strong></p>'){
+				$dummy[$listItem->empId] = (empty($dummy[$listItem->empId]) ? 1 : $dummy[$listItem->empId]+1);
+			}
+
+		}
+		return $dummy;
+
+	}
+	public function latereport(){
+		$data1 = $this->Attendance_model->getLateReport();
+
+		$data = array();
+
+		foreach($data1 as $listItem){
+
+			if($listItem->countlate <=  3){
+				continue;
+			}
+			$row = array();
+			$row['empId'] = $listItem->empId;
+			$row['count'] = $listItem->countlate;
+			$row['fname'] = $listItem->fname;
+			$row['lname'] = $listItem->lname;
+			
+			
+			// $row['data7'] = $listItem->datetimein;
+			$data[] = $row;
+		}
+		$json_data['data'] = $data;
+		echo json_encode($json_data);
+	}
 	public function generateTable(){
 		$data1 = $this->Attendance_model->getTableData($this->input->post('empId'),$this->input->post('date'));
 
@@ -72,6 +139,7 @@ class AttendanceList extends CI_Controller {
 			$row['lname'] = $listItem->lname;
 			$row['time1'] = $listItem->timeinf.' - '.$listItem->timeoutf;
 			$row['time2'] = $listItem->timeins.' - '.$listItem->timeouts;
+			$row['empsched'] = $listItem->timeinsched.' - '.$listItem->timeoutsched;
 			$row['Hours_Worked_Regular'] = $regularHour;
 			$row['Hours_Worked_OT'] = $overTimeHour;
 			$row['Break_Hour'] = $breakHour[0];
@@ -163,6 +231,8 @@ class AttendanceList extends CI_Controller {
 			
 
 				$row["empId"] = strtoupper($csvitem["empId"]);
+				$row["timeinsched"] = $empData->timein;
+				$row["timeoutsched"] =$empData->timeout ;
 				$row["timeinf"] = $csvitem["timein_beforebreak"];
 				$row["timeoutf"] = $csvitem["timeout_beforebreak"];
 				$row["timeins"] = $csvitem["timein_afterbreak"];
@@ -448,7 +518,7 @@ class AttendanceList extends CI_Controller {
 				return '<p class="text-warning"><strong>Overtime</strong></p>';
 			}
 			elseif (($timeinf != 'EMPTY'&&$timeoutf != 'EMPTY' )&& ($timeins == 'EMPTY'&&$timeouts == 'EMPTY')) {
-				return '<p class="text-danger"><strong>UnderTime</strong></p>';
+				return '<p class="text-danger"><strong>Undertime</strong></p>';
 			}
 		}
 		else if($newDayOff == 'Yes'){
