@@ -72,6 +72,8 @@ class EmployeeScan extends CI_Controller {
             "timeinf" => $currentTime,
             "datetimein" => date('Y-m-d'),
             "late" => $status_in,
+            "timeinsched" => $empData->timein,
+            "timeoutsched" => $empData->timeout,
         );
         
         if (strtolower(date('l')) == strtolower($empData->dayoff)) 
@@ -130,6 +132,7 @@ class EmployeeScan extends CI_Controller {
         $postData = array(
             "empId" => $empData->empId,
             "datetimeout" => date('Y-m-d'),
+            
         );
         if($attendanceDetail->timeoutf == 'EMPTY'){
             $postData['timeoutf'] = date("H:i");;
