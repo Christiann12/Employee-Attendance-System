@@ -68,6 +68,7 @@
                         <th class="headertable text-wrap ">EMP ID</th>
                         <th class="headertable text-wrap ">First Name</th>
                         <th class="headertable text-wrap ">Last Name</th>
+                        <th class="headertable text-wrap ">Employee Sched</th>
                         <th class="headertable text-wrap ">Time Before Break</th>
                         <th class="headertable text-wrap ">Time After Break</th>
                         <th class="headertable text-wrap ">Date Time in</th>
@@ -88,4 +89,103 @@
             </table>
         </div>
     </div>
+
+    <div class="section1">
+        <p class="header m-0">Employee with more than 3 late</p>
+        <div class="attendancetable m-0">
+            <table id="latereport" class="responsive display nowrap cell-border hover" width="100%">
+                <thead>
+                    <tr>
+                        <!-- <th class="headertable text-wrap ">Attendance ID</th> -->
+                        <th class="headertable text-wrap ">EMP ID</th>
+                        <th class="headertable text-wrap ">First Name</th>
+                        <th class="headertable text-wrap ">Last Name</th>
+                        <th class="headertable text-wrap ">Late Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section1">
+        <p class="header m-0">Employee with more than 3 Under Time</p>
+        <div class="attendancetable m-0">
+            <table id="undertime" class="responsive display nowrap cell-border hover" width="100%">
+                <thead>
+                    <tr>
+                        <!-- <th class="headertable text-wrap ">Attendance ID</th> -->
+                        <th class="headertable text-wrap ">EMP ID</th>
+                        <th class="headertable text-wrap ">First Name</th>
+                        <th class="headertable text-wrap ">Last Name</th>
+                        <th class="headertable text-wrap ">Undertime Count</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                        <?php foreach($underTimeReport as $key=>$value): 
+                            $test = $this->db->select('fname,lname')->from('employee')->where('empId',$key)->get()->row();    
+                        ?>
+                            <?php if($value >= 3): ?>
+                                <tr>
+                                    <td>
+                                        <?= $key ?>
+                                    </td>
+                                    <td>
+                                        <?= $test->fname ?>
+                                    </td>
+                                    <td>
+                                        <?= $test->lname ?>
+                                    </td>
+                                    <td>
+                                        <?= $value ?>
+                                    </td>
+                                </tr>
+                            <?php endif;?>
+                        <?php endforeach;?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section1">
+        <p class="header m-0">Employee with more than 3 Over Break</p>
+        <div class="attendancetable m-0">
+            <table id="overbreak" class="responsive display nowrap cell-border hover" width="100%">
+                <thead>
+                    <tr>
+                        <!-- <th class="headertable text-wrap ">Attendance ID</th> -->
+                        <th class="headertable text-wrap ">EMP ID</th>
+                        <th class="headertable text-wrap ">First Name</th>
+                        <th class="headertable text-wrap ">Last Name</th>
+                        <th class="headertable text-wrap ">Overbreak Count</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                        <?php foreach($overbreakreport as $key=>$value): 
+                            $test = $this->db->select('fname,lname')->from('employee')->where('empId',$key)->get()->row();    
+                        ?>
+                            <?php if($value >= 3): ?>
+                                <tr>
+                                    <td>
+                                        <?= $key ?>
+                                    </td>
+                                    <td>
+                                        <?= $test->fname ?>
+                                    </td>
+                                    <td>
+                                        <?= $test->lname ?>
+                                    </td>
+                                    <td>
+                                        <?= $value ?>
+                                    </td>
+                                </tr>
+                            <?php endif;?>
+                        <?php endforeach;?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>

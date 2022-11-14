@@ -20,6 +20,16 @@ class Attendance_model extends CI_Model {
                 'type' => 'VARCHAR',
                 'constraint' =>20,
                 ),
+                'timeinsched' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50,
+                'default' => 'timein'
+                ),
+                'timeoutsched' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50,
+                'default' => 'timeout'
+                ),
                 'timeinf' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 50,
@@ -136,5 +146,17 @@ class Attendance_model extends CI_Model {
         $result =  $this->db->insert_batch($this->table, $data);
         $this->db->query('UNLOCK TABLES');
         return $result;
+    }
+    public function getLateReport(){
+        $this->db->select("attendance.*,employee.fname,employee.lname, COUNT('attendance.Late') as countlate")->from($this->table)->where('attendance.Late','Late')->group_by('attendance.empId')->join('employee', 'attendance.empId = employee.empId', 'left');
+        
+        
+        return $this->db->get()->result();
+    }
+    public function getUndertimeReport(){
+        $this->db->select("attendance.*,employee.fname,employee.lname")->from($this->table)->join('employee', 'attendance.empId = employee.empId', 'left');
+        
+        
+        return $this->db->get()->result();
     }
 }
